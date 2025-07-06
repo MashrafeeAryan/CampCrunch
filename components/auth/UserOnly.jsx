@@ -2,6 +2,7 @@ import { useRouter } from "expo-router"
 import { useUser } from "../../hooks/useUser"
 import { useEffect } from "react"
 import { ActivityIndicator, StyleSheet, Text,  View } from "react-native"
+import LoadScreen from "../LoadScreen"
 
 
 const UserOnly = ({ children }) => {
@@ -16,10 +17,7 @@ const UserOnly = ({ children }) => {
 
     if (!authChecked || !user) {
         return (
-            <View style={styles.container}>
-                <ActivityIndicator size="large" color="#4D96FF" />
-                <Text style={styles.text}>Checking access...</Text>
-            </View>
+          <LoadScreen/>
         );
     }
 

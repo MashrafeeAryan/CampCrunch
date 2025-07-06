@@ -1,24 +1,12 @@
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import infoPageLogos from "../../assets/images/infoPageLogos";
 import goalPageLogos from "../../assets/images/goalPageLogos";
 import { Ionicons } from "@expo/vector-icons";
-import WeightComponent from "@/components/WeightComponent";
-import HeightComponent from "@/components/HeightComponent";
-import AgeComponent from "@/components/AgeComponent";
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from "expo-router";
 
-
-
 const GoalPage = () => {
-  const [showWeightComponent, setShowWeightComponent] = useState(false);
-  const [showHeightComponent, setShowHeightComponent] = useState(false);
-  const [showAgeComponent, setShowAgeComponent] = useState(false);
-
-  //router
-  const router = useRouter()
 
   return (
   
@@ -35,7 +23,7 @@ const GoalPage = () => {
             {/* Image */}
             <View className="mt-3">
               <Image
-                source={infoPageLogos.thumbsUpManLogo}
+                source={goalPageLogos.thumbsUpManLogo}
                 style={{ width: 190, height: 190 }}
               />
             </View>
