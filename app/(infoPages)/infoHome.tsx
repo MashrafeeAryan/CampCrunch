@@ -10,31 +10,34 @@ import { router } from "expo-router";
 import GenderComponent from "@/components/GenderComponent";
 import ActivityLevelComponent from "@/components/ActivityLevelComponent";
 import { useRouter } from "expo-router";
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 
 const infoHome = () => {
   const [showWeightComponent, setShowWeightComponent] = useState(false);
   const [showHeightComponent, setShowHeightComponent] = useState(false);
   const [showAgeComponent, setShowAgeComponent] = useState(false);
   const [showGenderComponent, setShowGenderComponent] = useState(false);
-  const [showActivityLevelComponent, setShowActivityLevelComponent] =
-    useState(false);
+  const [showActivityLevelComponent, setShowActivityLevelComponent] =  useState(false);
+  // Reading state
+  const userID = useUserHealthStore((s) => s.userID)
+  const weight_KG = useUserHealthStore((s) => s.weight_KG)
+  const weight_lbs = useUserHealthStore((s) => s.weight_lbs)
+  const heightInches = useUserHealthStore((s) => s.heightInches)
+  const heightCM = useUserHealthStore((s) => s.heightCM)
+  const ageYears = useUserHealthStore((s) => s.ageYears)
+  const gender = useUserHealthStore((s) => s.gender)
+  const activityLevel = useUserHealthStore((s) => s.activityLevel)
 
-  //Store Weights
-  const [weight_KG, setWeight_KG] = useState("");
-  const [weight_lbs, setWeight_lbs] = useState("");
-
-  //Store Height
-  const [heightInches, setHeightInches] = useState("");
-  const [heightCM, setHeightCM] = useState("");
-
-  //Store Age
-  const [ageYears, setAgeYears] = useState("");
-
-  //Store Gender
-  const [gender, setGender] = useState("");
-
-  //Store Activity Level
-  const [activityLevel, setActivityLevel] = useState("");
+  // Setters
+  const setUserID = useUserHealthStore((s) => s.setUserID)
+  const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG)
+  const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs)
+  const setHeightInches = useUserHealthStore((s) => s.setHeightInches)
+  const setHeightCM = useUserHealthStore((s) => s.setHeightCM)
+  const setAgeYears = useUserHealthStore((s) => s.setAgeYears)
+  const setGender = useUserHealthStore((s) => s.setGender)
+  const setActivityLevel = useUserHealthStore((s) => s.setActivityLevel)
+ 
 
   const router = useRouter();
   return (
@@ -171,8 +174,8 @@ const infoHome = () => {
               {showActivityLevelComponent && (
                 <ActivityLevelComponent
                   showActivityLevelComponent={showActivityLevelComponent}
-                  setShowActivityLevelComponent={setShowActivityLevelComponent}
-                />
+                  setShowActivityLevelComponent={setShowActivityLevelComponent} 
+                  setActivityLevel={setActivityLevel}                />
               )}
             </View>
           </View>
@@ -182,11 +185,12 @@ const infoHome = () => {
           </View>
           <View className="flex-row space-x-7 items-cente mt-3">
             <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl">
-              <Text className="text-white font-bold text-xl">Skip</Text>
+              <Text className="text-white font-bold text-xl"
+              onPress={()=>{router.push("/(infoPages)/allergies")}}
+              >Skip</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl" onPress={()=>{
-              router.push("setTarget");
-            }}>
+            <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
+            onPress={()=>{router.push("/(infoPages)/allergies")}}>
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
           </View>

@@ -8,6 +8,7 @@ import WeightComponent from "@/components/WeightComponent";
 import HeightComponent from "@/components/HeightComponent";
 import AgeComponent from "@/components/AgeComponent";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from "expo-router";
 
 
 
@@ -16,6 +17,8 @@ const GoalPage = () => {
   const [showHeightComponent, setShowHeightComponent] = useState(false);
   const [showAgeComponent, setShowAgeComponent] = useState(false);
 
+  //router
+  const router = useRouter()
 
   return (
   
@@ -182,10 +185,18 @@ const GoalPage = () => {
           </View>
 
           <View className="flex-row justify-center space-x-7 mt-2">
-            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl">
+            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+             onPress={
+                ()=> router.replace("/(tabs)")
+              }
+               >
               <Text className="text-white font-bold text-xl">Skip</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl">
+            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={
+                ()=> router.replace("/(tabs)")
+              }
+            >
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
           </View>
