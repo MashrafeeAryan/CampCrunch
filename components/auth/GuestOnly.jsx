@@ -18,10 +18,7 @@ const GuestOnly = ({ children }) => {
 	if (!authChecked || user) {
 
 		return (
-			<View style={styles.container}>
-				<ActivityIndicator size="large" color="#4D96FF" />
-				<Text style={styles.text}>Checking access...</Text>
-			</View>
+			<LoadScreen/>
 		);
 	}
 

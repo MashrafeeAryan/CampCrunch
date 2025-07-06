@@ -29,9 +29,6 @@ export default function  SignUpScreen() {
   // terms and conditons toggle
   const [agreed, setAgreed] = useState(false);
 
-  // Gender selection
-  const [genderDropdownOpen, setGenderDropdownOpen] = useState(false);
-  const [selectedGender, setSelectedGender] = useState(null);
 
   // Birthdate Selection
   const [birthDate, setBirthDate] = useState(null);
@@ -61,9 +58,6 @@ export default function  SignUpScreen() {
     case "Passwords do not match.":
       if (password === rePassword) setError(null);
       break;
-    case "Please select your gender.":
-      if (selectedGender) setError(null);
-      break;
     case "Please select your birth date.":
       if (birthDate) setError(null);
       break;
@@ -82,7 +76,7 @@ export default function  SignUpScreen() {
       }
       break;
   }
-  }, [ error, username, email, password, rePassword, selectedGender, birthDate, agreed,]);
+  }, [ error, username, email, password, rePassword, birthDate, agreed,]);
 
 
 
@@ -95,7 +89,6 @@ export default function  SignUpScreen() {
     if (!password.trim()) return setError("Password is required.");
     if (!rePassword.trim()) return setError("Please retype your password.");
     if (password !== rePassword) return setError("Passwords do not match.");
-    if (!selectedGender) return setError("Please select your gender.");
     if (!birthDate) return setError("Please select your birth date.");
     if (!agreed) return setError("You must agree to the Terms and Conditions.");
 
@@ -218,53 +211,8 @@ export default function  SignUpScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* Both Gender and Birth Date */}
+      {/* Birth Date Input*/}
       <View className="w-full flex-row mb-4 relative">
-        {/* Gender Selection */}
-        <View className="flex-1 mr-2 relative">
-          {/* Clickable Header */}
-          <TouchableOpacity
-            className="bg-white p-4 rounded-xl border border-gray-300 flex-row items-center justify-between"
-            onPress={() => setGenderDropdownOpen(!genderDropdownOpen)}
-          >
-            <View className="flex-1 pr-2">
-              <Text
-                className={`text-base ${
-                  selectedGender ? "text-black" : "text-gray-400"
-                } truncate`}
-                numberOfLines={1}
-                ellipsizeMode="tail"
-              >
-                {selectedGender || "Gender"}
-              </Text>
-            </View>
-            <Feather
-              name={genderDropdownOpen ? "chevron-up" : "chevron-down"}
-              size={16}
-              color="#6B7280"
-            />
-          </TouchableOpacity>
-
-          {/* Floating Dropdown for Gender Selection */}
-          {genderDropdownOpen && (
-            <View className="absolute top-[60px] left-0 w-full z-50 bg-white border border-gray-300 rounded-xl shadow-md">
-              {["Male", "Female", "Other", "Prefer not to say"].map(
-                (option) => (
-                  <TouchableOpacity
-                    key={option}
-                    className="p-3 border-b border-gray-200 last:border-b-0"
-                    onPress={() => {
-                      setSelectedGender(option);
-                      setGenderDropdownOpen(false);
-                    }}
-                  >
-                    <Text className="text-gray-800">{option}</Text>
-                  </TouchableOpacity>
-                )
-              )}
-            </View>
-          )}
-        </View>
 
         {/* Birth Date Selection */}
         <View className="flex-1 relative">
@@ -282,7 +230,7 @@ export default function  SignUpScreen() {
             <FontAwesome name="calendar" size={16} color="#6B7280" />
           </TouchableOpacity>
 					
-					{/* Pop up for Gender Selection */}
+					{/* Pop up for Date Selection */}
           {showDatePicker && (
             <DateTimePicker
               value={birthDate || new Date(2000, 0, 1)}
