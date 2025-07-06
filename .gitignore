@@ -38,3 +38,5 @@ yarn-error.log*
 
 # 👉 Ignore example files
 app-example
+
+appwriteConfig.js

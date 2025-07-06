@@ -22,6 +22,8 @@ export function UserProvider({children}) {
     // authChecked: tells us whether we've finished checking if the user is already logged in
     const [authChecked, setAuthChecked] = useState(false)
 
+    const [userID, setUserID] = useState("")
+
     // A function to log the user in using email and password
     async function login(email, password) {
         try {
@@ -33,6 +35,7 @@ export function UserProvider({children}) {
 
             // Save the user's info in our state so we can use it in the app
             setUser(response)
+            setUserID(response.$id)
         } catch (error) {
             // If there's a problem, show an error
             throw Error(error.message)
@@ -44,7 +47,7 @@ export function UserProvider({children}) {
         // Create a special ID for the new user
         try {
             // Create a new user account in Appwrite
-            userUniqueID = ID.unique()
+            setUserID(userUniqueID)
             await account.create(userUniqueID, email, password, name)
 
             // Save additional user info into the database (like name and email)
@@ -100,7 +103,7 @@ export function UserProvider({children}) {
 
     // This gives all components in the app access to the user data and actions
     return (
-        <UserContext.Provider value={{user, login, register, logout, authChecked}}>
+        <UserContext.Provider value={{user, login, register, logout, authChecked, userID}}>
             {children}
         </UserContext.Provider>
     )

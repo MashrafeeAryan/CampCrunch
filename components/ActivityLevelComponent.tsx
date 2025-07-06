@@ -13,7 +13,11 @@ import infoPageLogos from "@/assets/images/infoPageLogos";
 const ActivityLevelComponent = ({
   showActivityLevelComponent,
   setShowActivityLevelComponent,
+  setActivityLevel
 }) => {
+  const handleActivityLevelInput = (workoutType:string) => {
+    setActivityLevel(workoutType)
+  }
   return (
     <Modal
       visible={showActivityLevelComponent}
@@ -31,7 +35,9 @@ const ActivityLevelComponent = ({
             style={{ width: 80, height: 80 }}
           />
           <Text className="font-bold text-2xl">Activity Level</Text>
-          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2">
+          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
+            onPress={()=> {handleActivityLevelInput("Once or twice")}}
+          >
             <Image
               source={infoPageLogos.activityLevelImage2}
               style={{ width: 40, height: 50 }}
@@ -40,7 +46,10 @@ const ActivityLevelComponent = ({
           </TouchableOpacity>
 
 
-          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2">
+          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
+                        onPress={()=> {handleActivityLevelInput("Three to Five")}}
+
+          >
             <Image
               source={infoPageLogos.activityLevelImage1}
               style={{ width: 70, height: 50 }}
@@ -48,7 +57,9 @@ const ActivityLevelComponent = ({
             <Text className="text-xl font-bold">Three to Five days</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2">
+          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
+            onPress={()=> {handleActivityLevelInput("More than five")}}
+          >
             <Image
               source={infoPageLogos.activityLevelImage3}
               style={{ width: 50, height: 50 }}

@@ -4,6 +4,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import goalPageLogos from "../../assets/images/goalPageLogos";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from "expo-router";
 
 const GoalPage = () => {
 
@@ -172,10 +173,18 @@ const GoalPage = () => {
           </View>
 
           <View className="flex-row justify-center space-x-7 mt-2">
-            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl">
+            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+             onPress={
+                ()=> router.replace("/(tabs)")
+              }
+               >
               <Text className="text-white font-bold text-xl">Skip</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl">
+            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={
+                ()=> router.replace("/(tabs)")
+              }
+            >
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
           </View>

@@ -3,7 +3,12 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProgressRings from "@/components/ProgressRings"; // Custom progress ring component
-import { Link } from "expo-router";
+import { Link, usePathname } from "expo-router";
+import { router } from "expo-router";
+import { useEffect } from "react";
+ const [LoggedIn,setLoggedIn]=useState(false)
+
+
 
 const Index = () => {
   // Set static values for calorie tracking
@@ -18,8 +23,10 @@ const Index = () => {
 
   // These are the labels for the meal tabs
   const tabs = ["Breakfast", "Lunch", "Dinner", "Snacks"];
+  const pathname=usePathname();
 
   return (
+  
     // SafeAreaView keeps content out of notches and rounded screen edges
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
@@ -78,7 +85,11 @@ const Index = () => {
             className={`rounded-md p-2 border-[#f8d04a] border-2 ${
               pressed ? "bg-[#f1c40f]" : "bg-transparent"
             }`}
-            onPress={() => setPressed(true)} // Updates pressed state when tapped
+            onPress={() => {setPressed(true);
+              router.push("../(infoPages)/infoHome");
+              
+            } }// Updates pressed state when tapped
+          
           >
             <Text
               className={`${
@@ -126,7 +137,6 @@ const Index = () => {
         </View>
       </View>
       <Link href="../(infoPages)/infoHome">Info Pages</Link>
-      <Link href="../(infoPages)/random">Random</Link>
       </ScrollView>
     </SafeAreaView>
   );

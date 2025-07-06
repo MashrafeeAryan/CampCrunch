@@ -1,11 +1,26 @@
-import { View, Text, Modal, Image, TextInput, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  Modal,
+  Image,
+  TextInput,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import infoPageLogos from "@/assets/images/infoPageLogos";
 
-const GenderComponent = ({ showGenderComponent, setShowGenderComponent }) => {
+const GenderComponent = ({
+  showGenderComponent,
+  setShowGenderComponent,
+  setGender,
+}) => {
+  const handleGenderInput = (genderType: string) => {
+    setGender(genderType);
+  };
   return (
-    <Modal visible={showGenderComponent}
+    <Modal
+      visible={showGenderComponent}
       transparent={true}
       animationType="slide"
     >
@@ -23,29 +38,44 @@ const GenderComponent = ({ showGenderComponent, setShowGenderComponent }) => {
           <View className="bg-white w-full h-15 mt-2 rounded-xl flex-row p-3 items-center space-x-3">
             {/* Left side: lbs */}
             <View className="flex-row items-center space-x-2">
-              <TouchableOpacity className="bg-[#DDDDDD] p-2 w-[70] rounded-xl items-center" >
+              <TouchableOpacity
+                className="bg-[#DDDDDD] p-2 w-[70] rounded-xl items-center"
+                onPress={() => {
+                  handleGenderInput("Male");
+                }}
+              >
                 <Text className="font-bold text-lg">Male</Text>
               </TouchableOpacity>
             </View>
             <View className="flex-row items-center space-x-2">
-              <TouchableOpacity className="bg-[#DDDDDD] p-2 w-[80] rounded-xl items-center" >
+              <TouchableOpacity
+                className="bg-[#DDDDDD] p-2 w-[80] rounded-xl items-center"
+                onPress={() => {
+                  handleGenderInput("Female");
+                }}
+              >
                 <Text className="font-bold text-lg">Female</Text>
               </TouchableOpacity>
             </View>
             <View className="flex-row items-center space-x-2">
-              <TouchableOpacity className="bg-[#DDDDDD] p-2 w-[70] rounded-xl items-center" >
+              <TouchableOpacity
+                className="bg-[#DDDDDD] p-2 w-[70] rounded-xl items-center"
+                onPress={() => {
+                  handleGenderInput("Other");
+                }}
+              >
                 <Text className="font-bold text-lg">Other</Text>
               </TouchableOpacity>
             </View>
-
-
-
-
           </View>
 
           <View className="items-center mt-5 w-72">
-            <TouchableOpacity className="bg-black w-full h-[50] items-center justify-center rounded-xl"
-              onPress={() => { setShowGenderComponent(false) }}>
+            <TouchableOpacity
+              className="bg-black w-full h-[50] items-center justify-center rounded-xl"
+              onPress={() => {
+                setShowGenderComponent(false);
+              }}
+            >
               <Text className="text-white font-bold text-xl">Continue</Text>
             </TouchableOpacity>
           </View>
