@@ -4,7 +4,7 @@
 import { create } from 'zustand'
 
 // Import middleware to add persistence capability to the store
-import { persist } from 'zustand/middleware'
+import { persist, createJSONStorage } from 'zustand/middleware'
 
 // Import AsyncStorage, which allows us to store data on the device in React Native
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -23,25 +23,28 @@ type UserHealthStore = {
   ageYears: string
   gender: string
   activityLevel: string
+  allergies: string
 
   // --- Updater functions (similar to setState) ---
   setUserID: (id: string) => void
-  setWeight_KG: (weight: string) => void
-  setWeight_lbs: (weight: string) => void
-  setHeightInches: (height: string) => void
-  setHeightCM: (height: string) => void
-  setAgeYears: (age: string) => void
+  setWeight_KG: (weight: string | number) => void
+  setWeight_lbs: (weight: string | number) => void
+  setHeightInches: (height: string | number) => void
+  setHeightCM: (height: string | number) => void
+  setAgeYears: (age: string | number) => void
   setGender: (sex: string) => void
   setActivityLevel: (performance: string) => void
+  setAllergies: (allergy: string) => void
 }
 
 /**
  * 2. Create the Zustand store using the `create` function.
- * We also wrap it with the `persist` middleware so it saves data even when the app restarts.
+ * We wrap it with the `persist` middleware to automatically save the data
+ * even after the app is closed and restarted.
  */
 export const useUserHealthStore = create<UserHealthStore>()(
   persist(
-    // (set) is a function provided by Zustand to update the store state
+    // This function defines the initial state and how to update it
     (set) => ({
       // --- Initial state values ---
       userID: '',
@@ -52,25 +55,27 @@ export const useUserHealthStore = create<UserHealthStore>()(
       ageYears: '',
       gender: '',
       activityLevel: '',
-
-      // --- State updater functions (equivalent to setState in React) ---
+      allergies: '',
+      // --- Updater functions to modify the state ---
+      // Convert values to strings to ensure consistent type and avoid errors
       setUserID: (id) => set({ userID: id }),
-      setWeight_KG: (weight) => set({ weight_KG: weight }),
-      setWeight_lbs: (weight) => set({ weight_lbs: weight }),
-      setHeightInches: (height) => set({ heightInches: height }),
-      setHeightCM: (height) => set({ heightCM: height }),
-      setAgeYears: (age) => set({ ageYears: age }),
+      setWeight_KG: (weight) => set({ weight_KG: weight.toString() }),
+      setWeight_lbs: (weight) => set({ weight_lbs: weight.toString() }),
+      setHeightInches: (height) => set({ heightInches: height.toString() }),
+      setHeightCM: (height) => set({ heightCM: height.toString() }),
+      setAgeYears: (age) => set({ ageYears: age.toString() }),
       setGender: (sex) => set({ gender: sex }),
       setActivityLevel: (performance) => set({ activityLevel: performance }),
+      setAllergies: (allergy) => set({allergies: allergy})
     }),
 
-    // --- Persistence configuration ---
+    // --- Persistence configuration for AsyncStorage ---
     {
-      // The name used as the key in AsyncStorage (like localStorage)
+      // A unique key used to store this state in AsyncStorage
       name: 'userHealthInfo-storage',
 
-      // Tell Zustand to use AsyncStorage for React Native
-      storage: AsyncStorage,
+      // Wrap AsyncStorage using Zustand’s helper so it can stringify/parse JSON
+      storage: createJSONStorage(() => AsyncStorage),
     }
   )
 )

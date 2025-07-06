@@ -137,7 +137,6 @@ const Index = () => {
         </View>
       </View>
       <Link href="../(infoPages)/infoHome">Info Pages</Link>
-      <Link href="../(infoPages)/random">Random</Link>
       </ScrollView>
     </SafeAreaView>
   );
