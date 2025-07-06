@@ -1,15 +1,13 @@
-import React, { useState } from "react";
-
+import React, { useState, useRef } from "react";
 import {
-  View,
-  Text,
-  ScrollView,
-  TouchableOpacity,
-  Image,
   Animated,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { useEffect, useRef } from "react";
-import { router } from "expo-router"; // Make sure router is imported properly
+import { useRouter } from "expo-router";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import infoPageLogos from "../../assets/images/infoPageLogos";
 
 const goals = [
@@ -49,29 +47,33 @@ const goals = [
     label: "Maintain Weight",
     color: "#ECECEC",
     icon: require("@/assets/images/infoPageLogos/gain_1.png"),
-   
   },
 ];
 
 const GoalSelectionScreen = () => {
   const [selectedGoal, setSelectedGoal] = useState("Maintain Weight");
   const scrollY = useRef(new Animated.Value(0)).current;
+  const router = useRouter();
 
   const rotateArrow = scrollY.interpolate({
-    inputRange: [0, 50], // tweak this as needed
+    inputRange: [0, 50],
     outputRange: ["0deg", "180deg"],
     extrapolate: "clamp",
   });
 
   return (
-    <View className="flex-1 bg-white px-4 pt-10">
-    
-      
+    <View className="flex-1 bg-white pt-10">
+      {/* Header with Back Button */}
+      <View className="flex-row items-center px-4 mb-2">
+        <TouchableOpacity onPress={() => router.back()}>
+          <Ionicons name="chevron-back" size={26} color="black" />
+        </TouchableOpacity>
+      </View>
 
       {/* Top Illustration */}
       <View className="items-center mb-4">
         <Image
-          source={infoPageLogos.thumbsUpManLogo} // Replace with your own
+          source={infoPageLogos.thumbsUpManLogo}
           style={{ width: 160, height: 160, resizeMode: "contain" }}
         />
       </View>
@@ -79,8 +81,9 @@ const GoalSelectionScreen = () => {
       {/* Title */}
       <Text className="text-2xl font-bold text-center mb-4">What’s your goal?</Text>
 
-      {/* Scrollable Goals Section Only */}
+      {/* Scrollable Goals */}
       <Animated.ScrollView
+        className="px-4"
         style={{ flex: 1 }}
         onScroll={Animated.event(
           [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -94,7 +97,7 @@ const GoalSelectionScreen = () => {
             <TouchableOpacity
               key={index}
               onPress={() => setSelectedGoal(goal.label)}
-              className="rounded-2xl px-4 py-7 mb-2 mx-4"
+              className="rounded-2xl px-4 py-7"
               style={{
                 backgroundColor:
                   selectedGoal === goal.label ? "#333" : goal.color || "#f0f0f0",
@@ -138,7 +141,7 @@ const GoalSelectionScreen = () => {
           <TouchableOpacity
             className="bg-black px-5 py-3 rounded-lg"
             onPress={() => {
-              router.push("/allergies"); // Replace with your actual route
+              router.push("/allergies");
             }}
           >
             <Text className="text-white font-bold">Next</Text>

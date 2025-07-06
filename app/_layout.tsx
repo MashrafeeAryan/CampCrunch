@@ -23,8 +23,6 @@ export default function RootLayout() {
         options={{headerShown:false}}
       
       />
-
-      
       <Stack.Screen
         name="(infoPages)"
         options={{headerShown:false}}
