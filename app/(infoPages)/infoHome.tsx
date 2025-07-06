@@ -186,11 +186,11 @@ const infoHome = () => {
           <View className="flex-row space-x-7 items-cente mt-3">
             <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl">
               <Text className="text-white font-bold text-xl"
-              
+              onPress={()=>{router.push("/(infoPages)/allergies")}}
               >Skip</Text>
             </TouchableOpacity>
             <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
-            onPress={()=>{router.push("/allergies")}}>
+            onPress={()=>{router.push("/(infoPages)/allergies")}}>
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
           </View>

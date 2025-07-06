@@ -34,7 +34,6 @@ export default function AllergiesScreen() {
   const [selected, setSelected] = useState<string[]>([]); // Starts empty
 
   //Gets the set allergies variable and function
-  const allergies = useUserHealthStore((s) => s.allergies)
   const setAllergies = useUserHealthStore((s) => s.setAllergies)
   // This function runs when the user taps on an allergy.
   // If it's already selected, we remove it. If not, we add it.
@@ -118,7 +117,11 @@ export default function AllergiesScreen() {
       {/* 🚀 Navigation buttons at the bottom */}
       <View className="flex-row justify-between">
         {/* ❌ Skip button */}
-        <TouchableOpacity className="flex-1 bg-gray-800 py-3 rounded-xl mr-2">
+        <TouchableOpacity className="flex-1 bg-gray-800 py-3 rounded-xl mr-2"
+          onPress={
+            () => {router.push('/(infoPages)/goalPage')}
+          }
+        >
           <Text className="text-white text-center font-bold">Skip</Text>
         </TouchableOpacity>
 
