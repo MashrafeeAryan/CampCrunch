@@ -59,16 +59,19 @@ const TabsLayout = () => {
           tabBarLabel: "Home",
 
           //Change headerstyle. It is the yellow top part of the screen
-          headerTitle: "Eagle Eats +",
+          headerTitle: "CampCrunch",
           headerStyle: {
             backgroundColor: "#F4C542",
             height: 80,
           },
+          
           headerTitleAlign: "center",
           headerTintColor: "#fff",
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          
+          
           tabBarIcon: ({ focused }) => (
             <Image
               source={tabBarLogos.homeLogo}

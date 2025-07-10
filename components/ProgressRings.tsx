@@ -14,7 +14,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 const screenWidth = Dimensions.get('window').width;
 
 // Calculate a responsive ring size (80% of screen width, max 300px)
-const ringSize = Math.min(screenWidth * 0.6, 300);
+const ringSize = Math.min(screenWidth * 0.5, 250);
 const dynamicStrokeWidth = ringSize * 0.05; // Stroke is 5% of ring size
 
 // Define the nutrition metrics: each object contains info about one nutrient

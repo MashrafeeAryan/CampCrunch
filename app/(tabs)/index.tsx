@@ -6,7 +6,6 @@ import ProgressRings from "@/components/ProgressRings"; // Custom progress ring 
 import { Link, usePathname } from "expo-router";
 import { router } from "expo-router";
 import { useEffect } from "react";
- const [LoggedIn,setLoggedIn]=useState(false)
 
 
 
@@ -50,25 +49,25 @@ const Index = () => {
         >
           {/* Each box below shows data for one macro (Calories, Protein, etc.) */}
 
-          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[100] items-center justify-center border-[#3498db] border-2">
+          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#3498db] border-2">
             <Text className="text-2xl font-bold text-[#3498db]">800</Text>
             <Text className="text-xs text-gray-700">Daily Calories</Text>
             <Text className="text-xs text-gray-500">of 2000</Text>
           </View>
 
-          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[100] items-center justify-center border-[#e74c3c] border-2">
+          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#e74c3c] border-2">
             <Text className="text-2xl font-bold text-[#e74c3c]">150</Text>
             <Text className="text-xs text-gray-700">Daily Protein</Text>
             <Text className="text-xs text-gray-500">of 2000</Text>
           </View>
 
-          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[100] items-center justify-center border-[#9b59b6] border-2">
+          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#9b59b6] border-2">
             <Text className="text-2xl font-bold text-[#9b59b6]">200</Text>
             <Text className="text-xs text-gray-700">Daily Carbs</Text>
             <Text className="text-xs text-gray-500">of 2000</Text>
           </View>
 
-          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[100] items-center justify-center border-[#f1c40f] border-2">
+          <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#f1c40f] border-2">
             <Text className="text-2xl font-bold text-[#f1c40f]">800</Text>
             <Text className="text-xs text-gray-700">Daily Fat</Text>
             <Text className="text-xs text-gray-500">of 2000</Text>
@@ -94,7 +93,7 @@ const Index = () => {
             <Text
               className={`${
                 pressed ? "text-white" : "text-[#f1c40f]"
-              } font-bold text-sm`}
+              } font-bold text-xs`}
             >
               Adjust Goals
             </Text>
