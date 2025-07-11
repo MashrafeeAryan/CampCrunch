@@ -17,55 +17,54 @@ const infoHome = () => {
   const [showHeightComponent, setShowHeightComponent] = useState(false);
   const [showAgeComponent, setShowAgeComponent] = useState(false);
   const [showGenderComponent, setShowGenderComponent] = useState(false);
-  const [showActivityLevelComponent, setShowActivityLevelComponent] =  useState(false);
+  const [showActivityLevelComponent, setShowActivityLevelComponent] =
+    useState(false);
   // Reading state
-  const userID = useUserHealthStore((s) => s.userID)
-  const weight_KG = useUserHealthStore((s) => s.weight_KG)
-  const weight_lbs = useUserHealthStore((s) => s.weight_lbs)
-  const heightInches = useUserHealthStore((s) => s.heightInches)
-  const heightCM = useUserHealthStore((s) => s.heightCM)
-  const ageYears = useUserHealthStore((s) => s.ageYears)
-  const gender = useUserHealthStore((s) => s.gender)
-  const activityLevel = useUserHealthStore((s) => s.activityLevel)
+  const userID = useUserHealthStore((s) => s.userID);
+  const weight_KG = useUserHealthStore((s) => s.weight_KG);
+  const weight_lbs = useUserHealthStore((s) => s.weight_lbs);
+  const heightInches = useUserHealthStore((s) => s.heightInches);
+  const heightCM = useUserHealthStore((s) => s.heightCM);
+  const ageYears = useUserHealthStore((s) => s.ageYears);
+  const gender = useUserHealthStore((s) => s.gender);
+  const activityLevel = useUserHealthStore((s) => s.activityLevel);
 
   // Setters
-  const setUserID = useUserHealthStore((s) => s.setUserID)
-  const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG)
-  const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs)
-  const setHeightInches = useUserHealthStore((s) => s.setHeightInches)
-  const setHeightCM = useUserHealthStore((s) => s.setHeightCM)
-  const setAgeYears = useUserHealthStore((s) => s.setAgeYears)
-  const setGender = useUserHealthStore((s) => s.setGender)
-  const setActivityLevel = useUserHealthStore((s) => s.setActivityLevel)
- 
+  const setUserID = useUserHealthStore((s) => s.setUserID);
+  const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG);
+  const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs);
+  const setHeightInches = useUserHealthStore((s) => s.setHeightInches);
+  const setHeightCM = useUserHealthStore((s) => s.setHeightCM);
+  const setAgeYears = useUserHealthStore((s) => s.setAgeYears);
+  const setGender = useUserHealthStore((s) => s.setGender);
+  const setActivityLevel = useUserHealthStore((s) => s.setActivityLevel);
 
   const router = useRouter();
   return (
     <SafeAreaView className="bg-white flex-1">
-      <ScrollView>
-        <View className="items-center">
-          <TouchableOpacity
-            className="absolute top-4 left-4"
-            onPress={() => {
-              router.back();
-            }}
-          >
-            <Ionicons name="arrow-back" size={24} color="black" />
-          </TouchableOpacity>
+      <View className=" flex-1">
+        <TouchableOpacity
+          className="absolute top-4 left-4"
+          onPress={() => {
+            router.back();
+          }}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
 
-          <View className="mt-3">
-            <Image
-              source={infoPageLogos.thumbsUpManLogo}
-              style={{ width: 190, height: 190 }}
-            />
-          </View>
+        <View className="mt-3 items-center justify-center">
+          <Image
+            source={infoPageLogos.thumbsUpManLogo}
+            style={{ width: 190, height: 190 }}
+          />
+          <Text className="font-bold text-2xl mt-3">
+            Enter your information
+          </Text>
+        </View>
 
-          <View className="mt-3">
-            <Text className="font-bold text-2xl">Enter your information</Text>
-          </View>
-
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
           <View className="w-full p-7">
-            <View className="bg-white p-3 w-full rounded-xl">
+            <View className="bg-white p-3 w-full rounded-xl ">
               <TouchableOpacity
                 className="flex-row space-x-5 items-center"
                 onPress={() => {
@@ -130,9 +129,10 @@ const infoHome = () => {
               {showAgeComponent && (
                 <AgeComponent
                   showAgeComponent={showAgeComponent}
-                  setShowAgeComponent={setShowAgeComponent} 
-                  ageYears={ageYears} 
-                  setAgeYears={setAgeYears}                />
+                  setShowAgeComponent={setShowAgeComponent}
+                  ageYears={ageYears}
+                  setAgeYears={setAgeYears}
+                />
               )}
             </View>
 
@@ -152,9 +152,9 @@ const infoHome = () => {
               {showGenderComponent && (
                 <GenderComponent
                   showGenderComponent={showGenderComponent}
-                  setShowGenderComponent={setShowGenderComponent} 
-                  setGender={setGender}                
-                  />
+                  setShowGenderComponent={setShowGenderComponent}
+                  setGender={setGender}
+                />
               )}
             </View>
 
@@ -174,28 +174,49 @@ const infoHome = () => {
               {showActivityLevelComponent && (
                 <ActivityLevelComponent
                   showActivityLevelComponent={showActivityLevelComponent}
-                  setShowActivityLevelComponent={setShowActivityLevelComponent} 
-                  setActivityLevel={setActivityLevel}                />
+                  setShowActivityLevelComponent={setShowActivityLevelComponent}
+                  setActivityLevel={setActivityLevel}
+                />
               )}
             </View>
           </View>
+        </ScrollView>
 
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            backgroundColor: "white",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+          }}
+        >
           <View className="items-center">
             <Text>You will be able to update this at any time</Text>
           </View>
-          <View className="flex-row space-x-7 items-cente mt-3">
+          <View className="flex-row justify-center space-x-7 mt-2">
             <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl">
-              <Text className="text-white font-bold text-xl"
-              onPress={()=>{router.push("/(infoPages)/allergies")}}
-              >Skip</Text>
+              <Text
+                className="text-white font-bold text-xl"
+                onPress={() => {
+                  router.push("/(infoPages)/allergies");
+                }}
+              >
+                Skip
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
-            onPress={()=>{router.push("/(infoPages)/allergies")}}>
+            <TouchableOpacity
+              className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
+              onPress={() => {
+                router.push("/(infoPages)/allergies");
+              }}
+            >
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

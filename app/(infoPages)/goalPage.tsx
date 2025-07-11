@@ -1,43 +1,76 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
+import {
+  View,
+  Text,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+  Animated,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import goalPageLogos from "../../assets/images/goalPageLogos";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from 'expo-linear-gradient';
+import goalPageLogos from "../../assets/images/goalPageLogos";
+import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
 
 const GoalPage = () => {
+  const router = useRouter();
+
+  const [showScrollArrow, setShowScrollArrow] = useState(true);
+  const [scrollHeight, setScrollHeight] = useState(0);
+  const [contentHeight, setContentHeight] = useState(0);
+
+  // handles the scroll icon....
+  const handleScroll = (event) => {
+    const yOffset = event.nativeEvent.contentOffset.y;
+    if (yOffset + scrollHeight >= contentHeight - 50) {
+      setShowScrollArrow(false);
+    } else {
+      setShowScrollArrow(true);
+    }
+  };
 
   return (
-  
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} className="bg-white">
       <View style={{ flex: 1 }}>
-        {/* Scrollable Content */}
-        <ScrollView contentContainerStyle={{ paddingBottom: 180 }}>
+
+        {/* 🔙 Back Arrow (top-left) - Outside scroll view */}
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+
+        {/* 👤 Image + Text - Center aligned */}
+        <View className="mt-3 items-center justify-center">
+          <Image
+            source={goalPageLogos.thumbsUpManLogo}
+            style={{ width: 190, height: 190 }}
+          />
+          <Text className="font-bold text-2xl mt-3">
+            Enter your information
+          </Text>
+        </View>
+
+        {/* 🧾 Scrollable Content */}
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 150 }}
+          // uncomment this if you want to have a scroll icon dynamic
+          // onScroll={handleScroll}
+          // scrollEventThrottle={16}
+          // onLayout={(e) => setScrollHeight(e.nativeEvent.layout.height)}
+          // onContentSizeChange={(_, height) => setContentHeight(height)}
+        >
           <View className="items-center flex-1">
-            {/* Arrow */}
-            <View className="absolute top-4 left-4">
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </View>
-
-            {/* Image */}
-            <View className="mt-3">
-              <Image
-                source={goalPageLogos.thumbsUpManLogo}
-                style={{ width: 190, height: 190 }}
-              />
-            </View>
-
-            <View className="mt-3">
-              <Text className="font-bold text-2xl">Enter your information</Text>
-            </View>
-
+            {/* ... All goal selection cards (unchanged) */}
+            {/* Paste your current goal cards here as-is */}
             {/* Selection Boxes */}
             <View className="w-full p-7">
 
-              <View className="bg-[#7ed957] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
-                  <Image
+               <View className="bg-[#7ed957] p-3 w-full rounded-xl mt-4">
+                 <TouchableOpacity className="flex-row space-x-5 items-center">
+                   <Image
                     source={goalPageLogos.loose0_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
@@ -134,11 +167,29 @@ const GoalPage = () => {
               </View>
 
             </View>
+          
           </View>
         </ScrollView>
 
+        {/* ⬇️ Down Arrow Indicator */}
+        {/* uncomment this for the scroll icon */}
+        {/* {showScrollArrow && (
+          <Ionicons
+            name="chevron-down-outline"
+            size={40}
+            color="rgba(0, 0, 0, 0.15)"
+            style={{
+              position: "absolute",
+              bottom: 80,
+              left: "50%",
+              transform: [{ translateX: -20 }],
+              zIndex: 5,
+              pointerEvents: "none",
+            }}
+          />
+        )} */}
 
-
+        {/* 🧭 Bottom Section */}
         <View
           style={{
             position: "absolute",
@@ -149,46 +200,27 @@ const GoalPage = () => {
             paddingHorizontal: 20,
           }}
         >
-          <View style={{ position: "relative", alignItems: "center" }} >
-            {/* Transparent arrow, absolutely positioned */}
-            <Ionicons
-              name="chevron-down-outline"
-              size={70}
-              color="rgba(0, 0, 0, 0.15)" // semi-transparent black
-              style={{
-                position: "absolute",
-                top: -50, // adjust to hover over text nicely
-                left: '50%',
-                right: 0,
-                transform: [{ translateX: -35 }],
-                marginHorizontal: "auto",
-                pointerEvents: "none", // so arrow doesn't block taps
-              }}
-            />
-
-            {/* The actual text */}
+          <View style={{ alignItems: "center" }}>
             <Text className="text-center mb-2 text-gray-600 text-base">
               You will be able to update this at any time
             </Text>
           </View>
 
           <View className="flex-row justify-center space-x-7 mt-2">
-            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
-             onPress={
-                ()=> router.replace("/(tabs)")
-              }
-               >
+            <TouchableOpacity
+              className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={() => console.log("skip")}
+            >
               <Text className="text-white font-bold text-xl">Skip</Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
-              onPress={
-                ()=> router.replace("/(tabs)")
-              }
+            <TouchableOpacity
+              className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={() => console.log("next")}
             >
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
           </View>
-      </View>
+        </View>
 
       </View>
     </SafeAreaView>
