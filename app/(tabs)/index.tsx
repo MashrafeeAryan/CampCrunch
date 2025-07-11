@@ -23,7 +23,7 @@ const Index = () => {
   // These are the labels for the meal tabs
   const tabs = ["Breakfast", "Lunch", "Dinner", "Snacks"];
   const pathname=usePathname();
-
+  //NIce
   return (
   
     // SafeAreaView keeps content out of notches and rounded screen edges
