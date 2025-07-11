@@ -47,7 +47,7 @@ const infoHome = () => {
           <TouchableOpacity
             className="absolute top-4 left-4"
             onPress={() => {
-              router.back();
+              router.push("/");
             }}
           >
             <Ionicons name="arrow-back" size={24} color="black" />

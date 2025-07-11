@@ -7,7 +7,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from "expo-router";
 
 const GoalPage = () => {
-
+  const router = useRouter()
   return (
   
     <SafeAreaView style={{ flex: 1 }}>
@@ -175,14 +175,14 @@ const GoalPage = () => {
           <View className="flex-row justify-center space-x-7 mt-2">
             <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
              onPress={
-                ()=> router.replace("/(tabs)")
+                ()=> router.replace("/")
               }
                >
               <Text className="text-white font-bold text-xl">Skip</Text>
             </TouchableOpacity>
             <TouchableOpacity className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
               onPress={
-                ()=> router.replace("/(tabs)")
+                ()=> router.replace("/")
               }
             >
               <Text className="text-white font-bold text-xl">Next</Text>
