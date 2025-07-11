@@ -45,6 +45,7 @@ export function UserProvider({children}) {
     // A function to register a new user
     async function register(email, password, name) {
         // Create a special ID for the new user
+        userUniqueID = ID.unique()
         try {
             // Create a new user account in Appwrite
             setUserID(userUniqueID)
