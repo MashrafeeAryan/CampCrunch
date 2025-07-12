@@ -3,10 +3,15 @@ import { useEffect, useState } from "react";
 import { Feather } from "@expo/vector-icons";
 import { Image } from 'react-native';
 import { useRouter } from "expo-router";
-import { useUser } from "@/hooks/useUser";
+import { handleLogin } from "@/components/auth/authFunctions";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 
 
 export default function WelcomeScreen() {
+  //Zustand
+  const setUserID = useUserAuthStore((s) => s.setUserID)
+  const setUserEmail = useUserAuthStore((s) => s.setUserEmail)
+  const setUserName = useUserAuthStore((s)=>s.setUserName)
 
   const router = useRouter()
 
@@ -19,15 +24,14 @@ export default function WelcomeScreen() {
   // error message
   const [error, setError] = useState(null)
 
-	const { login } = useUser()
 
 
 
   // handles login
-	const handleLogin = async () => {
+	const loginFunction = async () => {
 		setError(null)
 		try {
-			await login(email, password)
+			await handleLogin(email, password, router, setUserID, setUserEmail, setUserName)
 		} catch (error) {
 			setError(error.message)
 		}
@@ -88,7 +92,7 @@ export default function WelcomeScreen() {
       </View>)}
       
       {/* Sign In Button */}
-      <TouchableOpacity className="w-full bg-gray-800 p-4 rounded-xl mb-4" onPress={handleLogin}>
+      <TouchableOpacity className="w-full bg-gray-800 p-4 rounded-xl mb-4" onPress={loginFunction}>
         <Text className="text-center text-white font-bold text-lg">Sign In</Text>
       </TouchableOpacity>
 

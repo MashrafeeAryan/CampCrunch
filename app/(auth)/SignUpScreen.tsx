@@ -13,11 +13,18 @@ import CheckBox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
-import { useUser } from "@/hooks/useUser";
+import { handleSignUp } from "@/components/auth/authFunctions";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 
 export default function  SignUpScreen() {
+  //Zustand
+  const setUserID = useUserAuthStore((s) => s.setUserID)
+  const setUserEmail = useUserAuthStore((s) => s.setUserEmail)
+  const setUserName = useUserAuthStore((s)=>s.setUserName)
+
+  
   // Input Fields
-  const [username, setUserName] = useState("");
+  const [username, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [rePassword, setRePassword] = useState("");
@@ -36,7 +43,6 @@ export default function  SignUpScreen() {
 
   const router = useRouter();
 
-  const {register} = useUser()
   const [error, setError] = useState()
 
 
@@ -80,7 +86,7 @@ export default function  SignUpScreen() {
 
 
 
-  const handleSignUp = async () => {
+  const signUpFunction = async () => {
     setError(null);
 
     // Validate required fields
@@ -101,7 +107,7 @@ export default function  SignUpScreen() {
     }
 
     try {
-    await register(email, password, username);
+    await handleSignUp(username,email, password, router, setUserID, setUserEmail, setUserName);
     } catch (error) {
     setError(error.message || "Something went wrong. Please try again.");
     }
@@ -130,7 +136,7 @@ export default function  SignUpScreen() {
           placeholder="Your Full Name"
           className="flex-1 text-black"
           placeholderTextColor="#9CA3AF"
-          onChangeText={setUserName}
+          onChangeText={setName}
         />
       </View>
 
@@ -271,7 +277,7 @@ export default function  SignUpScreen() {
       {/* Create Account Button */}
       <TouchableOpacity
         className="w-full bg-gray-800 p-4 rounded-xl mb-4"
-        onPress={handleSignUp}
+        onPress={signUpFunction}
       >
         <Text className="text-center text-white font-bold text-lg">
           Create your Account

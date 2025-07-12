@@ -11,6 +11,7 @@ import GenderComponent from "@/components/GenderComponent";
 import ActivityLevelComponent from "@/components/ActivityLevelComponent";
 import { useRouter } from "expo-router";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 
 const infoHome = () => {
   const [showWeightComponent, setShowWeightComponent] = useState(false);
