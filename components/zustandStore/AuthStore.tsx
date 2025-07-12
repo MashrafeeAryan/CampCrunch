@@ -62,7 +62,7 @@ export const useUserAuthStore = create<UserAuthStore>()(
     // --- Persistence configuration for AsyncStorage ---
     {
       // A unique key used to store this state in AsyncStorage
-      name: 'userAuthInfo--storage',
+      name: 'userAuthInfo-storage',
 
       // Wrap AsyncStorage using Zustand’s helper so it can stringify/parse JSON
       storage: createJSONStorage(() => AsyncStorage),

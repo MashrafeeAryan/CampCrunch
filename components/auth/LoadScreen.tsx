@@ -1,6 +1,6 @@
 import { ActivityIndicator, Image, Text, View } from "react-native";
 import React from "react";
-import goalPageLogos from "../assets/images/goalPageLogos";
+import goalPageLogos from "../../assets/images/goalPageLogos";
 
 const LoadScreen = () => {
   return (

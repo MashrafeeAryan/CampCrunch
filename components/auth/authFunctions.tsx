@@ -6,9 +6,8 @@ import { ID } from "appwrite";
 
 // Zustand is where we store our user's info, like ID, name, email (like a backpack for user data)
 import { useUserAuthStore } from "../zustandStore/AuthStore";
-
+import { useUserHealthStore } from "../zustandStore/UserHealthStore";
 // This helps us move to different screens in the app (like changing pages)
-import { useRouter } from "expo-router";
 
 
 // This function helps a new person sign up to our app
@@ -72,4 +71,20 @@ export async function handleLogin(email, password, router, setUserID, setUserEma
     console.log("Login Error", error);
     throw new Error(error.message || "Login Failed");
   }
+}
+
+
+export async function handleLogout(router){
+    try{
+        await account.deleteSession("current")
+    
+
+        //Reset the store
+        useUserHealthStore.getState().reset()
+        useUserAuthStore.getState().reset()
+
+        router.replace("/(auth)/LoginScreen")
+    } catch(error){
+        console.log("Logout Failed", error)
+    }
 }
