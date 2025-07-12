@@ -74,7 +74,6 @@ export function UserProvider({children}) {
     async function logout() {
         // Tell Appwrite to delete the session (log the user out)
         await account.deleteSession('current')
-
         // Clear the user info from our state
         setUser(null)
     }
