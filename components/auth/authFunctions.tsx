@@ -57,12 +57,9 @@ export async function handleLogin(email, password, router, setUserID, setUserEma
     await account.createEmailPasswordSession(email, password);
 
     // Step 2: After login, get the user's info (like checking who just came in)
-    const response = await account.get();
 
     // Step 3: Save their data so we know who is using the app
-    setUserID(response.$id);       // Save their ID
-    setUserEmail(response.email);  // Save their email
-    setUserName(response.name);    // Save their name
+   // Save their name
 
     // Step 4: Send them to the home screen
     router.replace("/(tabs)");

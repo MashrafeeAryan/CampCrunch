@@ -3,6 +3,8 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import goalPageLogos from "../../assets/images/goalPageLogos";
 import streakIcons from "../../assets/images/ProfilePageIcons";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
+import { useRouter } from "expo-router";
 
 const streakData = [
   { day: "Mon", icon: streakIcons.freezeIcon, status: "missed" },
@@ -24,13 +26,20 @@ const achievements = [
 
 const ProfileScreen = () => {
 
+  const userName = useUserAuthStore((s)=> s.userName)
+  const userEmail = useUserAuthStore((s)=> s.userEmail)
+  const router = useRouter()
   return (
+    <ScrollView>
     <View className="flex-1 bg-[#aba8a8]">
       {/* Top Header */}
       <View className="bg-[#d9d9d9] px-[30px] pt-[40px] pb-[60px] relative h-[150px]">
         {/* Settings icon at top right */}
         <View className="flex-row justify-end mt-[12px]">
-          <TouchableOpacity onPress={() => console.log("setting")}>
+          <TouchableOpacity 
+          onPress={
+            () => {router.push("/settings")} 
+          }>
             <Ionicons name="settings" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -47,8 +56,8 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View className="ml-4">
-            <Text className="text-lg font-bold">aaaa</Text>
-            <Text className="text-gray-600">@sonamshrpac</Text>
+            <Text className="text-lg font-bold">{userName}</Text>
+            <Text className="text-gray-600">{userEmail}</Text>
           </View>
         </View>
       </View>
@@ -137,9 +146,13 @@ const ProfileScreen = () => {
             ))}
           </ScrollView>
         </View>
+        <View className="h-10">
+
+        </View>
         
       </View>
     </View>
+    </ScrollView>
   );
 };
 
