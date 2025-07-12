@@ -1,4 +1,4 @@
-import { View, Text, Modal, Image, TextInput, TouchableOpacity } from "react-native";
+import { View, Text, Modal, Image, TextInput, TouchableOpacity, Keyboard } from "react-native";
 import React, { useState } from "react";
 import { BlurView } from "expo-blur";
 import infoPageLogos from "@/assets/images/infoPageLogos";
@@ -38,7 +38,8 @@ const AgeComponent = ({showAgeComponent, setShowAgeComponent, ageYears, setAgeYe
           </View>
              <View className="items-center mt-5 w-full">
                         <TouchableOpacity className="bg-black w-full h-[50] items-center justify-center rounded-xl"
-                        onPress={()=>{setShowAgeComponent(false)}}>
+                        onPress={()=>{
+                          setShowAgeComponent(false)}}>
                           <Text className="text-white font-bold text-xl">Continue</Text>
                         </TouchableOpacity>
             </View>

@@ -18,11 +18,13 @@ type UserAuthStore = {
   userID: string,
   userName: string,
   userEmail: string,
+  campCrunchUserName: string, 
 
   // --- Updater functions (similar to setState) ---
   setUserID: (id: string) => void
   setUserName: (name: string) => void
   setUserEmail: (email: string) => void
+  setCampCrunchUserName: (campCrunchName: string) => void
 
   reset: () => void;
  
@@ -41,13 +43,14 @@ export const useUserAuthStore = create<UserAuthStore>()(
       userID: '',
       userName: '',
       userEmail: '',
+      campCrunchUserName: '',
 
       // --- Updater functions to modify the state ---
       // Convert values to strings to ensure consistent type and avoid errors
       setUserID: (id) => set({ userID: id }),
       setUserName: (name) => set({ userName: name }),
       setUserEmail: (email) => set({ userEmail: email }),
-     
+      setCampCrunchUserName: (campCrunchName) => set({campCrunchUserName: campCrunchName}),
 
             // ✅ --- Reset function to clear all fields ---
       reset: () =>
@@ -55,6 +58,7 @@ export const useUserAuthStore = create<UserAuthStore>()(
           userID: '',
           userName: '',
           userEmail: '',
+          campCrunchUserName: '',
         }),
   
     }),

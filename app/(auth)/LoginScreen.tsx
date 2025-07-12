@@ -12,6 +12,7 @@ export default function WelcomeScreen() {
   const setUserID = useUserAuthStore((s) => s.setUserID)
   const setUserEmail = useUserAuthStore((s) => s.setUserEmail)
   const setUserName = useUserAuthStore((s)=>s.setUserName)
+  const setCampCrunchUserName = useUserAuthStore((s)=>s.setCampCrunchUserName)
 
   const router = useRouter()
 
@@ -31,7 +32,7 @@ export default function WelcomeScreen() {
 	const loginFunction = async () => {
 		setError(null)
 		try {
-			await handleLogin(email, password, router, setUserID, setUserEmail, setUserName)
+			await handleLogin(email, password, router, setUserID, setUserEmail, setUserName, setCampCrunchUserName)
 		} catch (error) {
 			setError(error.message)
 		}
