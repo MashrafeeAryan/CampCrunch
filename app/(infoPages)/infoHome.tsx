@@ -11,6 +11,7 @@ import GenderComponent from "@/components/GenderComponent";
 import ActivityLevelComponent from "@/components/ActivityLevelComponent";
 import { useRouter } from "expo-router";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 
 const infoHome = () => {
   const [showWeightComponent, setShowWeightComponent] = useState(false);
@@ -19,7 +20,7 @@ const infoHome = () => {
   const [showGenderComponent, setShowGenderComponent] = useState(false);
   const [showActivityLevelComponent, setShowActivityLevelComponent] =  useState(false);
   // Reading state
-  const userID = useUserHealthStore((s) => s.userID)
+  const userID = useUserAuthStore((s) => s.userID)
   const weight_KG = useUserHealthStore((s) => s.weight_KG)
   const weight_lbs = useUserHealthStore((s) => s.weight_lbs)
   const heightInches = useUserHealthStore((s) => s.heightInches)
@@ -29,7 +30,7 @@ const infoHome = () => {
   const activityLevel = useUserHealthStore((s) => s.activityLevel)
 
   // Setters
-  const setUserID = useUserHealthStore((s) => s.setUserID)
+  const setUserID = useUserAuthStore((s) => s.setUserID)
   const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG)
   const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs)
   const setHeightInches = useUserHealthStore((s) => s.setHeightInches)

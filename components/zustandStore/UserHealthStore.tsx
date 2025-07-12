@@ -24,6 +24,7 @@ type UserHealthStore = {
   activityLevel: string
   allergies: string
 
+
   // --- Updater functions (similar to setState) ---
   setWeight_KG: (weight: string | number) => void
   setWeight_lbs: (weight: string | number) => void
@@ -33,6 +34,8 @@ type UserHealthStore = {
   setGender: (sex: string) => void
   setActivityLevel: (performance: string) => void
   setAllergies: (allergy: string) => void
+
+  reset: () => void
 }
 
 /**
@@ -62,9 +65,24 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setAgeYears: (age) => set({ ageYears: age.toString() }),
       setGender: (sex) => set({ gender: sex }),
       setActivityLevel: (performance) => set({ activityLevel: performance }),
-      setAllergies: (allergy) => set({allergies: allergy})
+      setAllergies: (allergy) => set({allergies: allergy}),
+    
+      // ✅ --- Reset function to clear all fields ---
+      reset: () =>
+        set({
+          weight_KG: '',
+          weight_lbs: '',
+          heightInches: '',
+          heightCM: '',
+          ageYears: '',
+          gender: '',
+          activityLevel: '',
+          allergies: '',
+        }),
+  
     }),
 
+    
     // --- Persistence configuration for AsyncStorage ---
     {
       // A unique key used to store this state in AsyncStorage

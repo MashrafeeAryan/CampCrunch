@@ -15,10 +15,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
  */
 type UserAuthStore = {
   // --- Data fields (state) ---
-  userID: string
+  userID: string,
+  userName: string,
+  userEmail: string,
 
   // --- Updater functions (similar to setState) ---
   setUserID: (id: string) => void
+  setUserName: (name: string) => void
+  setUserEmail: (email: string) => void
+
+  reset: () => void;
  
 }
 
@@ -33,10 +39,24 @@ export const useUserAuthStore = create<UserAuthStore>()(
     (set) => ({
       // --- Initial state values ---
       userID: '',
+      userName: '',
+      userEmail: '',
+
       // --- Updater functions to modify the state ---
       // Convert values to strings to ensure consistent type and avoid errors
       setUserID: (id) => set({ userID: id }),
+      setUserName: (name) => set({ userName: name }),
+      setUserEmail: (email) => set({ userEmail: email }),
      
+
+            // ✅ --- Reset function to clear all fields ---
+      reset: () =>
+        set({
+          userID: '',
+          userName: '',
+          userEmail: '',
+        }),
+  
     }),
 
     // --- Persistence configuration for AsyncStorage ---
