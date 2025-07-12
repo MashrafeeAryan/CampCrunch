@@ -41,7 +41,7 @@ export async function handleSignUp(name, email, password, router, setUserID, set
     setUserName(user.name);   // Save their name
 
     // Step 5: Move them to the home screen ("/") after successful signup
-    router.replace("/");
+    router.replace("/(tabs)");
   } catch (error) {
     // If anything goes wrong, print the error and show a friendly message
     console.error("Signup Error:", error);
@@ -65,7 +65,7 @@ export async function handleLogin(email, password, router, setUserID, setUserEma
     setUserName(response.name);    // Save their name
 
     // Step 4: Send them to the home screen
-    router.replace("/");
+    router.replace("/(tabs)");
   } catch (error) {
     // If logging in doesn’t work, show the error
     console.log("Login Error", error);

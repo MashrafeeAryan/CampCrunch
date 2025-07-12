@@ -1,22 +1,41 @@
-import AuthGate from "@/components/auth/AuthGate";
+import { account } from "@/appwriteConfig";
+import LoadScreen from "@/components/auth/LoadScreen";
 import { Stack } from "expo-router";
+import { useEffect, useState } from "react";
+import { ActivityIndicator, View } from "react-native";
 
 export default function RootLayout() {
-  return (
-    <AuthGate>
-      <Stack>
-        {/* Main app pages */}
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+  const [exists, setExistence] = useState<boolean | null>(null); // null means "loading"
 
-        {/* Auth pages: Login, Sign Up */}
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+  useEffect(() => {
+    const checkUserSession = async () => {
+      try {
+        await account.get(); // Will throw if not logged in
+        setExistence(true);
+      } catch (error) {
+        setExistence(false);
+      }
+    };
 
-        {/* Hidden/protected pages */}
-        <Stack.Screen name="(hidden)" options={{ headerShown: false }} />
+    checkUserSession(); // <- You forgot to call it
+  }, []);
 
-        {/* Info or settings pages */}
-        <Stack.Screen name="(infoPages)" options={{ headerShown: false }} />
-      </Stack>
-    </AuthGate>
+  if (exists === null) {
+    // While checking, show loader
+    return (
+      <LoadScreen/>
+    );
+  }
+
+  return exists ? (
+    <Stack>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(hidden)" options={{ headerShown: false }} />
+      <Stack.Screen name="(infoPages)" options={{ headerShown: false }} />
+    </Stack>
+  ) : (
+    <Stack>
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+    </Stack>
   );
 }

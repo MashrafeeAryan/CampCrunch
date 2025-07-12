@@ -13,7 +13,6 @@ import CheckBox from "expo-checkbox";
 import { useRouter } from "expo-router";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import moment from "moment";
-import { useUser } from "@/hooks/useUser";
 import { handleSignUp } from "@/components/auth/authFunctions";
 import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 
@@ -44,7 +43,6 @@ export default function  SignUpScreen() {
 
   const router = useRouter();
 
-  const {register} = useUser()
   const [error, setError] = useState()
 
 
