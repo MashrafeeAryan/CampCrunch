@@ -135,13 +135,16 @@ const GoalSelectionScreen = () => {
 
         {/* Buttons */}
         <View className="flex-row justify-between mb-10">
-          <TouchableOpacity className="bg-black px-5 py-3 rounded-lg">
+          <TouchableOpacity className="bg-black px-5 py-3 rounded-lg"
+          onPress={
+            router.push("/(tabs)")
+          }>
             <Text className="text-white font-bold">Skip</Text>
           </TouchableOpacity>
           <TouchableOpacity
             className="bg-black px-5 py-3 rounded-lg"
             onPress={() => {
-              router.push("/allergies");
+              router.push("/(tabs)");
             }}
           >
             <Text className="text-white font-bold">Next</Text>

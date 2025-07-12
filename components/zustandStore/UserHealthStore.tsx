@@ -15,7 +15,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
  */
 type UserHealthStore = {
   // --- Data fields (state) ---
-  userID: string
   weight_KG: string
   weight_lbs: string
   heightInches: string
@@ -25,8 +24,8 @@ type UserHealthStore = {
   activityLevel: string
   allergies: string
 
+
   // --- Updater functions (similar to setState) ---
-  setUserID: (id: string) => void
   setWeight_KG: (weight: string | number) => void
   setWeight_lbs: (weight: string | number) => void
   setHeightInches: (height: string | number) => void
@@ -35,6 +34,8 @@ type UserHealthStore = {
   setGender: (sex: string) => void
   setActivityLevel: (performance: string) => void
   setAllergies: (allergy: string) => void
+
+  reset: () => void
 }
 
 /**
@@ -47,7 +48,6 @@ export const useUserHealthStore = create<UserHealthStore>()(
     // This function defines the initial state and how to update it
     (set) => ({
       // --- Initial state values ---
-      userID: '',
       weight_KG: '',
       weight_lbs: '',
       heightInches: '',
@@ -58,7 +58,6 @@ export const useUserHealthStore = create<UserHealthStore>()(
       allergies: '',
       // --- Updater functions to modify the state ---
       // Convert values to strings to ensure consistent type and avoid errors
-      setUserID: (id) => set({ userID: id }),
       setWeight_KG: (weight) => set({ weight_KG: weight.toString() }),
       setWeight_lbs: (weight) => set({ weight_lbs: weight.toString() }),
       setHeightInches: (height) => set({ heightInches: height.toString() }),
@@ -66,9 +65,24 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setAgeYears: (age) => set({ ageYears: age.toString() }),
       setGender: (sex) => set({ gender: sex }),
       setActivityLevel: (performance) => set({ activityLevel: performance }),
-      setAllergies: (allergy) => set({allergies: allergy})
+      setAllergies: (allergy) => set({allergies: allergy}),
+    
+      // ✅ --- Reset function to clear all fields ---
+      reset: () =>
+        set({
+          weight_KG: '',
+          weight_lbs: '',
+          heightInches: '',
+          heightCM: '',
+          ageYears: '',
+          gender: '',
+          activityLevel: '',
+          allergies: '',
+        }),
+  
     }),
 
+    
     // --- Persistence configuration for AsyncStorage ---
     {
       // A unique key used to store this state in AsyncStorage

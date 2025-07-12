@@ -3,7 +3,6 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import goalPageLogos from "../../assets/images/goalPageLogos";
 import streakIcons from "../../assets/images/ProfilePageIcons";
-import { useUser } from "@/hooks/useUser";
 
 const streakData = [
   { day: "Mon", icon: streakIcons.freezeIcon, status: "missed" },
@@ -24,8 +23,6 @@ const achievements = [
 
 
 const ProfileScreen = () => {
-  const { user } = useUser();
-  console.log(user);
 
   return (
     <View className="flex-1 bg-[#aba8a8]">
@@ -50,7 +47,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View className="ml-4">
-            <Text className="text-lg font-bold">{user.name}</Text>
+            <Text className="text-lg font-bold">aaaa</Text>
             <Text className="text-gray-600">@sonamshrpac</Text>
           </View>
         </View>
@@ -117,7 +114,7 @@ const ProfileScreen = () => {
             })}
           </View>
           <Text className="mt-3 text-xs text-center">
-            “Hi {user.name}. You’re on track 4 days this week. Keep it up!”
+            “Hi . You’re on track 4 days this week. Keep it up!”
           </Text>
         </View>
 

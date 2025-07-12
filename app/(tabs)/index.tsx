@@ -6,6 +6,7 @@ import ProgressRings from "@/components/ProgressRings"; // Custom progress ring 
 import { Link, usePathname } from "expo-router";
 import { router } from "expo-router";
 import { useEffect } from "react";
+import { handleLogout } from "@/components/auth/authFunctions";
 
 
 
@@ -136,6 +137,11 @@ const Index = () => {
         </View>
       </View>
       <Link href="../(infoPages)/infoHome">Info Pages</Link>
+      <TouchableOpacity onPress={
+        () => {handleLogout(router)}
+      }>
+        <Text>Logout</Text>
+      </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );

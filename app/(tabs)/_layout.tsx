@@ -8,41 +8,12 @@ import { router } from "expo-router";
 import { useState } from "react";
 import { Slot } from "expo-router";
 import { ActivityIndicator } from "react-native";
-import UserOnly from '../../components/auth/UserOnly';
 
 
 const TabsLayout = () => {
-  const[loggedIn,setLoggedIn]=useState(false)
-   useEffect(() => {
-    const checkAuth = async () => {
-      // Replace this with real auth check, e.g., AsyncStorage, context, etc.
-      const isLoggedIn =false;
-      if (isLoggedIn==false) {
-        router.replace("/(infoPages)/infoHome");
-      } else {
-        setLoggedIn(true);
-      }
-    };
-
-    checkAuth();
-  }, []);
-
-  // // Show loader while checking login
-  // if (loggedIn === null || loggedIn===false) {
-  //   return (
-  //     <View className="flex-1 justify-center items-center">
-  //       <ActivityIndicator size="large" />
-  //     </View>
-  //   );
-  // }
-
-
-
-
 
 
   return (
-    <UserOnly>
     <Tabs
       screenOptions={{
         tabBarStyle: {
@@ -210,7 +181,6 @@ const TabsLayout = () => {
         }}
       />
     </Tabs>
-    </UserOnly>
   );
 };
 
