@@ -3,7 +3,7 @@ export default {
   actvityLogo: require("./activityLogo.png"),
   activityLevelImage1: require("./activityLevelImage_1.png"),
   activityLevelImage2: require("./activityLevelImage_2.png"),
-  activityLevelImage3: require("./activityLevelImage_3.png"),
+  activityLevelImage3: require("./activityLevelImage_3.jpg"),
   ageLogo: require("./ageLogo.png"),
   genderLogo: require("./genderLogo.png"),
   HeightScaleLogo: require("./HeightScaleLogo.png"),
@@ -32,4 +32,3 @@ export default {
   // Header Image for Preferences Screen
   preferences_allergies_top: require("./allergies_top.png"),
 };
-

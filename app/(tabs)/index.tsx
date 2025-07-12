@@ -5,7 +5,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import ProgressRings from "@/components/ProgressRings"; // Custom progress ring component
 import { Link, usePathname } from "expo-router";
 import { router } from "expo-router";
-import { useEffect } from "react";
 import { handleLogout } from "@/components/auth/authFunctions";
 
 

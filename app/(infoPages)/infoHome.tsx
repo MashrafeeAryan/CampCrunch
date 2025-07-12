@@ -18,27 +18,27 @@ const infoHome = () => {
   const [showHeightComponent, setShowHeightComponent] = useState(false);
   const [showAgeComponent, setShowAgeComponent] = useState(false);
   const [showGenderComponent, setShowGenderComponent] = useState(false);
-  const [showActivityLevelComponent, setShowActivityLevelComponent] =  useState(false);
+  const [showActivityLevelComponent, setShowActivityLevelComponent] =
+    useState(false);
   // Reading state
-  const userID = useUserAuthStore((s) => s.userID)
-  const weight_KG = useUserHealthStore((s) => s.weight_KG)
-  const weight_lbs = useUserHealthStore((s) => s.weight_lbs)
-  const heightInches = useUserHealthStore((s) => s.heightInches)
-  const heightCM = useUserHealthStore((s) => s.heightCM)
-  const ageYears = useUserHealthStore((s) => s.ageYears)
-  const gender = useUserHealthStore((s) => s.gender)
-  const activityLevel = useUserHealthStore((s) => s.activityLevel)
+  const userID = useUserAuthStore((s) => s.userID);
+  const weight_KG = useUserHealthStore((s) => s.weight_KG);
+  const weight_lbs = useUserHealthStore((s) => s.weight_lbs);
+  const heightInches = useUserHealthStore((s) => s.heightInches);
+  const heightCM = useUserHealthStore((s) => s.heightCM);
+  const ageYears = useUserHealthStore((s) => s.ageYears);
+  const gender = useUserHealthStore((s) => s.gender);
+  const activityLevel = useUserHealthStore((s) => s.activityLevel);
 
   // Setters
-  const setUserID = useUserAuthStore((s) => s.setUserID)
-  const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG)
-  const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs)
-  const setHeightInches = useUserHealthStore((s) => s.setHeightInches)
-  const setHeightCM = useUserHealthStore((s) => s.setHeightCM)
-  const setAgeYears = useUserHealthStore((s) => s.setAgeYears)
-  const setGender = useUserHealthStore((s) => s.setGender)
-  const setActivityLevel = useUserHealthStore((s) => s.setActivityLevel)
- 
+  const setUserID = useUserAuthStore((s) => s.setUserID);
+  const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG);
+  const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs);
+  const setHeightInches = useUserHealthStore((s) => s.setHeightInches);
+  const setHeightCM = useUserHealthStore((s) => s.setHeightCM);
+  const setAgeYears = useUserHealthStore((s) => s.setAgeYears);
+  const setGender = useUserHealthStore((s) => s.setGender);
+  const setActivityLevel = useUserHealthStore((s) => s.setActivityLevel);
 
   const router = useRouter();
   return (
@@ -131,9 +131,10 @@ const infoHome = () => {
               {showAgeComponent && (
                 <AgeComponent
                   showAgeComponent={showAgeComponent}
-                  setShowAgeComponent={setShowAgeComponent} 
-                  ageYears={ageYears} 
-                  setAgeYears={setAgeYears}                />
+                  setShowAgeComponent={setShowAgeComponent}
+                  ageYears={ageYears}
+                  setAgeYears={setAgeYears}
+                />
               )}
             </View>
 
@@ -153,9 +154,9 @@ const infoHome = () => {
               {showGenderComponent && (
                 <GenderComponent
                   showGenderComponent={showGenderComponent}
-                  setShowGenderComponent={setShowGenderComponent} 
-                  setGender={setGender}                
-                  />
+                  setShowGenderComponent={setShowGenderComponent}
+                  setGender={setGender}
+                />
               )}
             </View>
 
@@ -175,8 +176,9 @@ const infoHome = () => {
               {showActivityLevelComponent && (
                 <ActivityLevelComponent
                   showActivityLevelComponent={showActivityLevelComponent}
-                  setShowActivityLevelComponent={setShowActivityLevelComponent} 
-                  setActivityLevel={setActivityLevel}                />
+                  setShowActivityLevelComponent={setShowActivityLevelComponent}
+                  setActivityLevel={setActivityLevel}
+                />
               )}
             </View>
           </View>
@@ -186,12 +188,21 @@ const infoHome = () => {
           </View>
           <View className="flex-row space-x-7 items-cente mt-3">
             <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl">
-              <Text className="text-white font-bold text-xl"
-              onPress={()=>{router.push("/(infoPages)/allergies")}}
-              >Skip</Text>
+              <Text
+                className="text-white font-bold text-xl"
+                onPress={() => {
+                  router.push("/(infoPages)/allergies");
+                }}
+              >
+                Skip
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
-            onPress={()=>{router.push("/(infoPages)/allergies")}}>
+            <TouchableOpacity
+              className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
+              onPress={() => {
+                router.push("/(infoPages)/allergies");
+              }}
+            >
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
           </View>

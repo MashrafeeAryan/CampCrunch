@@ -10,7 +10,7 @@ export default function RootLayout() {
   useEffect(() => {
     const checkUserSession = async () => {
       try {
-        await account.get(); // Will throw if not logged in
+        const response = await account.get(); // Will throw if not logged in
         setExistence(true);
       } catch (error) {
         setExistence(false);

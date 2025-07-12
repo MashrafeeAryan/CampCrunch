@@ -10,6 +10,12 @@ const InfoLayout = () => {
 
         />
         <Stack.Screen
+            name='allergies'
+        />
+        <Stack.Screen
+            name='preferences'
+        />
+        <Stack.Screen
             name='goalPage'
         />
 

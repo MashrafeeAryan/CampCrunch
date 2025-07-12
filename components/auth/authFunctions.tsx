@@ -41,7 +41,7 @@ export async function handleSignUp(name, email, password, router, setUserID, set
     setUserName(user.name);   // Save their name
 
     // Step 5: Move them to the home screen ("/") after successful signup
-    router.replace("/(tabs)");
+    router.replace("/(infoPages)/infoHome");
   } catch (error) {
     // If anything goes wrong, print the error and show a friendly message
     console.error("Signup Error:", error);
