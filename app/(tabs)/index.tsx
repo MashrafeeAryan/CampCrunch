@@ -22,7 +22,6 @@ const Index = () => {
 
   // These are the labels for the meal tabs
   const tabs = ["Breakfast", "Lunch", "Dinner", "Snacks"];
-  const pathname=usePathname();
   //NIce
   return (
   
@@ -136,11 +135,7 @@ const Index = () => {
         </View>
       </View>
       <Link href="../(infoPages)/infoHome">Info Pages</Link>
-      <TouchableOpacity onPress={
-        () => {handleLogout(router)}
-      }>
-        <Text>Logout</Text>
-      </TouchableOpacity>
+    
       </ScrollView>
     </SafeAreaView>
   );

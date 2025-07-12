@@ -26,8 +26,8 @@ const achievements = [
 
 const ProfileScreen = () => {
 
-  const userName = useUserAuthStore((s)=> s.userName)
   const userEmail = useUserAuthStore((s)=> s.userEmail)
+  const campCrunchUserName = useUserAuthStore((s)=> s.campCrunchUserName)
   const router = useRouter()
   return (
     <ScrollView>
@@ -56,7 +56,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View className="ml-4">
-            <Text className="text-lg font-bold">{userName}</Text>
+            <Text className="text-lg font-bold">{campCrunchUserName}</Text>
             <Text className="text-gray-600">{userEmail}</Text>
           </View>
         </View>
