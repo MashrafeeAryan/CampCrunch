@@ -24,7 +24,7 @@ type UserHealthStore = {
   activityLevel: string
   allergies: string
   preferences: string
-
+  goals: string
 
   // --- Updater functions (similar to setState) ---
   setWeight_KG: (weight: string | number) => void
@@ -36,6 +36,7 @@ type UserHealthStore = {
   setActivityLevel: (performance: string) => void
   setAllergies: (allergy: string) => void
   setPreferences: (preference: string) => void
+  setGoals: (goal:string) => void
 
   reset: () => void
 }
@@ -59,6 +60,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
       activityLevel: '',
       allergies: '',
       preferences: '',
+      goals: '',
       // --- Updater functions to modify the state ---
       // Convert values to strings to ensure consistent type and avoid errors
       setWeight_KG: (weight) => set({ weight_KG: weight.toString() }),
@@ -70,7 +72,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setActivityLevel: (performance) => set({ activityLevel: performance }),
       setAllergies: (allergy) => set({allergies: allergy}),
       setPreferences: (preference) => set({preferences: preference}),
-    
+      setGoals: (goal) => set({goals: goal}),
       // ✅ --- Reset function to clear all fields ---
       reset: () =>
         set({
@@ -82,6 +84,8 @@ export const useUserHealthStore = create<UserHealthStore>()(
           gender: '',
           activityLevel: '',
           allergies: '',
+          preferences: '',
+          goals: ''
         }),
   
     }),

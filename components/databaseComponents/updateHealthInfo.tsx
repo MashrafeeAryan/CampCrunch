@@ -17,7 +17,8 @@ export async function updateHealthInfo({
   gender,
   activityLevel,
   allergies, 
-  preferences
+  preferences, 
+  goals
 }: {
   userID: string;
   weight_KG: string;
@@ -29,6 +30,7 @@ export async function updateHealthInfo({
   activityLevel: string;
   allergies: string;
   preferences: string;
+  goals: string
 }) {
   try {
     await databases.createDocument(
@@ -45,7 +47,8 @@ export async function updateHealthInfo({
         gender,
         activityLevel,
         allergies: allergies,
-        preferences: preferences
+        preferences: preferences,
+        goals: goals,
       }
     );
 

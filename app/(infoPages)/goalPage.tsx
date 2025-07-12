@@ -22,6 +22,8 @@ const GoalPage = () => {
   const activityLevel = useUserHealthStore((s) => s.activityLevel)
   const allergies = useUserHealthStore((s) => s.allergies)
   const preferences = useUserHealthStore((s) => s.preferences)
+  const goals = useUserHealthStore((s) => s.goals)
+  const setGoals = useUserHealthStore((s) => s.setGoals)
 
   const handleUpdateUserData = async () => {
     try {
@@ -35,7 +37,8 @@ const GoalPage = () => {
         gender,
         activityLevel,
         preferences,
-        allergies
+        allergies, 
+        goals
     })
       router.replace("/(tabs)")
       console.log('Works')
@@ -70,7 +73,11 @@ const GoalPage = () => {
             {/* Selection Boxes */}
             <View className="w-full p-7">
               <View className="bg-[#7ed957] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                  onPress={
+                    ()=>{setGoals("-0.5")}
+                  }
+                >
                   <Image
                     source={goalPageLogos.loose0_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
@@ -87,7 +94,11 @@ const GoalPage = () => {
               </View>
 
               <View className="bg-[#c1ff72] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                     onPress={
+                    ()=>{setGoals("-1")}
+                  }
+                >
                   <Image
                     source={goalPageLogos.gain1}
                     className="w-[60px] h-[60px] rounded-[30px]"
@@ -104,7 +115,11 @@ const GoalPage = () => {
               </View>
 
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                   onPress={
+                    ()=>{setGoals("-1.5")}
+                  }
+                >
                   <Image
                     source={goalPageLogos.loose1_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
@@ -118,10 +133,16 @@ const GoalPage = () => {
               </View>
 
               <View className="bg-[#ff914d] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                   onPress={
+                    ()=>{setGoals("-2")}
+                  }
+                >
+
                   <Image
                     source={goalPageLogos.loose2}
                     className="w-[60px] h-[60px] rounded-[30px]"
+                  
                   />
                   <View className="flex-1">
                     <Text className="font-bold text-[20px]">
@@ -138,7 +159,11 @@ const GoalPage = () => {
                   end={{ x: 1, y: 0 }}
                   className="p-3 w-full"
                 >
-                  <TouchableOpacity className="flex-row space-x-5 items-center">
+                  <TouchableOpacity className="flex-row space-x-5 items-center"
+                     onPress={
+                    ()=>{setGoals("+0")}
+                  }
+                  >
                     <Image
                       source={goalPageLogos.maintain}
                       className="w-[60px] h-[60px] rounded-[30px]"
@@ -153,7 +178,10 @@ const GoalPage = () => {
               </View>
 
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center" 
+                   onPress={
+                    ()=>{setGoals("+0.5")}
+                  }>
                   <Image
                     source={goalPageLogos.gain0_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
@@ -167,7 +195,11 @@ const GoalPage = () => {
               </View>
 
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                   onPress={
+                    ()=>{setGoals("+1")}
+                  }
+                >
                   <Image
                     source={goalPageLogos.gain1}
                     className="w-[60px] h-[60px] rounded-[30px]"
