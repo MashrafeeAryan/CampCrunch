@@ -1,13 +1,13 @@
 import { View, Text } from 'react-native'
 import React, { useContext } from 'react'
 import { DatabaseID, databases, userHealthInfoCollectionID } from '@/appwriteConfig'
-import { UserContext } from '@/context/UserContext'
 import { useUserHealthStore } from '../zustandStore/UserHealthStore'
+import { useUserAuthStore } from '../zustandStore/AuthStore'
 
 const updateHealthInfo = async () => {
 
     //Get this from zustand:
-    const userID = useUserHealthStore((s) => s.userID)
+    const userID = useUserAuthStore((s) => s.userID)
     const weight_KG = useUserHealthStore((s) => s.weight_KG)
     const weight_lbs = useUserHealthStore((s) => s.weight_lbs)
     const heightInches = useUserHealthStore((s) => s.heightInches)
