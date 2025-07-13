@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import streakIcons from "../../assets/images/ProfilePageIcons";
 import { useRouter } from "expo-router";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 
 const streakData = [
   { day: "Mon", icon: streakIcons.freezeIcon, status: "missed" },
@@ -22,6 +23,10 @@ const achievements = [
 ];
 
 const ProfileScreen = () => {
+
+  const userID = useUserAuthStore((s) => s.userID)
+  const userEmail = useUserAuthStore((s) => s.userEmail)
+  const userName = useUserAuthStore((s)=>s.userName)
 
   const router = useRouter()
 
@@ -48,7 +53,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View className="ml-4">
-            <Text className="text-lg font-bold">aaaa</Text>
+            <Text className="text-lg font-bold">{userName}</Text>
             <Text className="text-gray-600">@sonamshrpac</Text>
           </View>
         </View>
