@@ -44,7 +44,7 @@
     "react-dom": "19.0.0",
     "react-native": "0.79.3",
     "react-native-appwrite": "^0.10.0",
-    "react-native-calendar-strip": "^2.2.6",
+    "react-native-calendar-strip": "^1.4.2",
     "react-native-calendars": "^1.1312.1",
     "react-native-gesture-handler": "~2.24.0",
     "react-native-image-picker": "^8.2.1",
