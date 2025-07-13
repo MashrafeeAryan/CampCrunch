@@ -14,11 +14,16 @@ import {
   Entypo,
 } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import { handleLogout } from '@/components/auth/authFunctions';
+import { useUserAuthStore } from '@/components/zustandStore/AuthStore';
 
 export default function SettingsScreen() {
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [notifications, setNotifications] = useState(false);
 
+  //Get it from zustand:
+  const campCrunchUserName = useUserAuthStore((s)=> s.campCrunchUserName)
+  const userEmail = useUserAuthStore((s)=> s.userEmail)
   const userInfo = {
     username: '@reallygreatsite',
     email: 'hello@reallygreatsite.com',
@@ -170,7 +175,11 @@ export default function SettingsScreen() {
 
       {/* Sign Out + Privacy Row */}
       <View className="flex-row justify-between items-center mt-10">
-        <TouchableOpacity className="bg-yellow-400 rounded-full py-3 px-6 w-[48%]">
+        <TouchableOpacity className="bg-yellow-400 rounded-full py-3 px-6 w-[48%]"
+          onPress={
+            () => {handleLogout(router)}
+          }
+        >
           <Text className="text-center font-bold text-black">Sign Out</Text>
         </TouchableOpacity>
         <Text className="text-xs text-gray-500">Privacy & Policy</Text>
