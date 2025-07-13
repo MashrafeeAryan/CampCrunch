@@ -40,3 +40,4 @@ yarn-error.log*
 app-example
 
 appwriteConfig.js
+appwrite.js

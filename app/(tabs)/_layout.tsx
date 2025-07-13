@@ -136,25 +136,24 @@ const TabsLayout = () => {
         }}
       />
 
-      <Tabs.Screen
-        name="ChallengeScreen"
-        options={{
-          title: "Challenge",
-          //When user is on that page, the icon color will be golden
-          //When user leaves the page, icon color will be gray
-          tabBarIcon: ({ focused }) => (
-            <Image
-              source={tabBarLogos.challengesLogo}
-              style={{
-                width: 24,
-                height: 24,
-                tintColor: focused ? "#f8d04a" : "#999",
-              }}
-              resizeMode="contain"
-            />
-          ),
+    <Tabs.Screen
+    name="ChallengeScreen"
+  options={{
+    headerShown: false,
+    tabBarIcon: ({ focused }) => (
+      <Image
+        source={tabBarLogos.challengesLogo}
+        style={{
+          width: 24,
+          height: 24,
+          tintColor: focused ? "#f8d04a" : "#999",
         }}
+        resizeMode="contain"
       />
+    ),
+  }}
+/>
+
 
       <Tabs.Screen
         name="ProfileScreen"
