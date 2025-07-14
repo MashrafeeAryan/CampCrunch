@@ -1,39 +1,60 @@
-import { View, Text } from 'react-native'
-import React, { useContext } from 'react'
-import { DatabaseID, databases, userHealthInfoCollectionID } from '@/appwriteConfig'
-import { UserContext } from '@/context/UserContext'
-import { useUserHealthStore } from '../zustandStore/UserHealthStore'
+ import { View, Text } from "react-native";
+import React, { useContext } from "react";
+import {
+  DatabaseID,
+  databases,
+  userHealthInfoCollectionID,
+} from "@/appwriteConfig";
 
-const updateHealthInfo = async () => {
 
-    //Get this from zustand:
-    const userID = useUserHealthStore((s) => s.userID)
-    const weight_KG = useUserHealthStore((s) => s.weight_KG)
-    const weight_lbs = useUserHealthStore((s) => s.weight_lbs)
-    const heightInches = useUserHealthStore((s) => s.heightInches)
-    const heightCM = useUserHealthStore((s) => s.heightCM)
-    const ageYears = useUserHealthStore((s) => s.ageYears)
-    const gender = useUserHealthStore((s) => s.gender)
-    const activityLevel = useUserHealthStore((s) => s.activityLevel)
-
+export async function updateHealthInfo({
+  userID,
+  weight_KG,
+  weight_lbs,
+  heightInches,
+  heightCM,
+  ageYears,
+  gender,
+  activityLevel,
+  allergies, 
+  preferences, 
+  goals
+}: {
+  userID: string;
+  weight_KG: string;
+  weight_lbs: string;
+  heightInches: string;
+  heightCM: string;
+  ageYears: string;
+  gender: string;
+  activityLevel: string;
+  allergies: string;
+  preferences: string;
+  goals: string
+}) {
+  try {
     await databases.createDocument(
-            DatabaseID,
-            userHealthInfoCollectionID,
-            userID, 
-            {
-                userID: userID,
-                weightlbs: weight_lbs,
-                weightKG: weight_KG,
-                heightInch: heightInches,
-                age: ageYears, 
-                gender: gender, 
-                activityLevel: activityLevel,
-                heightCM: heightCM
-            }
+      DatabaseID,
+      userHealthInfoCollectionID,
+      userID,
+      {
+        userID,
+        weightlbs: weight_lbs,
+        weightKG: weight_KG,
+        heightInch: heightInches,
+        heightCM,
+        age: ageYears,
+        gender,
+        activityLevel,
+        allergies: allergies,
+        preferences: preferences,
+        goals: goals,
+      }
+    );
 
-
-        )
+    console.log("UserHealthInfo Creation Successful");
+  } catch (error) {
+    console.log("UserHealthInfo Creation Failed: ", error);
+    throw new Error(error.message);
+  }
 }
-
-
-export default updateHealthInfo

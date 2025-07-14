@@ -12,6 +12,9 @@ import { Ionicons } from "@expo/vector-icons";
 import goalPageLogos from "../../assets/images/goalPageLogos";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
+import { updateHealthInfo } from "@/components/databaseComponents/updateHealthInfo";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 
 const GoalPage = () => {
   const router = useRouter();
@@ -75,97 +78,134 @@ const GoalPage = () => {
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[21px]">Loose 0.5 lbs per week</Text>
-                    <Text className="font-bold text-[12px]">Recommended for beginners</Text>
+                    <Text className="font-bold text-[21px]">
+                      Loose 0.5 lbs per week
+                    </Text>
+                    <Text className="font-bold text-[12px]">
+                      Recommended for beginners
+                    </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-             
               <View className="bg-[#c1ff72] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                     onPress={
+                    ()=>{setGoals("-1")}
+                  }
+                >
                   <Image
                     source={goalPageLogos.gain1}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">Loose 1 lbs per week</Text>
-                    <Text className="font-bold text-[12px]">Recommended for beginners</Text>
+                    <Text className="font-bold text-[20px]">
+                      Loose 1 lbs per week
+                    </Text>
+                    <Text className="font-bold text-[12px]">
+                      Recommended for beginners
+                    </Text>
                   </View>
                 </TouchableOpacity>
-              </View> 
+              </View>
 
-             
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                   onPress={
+                    ()=>{setGoals("-1.5")}
+                  }
+                >
                   <Image
                     source={goalPageLogos.loose1_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">Loose 1.5 lbs per week</Text>
+                    <Text className="font-bold text-[20px]">
+                      Loose 1.5 lbs per week
+                    </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-             
               <View className="bg-[#ff914d] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                   onPress={
+                    ()=>{setGoals("-2")}
+                  }
+                >
+
                   <Image
                     source={goalPageLogos.loose2}
                     className="w-[60px] h-[60px] rounded-[30px]"
+                  
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">Loose 2 lbs per week</Text>
+                    <Text className="font-bold text-[20px]">
+                      Loose 2 lbs per week
+                    </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
               <View className="w-full rounded-xl mt-4 overflow-hidden">
                 <LinearGradient
-                    colors={['#a7a7a7', '#fdfdfd']}
-                    start={{ x: 0, y: 0 }}
-                    end={{ x: 1, y: 0 }}
-                    className="p-3 w-full"
+                  colors={["#a7a7a7", "#fdfdfd"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                  className="p-3 w-full"
                 >
-                  <TouchableOpacity className="flex-row space-x-5 items-center">
+                  <TouchableOpacity className="flex-row space-x-5 items-center"
+                     onPress={
+                    ()=>{setGoals("+0")}
+                  }
+                  >
                     <Image
-                        source={goalPageLogos.maintain}
-                        className="w-[60px] h-[60px] rounded-[30px]"
+                      source={goalPageLogos.maintain}
+                      className="w-[60px] h-[60px] rounded-[30px]"
                     />
                     <View className="flex-1">
-                      <Text className="font-bold text-[20px]">Maintain Weight</Text>
+                      <Text className="font-bold text-[20px]">
+                        Maintain Weight
+                      </Text>
                     </View>
                   </TouchableOpacity>
                 </LinearGradient>
               </View>
 
-
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center" 
+                   onPress={
+                    ()=>{setGoals("+0.5")}
+                  }>
                   <Image
                     source={goalPageLogos.gain0_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">Gain 0.5 lbs per week</Text>
+                    <Text className="font-bold text-[20px]">
+                      Gain 0.5 lbs per week
+                    </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center">
+                <TouchableOpacity className="flex-row space-x-5 items-center"
+                   onPress={
+                    ()=>{setGoals("+1")}
+                  }
+                >
                   <Image
                     source={goalPageLogos.gain1}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">Gain 1 lbs per week</Text>
+                    <Text className="font-bold text-[20px]">
+                      Gain 1 lbs per week
+                    </Text>
                   </View>
                 </TouchableOpacity>
               </View>
-
             </View>
           
           </View>

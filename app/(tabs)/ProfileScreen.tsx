@@ -2,8 +2,8 @@ import React from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import streakIcons from "../../assets/images/ProfilePageIcons";
-import { useRouter } from "expo-router";
 import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
+import { useRouter } from "expo-router";
 
 const streakData = [
   { day: "Mon", icon: streakIcons.freezeIcon, status: "missed" },
@@ -24,19 +24,20 @@ const achievements = [
 
 const ProfileScreen = () => {
 
-  const userID = useUserAuthStore((s) => s.userID)
-  const userEmail = useUserAuthStore((s) => s.userEmail)
-  const userName = useUserAuthStore((s)=>s.userName)
-
+  const userEmail = useUserAuthStore((s)=> s.userEmail)
+  const campCrunchUserName = useUserAuthStore((s)=> s.campCrunchUserName)
   const router = useRouter()
-
   return (
+    <ScrollView>
     <View className="flex-1 bg-[#aba8a8]">
       {/* Top Header */}
       <View className="bg-[#d9d9d9] px-[30px] pt-[40px] pb-[60px] relative h-[150px]">
         {/* Settings icon at top right */}
         <View className="flex-row justify-end mt-[12px]">
-          <TouchableOpacity onPress={() => router.push('/(hidden)/settings')}>
+          <TouchableOpacity 
+          onPress={
+            () => {router.push("/settings")} 
+          }>
             <Ionicons name="settings" size={24} color="black" />
           </TouchableOpacity>
         </View>
@@ -53,8 +54,8 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View className="ml-4">
-            <Text className="text-lg font-bold">{userName}</Text>
-            <Text className="text-gray-600">@sonamshrpac</Text>
+            <Text className="text-lg font-bold">{campCrunchUserName}</Text>
+            <Text className="text-gray-600">{userEmail}</Text>
           </View>
         </View>
       </View>
@@ -95,38 +96,40 @@ const ProfileScreen = () => {
             </View>
           </View>
 
-        {/* Fuel Streak */}
-        <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
-          <Text className="font-bold text-base text-center mb-3">
-            Fuel Streak
-          </Text>
-          <View className="flex-row justify-between px-2">
-            {streakData.map((item, index) => {
-              let textColor =
-                item.status === "met"
-                  ? "text-red-500"
-                  : item.status === "missed"
-                  ? "text-blue-500"
-                  : "text-gray-400";
-              return (
-                <View key={index} className="items-center">
-                  <Text className={`text-xs ${textColor}`}>{item.day}</Text>
-                  <Image
-                    source={item.icon}
-                    className="w-[38px] h-[38px] mt-1"
-                    resizeMode="contain"
-                  />
-                </View>
-              );
-            })}
+          {/* Fuel Streak */}
+          <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
+            <Text className="font-bold text-base text-center mb-3">
+              Fuel Streak
+            </Text>
+            <View className="flex-row justify-between px-2">
+              {streakData.map((item, index) => {
+                let textColor =
+                  item.status === "met"
+                    ? "text-red-500"
+                    : item.status === "missed"
+                    ? "text-blue-500"
+                    : "text-gray-400";
+                return (
+                  <View key={index} className="items-center">
+                    <Text className={`text-xs ${textColor}`}>{item.day}</Text>
+                    <Image
+                      source={item.icon}
+                      className="w-[38px] h-[38px] mt-1"
+                      resizeMode="contain"
+                    />
+                  </View>
+                );
+              })}
+            </View>
+            <Text className="mt-3 text-xs text-center">
+              “Hi . You’re on track 4 days this week. Keep it up!”
+            </Text>
           </View>
-          <Text className="mt-3 text-xs text-center">
-            “Hi . You’re on track 4 days this week. Keep it up!”
-          </Text>
-        </View>
 
-          {/* Achievements */}
-          {/* <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
+
+        {/* Achievements */}
+        {/* </View>
+          <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
           <Text className="text-base font-bold text-center mb-3">
             Achievements
           </Text>
@@ -143,10 +146,17 @@ const ProfileScreen = () => {
               </View>
             ))}
           </ScrollView>
-        </View> */}
         </View>
+        <View className="h-10">*/}
+
+        <TouchableOpacity onPress={() => router.push('/(infoPages)/infoHome')}>
+          <Text>Hi there</Text>
+        </TouchableOpacity>
+
+        </View> 
       </ScrollView>
     </View>
+    </ScrollView>
   );
 };
 

@@ -20,6 +20,7 @@ const infoHome = () => {
   const [showGenderComponent, setShowGenderComponent] = useState(false);
   const [showActivityLevelComponent, setShowActivityLevelComponent] =
     useState(false);
+  
   // Reading state
   const userID = useUserHealthStore((s) => s.userID);
   const weight_KG = useUserHealthStore((s) => s.weight_KG);
@@ -207,6 +208,7 @@ const infoHome = () => {
                 Skip
               </Text>
             </TouchableOpacity>
+    
             <TouchableOpacity
               className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
               onPress={() => {

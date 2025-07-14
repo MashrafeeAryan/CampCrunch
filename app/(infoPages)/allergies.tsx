@@ -31,6 +31,23 @@ const allergies = [
     key: "shellfish",
     image: infoPageLogos.shellfish_allergy,
   },
+  { label: "Peanuts", key: "peanuts", image: infoPageLogos.peanut_allergy },
+  { label: "Milk", key: "milk", image: infoPageLogos.milk_allergy },
+  { label: "Fish", key: "fish", image: infoPageLogos.fish_allergy },
+  { label: "Soy", key: "soy", image: infoPageLogos.soy_allergy },
+  { label: "Wheat", key: "wheat", image: infoPageLogos.wheat_allergy },
+  { label: "Eggs", key: "eggs", image: infoPageLogos.egg_allergy },
+  { label: "Sesame", key: "sesame", image: infoPageLogos.sesame_allergy },
+  {
+    label: "Tree nuts",
+    key: "tree_nuts",
+    image: infoPageLogos.tree_nuts_allergy,
+  },
+  {
+    label: "Shellfish",
+    key: "shellfish",
+    image: infoPageLogos.shellfish_allergy,
+  },
 ];
 
 export default function AllergiesScreen() {
