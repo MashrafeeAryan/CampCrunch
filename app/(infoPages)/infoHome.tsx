@@ -20,8 +20,9 @@ const infoHome = () => {
   const [showGenderComponent, setShowGenderComponent] = useState(false);
   const [showActivityLevelComponent, setShowActivityLevelComponent] =
     useState(false);
+  
   // Reading state
-  const userID = useUserAuthStore((s) => s.userID);
+  const userID = useUserHealthStore((s) => s.userID);
   const weight_KG = useUserHealthStore((s) => s.weight_KG);
   const weight_lbs = useUserHealthStore((s) => s.weight_lbs);
   const heightInches = useUserHealthStore((s) => s.heightInches);
@@ -31,7 +32,7 @@ const infoHome = () => {
   const activityLevel = useUserHealthStore((s) => s.activityLevel);
 
   // Setters
-  const setUserID = useUserAuthStore((s) => s.setUserID);
+  const setUserID = useUserHealthStore((s) => s.setUserID);
   const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG);
   const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs);
   const setHeightInches = useUserHealthStore((s) => s.setHeightInches);
@@ -43,30 +44,29 @@ const infoHome = () => {
   const router = useRouter();
   return (
     <SafeAreaView className="bg-white flex-1">
-      <ScrollView>
-        <View className="items-center">
-          <TouchableOpacity
-            className="absolute top-4 left-4"
-            onPress={() => {
-              router.push("/");
-            }}
-          >
-            <Ionicons name="arrow-back" size={24} color="black" />
-          </TouchableOpacity>
+      <View className=" flex-1">
+        <TouchableOpacity
+          className="absolute top-4 left-4"
+          onPress={() => {
+            router.back();
+          }}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
 
-          <View className="mt-3">
-            <Image
-              source={infoPageLogos.thumbsUpManLogo}
-              style={{ width: 190, height: 190 }}
-            />
-          </View>
+        <View className="mt-3 items-center justify-center">
+          <Image
+            source={infoPageLogos.thumbsUpManLogo}
+            style={{ width: 190, height: 190 }}
+          />
+          <Text className="font-bold text-2xl mt-3">
+            Enter your information
+          </Text>
+        </View>
 
-          <View className="mt-3">
-            <Text className="font-bold text-2xl">Enter your information</Text>
-          </View>
-
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }}>
           <View className="w-full p-7">
-            <View className="bg-white p-3 w-full rounded-xl">
+            <View className="bg-white p-3 w-full rounded-xl ">
               <TouchableOpacity
                 className="flex-row space-x-5 items-center"
                 onPress={() => {
@@ -182,11 +182,22 @@ const infoHome = () => {
               )}
             </View>
           </View>
+        </ScrollView>
 
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            backgroundColor: "white",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+          }}
+        >
           <View className="items-center">
             <Text>You will be able to update this at any time</Text>
           </View>
-          <View className="flex-row space-x-7 items-cente mt-3">
+          <View className="flex-row justify-center space-x-7 mt-2">
             <TouchableOpacity className="bg-black w-32 h-[50] items-center justify-center rounded-xl">
               <Text
                 className="text-white font-bold text-xl"
@@ -197,6 +208,7 @@ const infoHome = () => {
                 Skip
               </Text>
             </TouchableOpacity>
+    
             <TouchableOpacity
               className="bg-black w-32 h-[50] items-center justify-center rounded-xl"
               onPress={() => {
@@ -207,7 +219,7 @@ const infoHome = () => {
             </TouchableOpacity>
           </View>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };

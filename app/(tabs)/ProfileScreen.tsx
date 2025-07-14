@@ -1,7 +1,6 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity, ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import goalPageLogos from "../../assets/images/goalPageLogos";
 import streakIcons from "../../assets/images/ProfilePageIcons";
 import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 import { useRouter } from "expo-router";
@@ -22,7 +21,6 @@ const achievements = [
   { title: "Meal Planner Pro", icon: streakIcons.medalIcon },
   { title: "Hydration Champ", icon: streakIcons.medalIcon },
 ];
-
 
 const ProfileScreen = () => {
 
@@ -62,73 +60,76 @@ const ProfileScreen = () => {
         </View>
       </View>
 
-      <View className="flex-1 bg-[#f5f5f5]">
-        {/* Stats */}
-        <View className="flex-row justify-around py-5">
-          {[
-            { label: "Nutri-Level", value: 5 },
-            { label: "NutriBuds", value: 10 },
-            { label: "Fuel-Streak", value: 200 },
-            { label: "Bonus Bucks", value: "$150" },
-          ].map((item, index) => (
-            <View
-              key={index}
-              className="items-center bg-white rounded-[10px] p-[9px]"
-            >
-              <Text className="font-bold text-lg">{item.value}</Text>
-              <Text className="text-xs">{item.label}</Text>
-            </View>
-          ))}
-        </View>
+      <ScrollView>
+        <View className="bg-[#f5f5f5] min-h-full">
+          {/* Stats */}
+          <View className="flex-row justify-around py-5">
+            {[
+              { label: "Nutri-Level", value: 5 },
+              { label: "NutriBuds", value: 10 },
+              { label: "Fuel-Streak", value: 200 },
+              { label: "Bonus Bucks", value: "$150" },
+            ].map((item, index) => (
+              <View
+                key={index}
+                className="items-center bg-white rounded-[10px] p-[9px]"
+              >
+                <Text className="font-bold text-lg">{item.value}</Text>
+                <Text className="text-xs">{item.label}</Text>
+              </View>
+            ))}
+          </View>
 
-        {/* Did You Know */}
-        <View className="bg-white rounded-2xl mx-4 p-4 flex-row items-center">
-          <Image
-            source={goalPageLogos.thumbsUpManLogo}
-            className="w-[100px] h-[100px] mr-5"
-            resizeMode="contain"
-          />
-          <View className="flex-1">
-            <Text className="font-[900] text-[18px]">Did you know?</Text>
-            <Text className="text-[12px] font-[500] text-gray-600">
-              The rate of calorie consumption through drinks has been the
-              highest.
+          {/* Did You Know */}
+          <View className="bg-white rounded-2xl mx-4 p-4 flex-row items-center">
+            <Image
+              source={streakIcons.coachIcon}
+              className="w-[110px] h-[110px] mr-3"
+              resizeMode="contain"
+            />
+            <View className="flex-1">
+              <Text className="font-[900] text-[18px]">Did you know?</Text>
+              <Text className="text-[12px] font-[500] text-gray-600">
+                The rate of calorie consumption through drinks has been the
+                highest.
+              </Text>
+            </View>
+          </View>
+
+          {/* Fuel Streak */}
+          <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
+            <Text className="font-bold text-base text-center mb-3">
+              Fuel Streak
+            </Text>
+            <View className="flex-row justify-between px-2">
+              {streakData.map((item, index) => {
+                let textColor =
+                  item.status === "met"
+                    ? "text-red-500"
+                    : item.status === "missed"
+                    ? "text-blue-500"
+                    : "text-gray-400";
+                return (
+                  <View key={index} className="items-center">
+                    <Text className={`text-xs ${textColor}`}>{item.day}</Text>
+                    <Image
+                      source={item.icon}
+                      className="w-[38px] h-[38px] mt-1"
+                      resizeMode="contain"
+                    />
+                  </View>
+                );
+              })}
+            </View>
+            <Text className="mt-3 text-xs text-center">
+              “Hi . You’re on track 4 days this week. Keep it up!”
             </Text>
           </View>
-        </View>
 
-        {/* Fuel Streak */}
-        <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
-          <Text className="font-bold text-base text-center mb-3">
-            Fuel Streak
-          </Text>
-          <View className="flex-row justify-between px-2">
-            {streakData.map((item, index) => {
-              let textColor =
-                item.status === "met"
-                  ? "text-red-500"
-                  : item.status === "missed"
-                  ? "text-blue-500"
-                  : "text-gray-400";
-              return (
-                <View key={index} className="items-center">
-                  <Text className={`text-xs ${textColor}`}>{item.day}</Text>
-                  <Image
-                    source={item.icon}
-                    className="w-[38px] h-[38px] mt-1"
-                    resizeMode="contain"
-                  />
-                </View>
-              );
-            })}
-          </View>
-          <Text className="mt-3 text-xs text-center">
-            “Hi . You’re on track 4 days this week. Keep it up!”
-          </Text>
-        </View>
 
         {/* Achievements */}
-        <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
+        {/* </View>
+          <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
           <Text className="text-base font-bold text-center mb-3">
             Achievements
           </Text>
@@ -146,11 +147,14 @@ const ProfileScreen = () => {
             ))}
           </ScrollView>
         </View>
-        <View className="h-10">
+        <View className="h-10">*/}
 
-        </View>
-        
-      </View>
+        <TouchableOpacity onPress={() => router.push('/(infoPages)/infoHome')}>
+          <Text>Hi there</Text>
+        </TouchableOpacity>
+
+        </View> 
+      </ScrollView>
     </View>
     </ScrollView>
   );
