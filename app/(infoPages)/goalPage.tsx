@@ -25,6 +25,13 @@ const GoalPage = () => {
   const goals = useUserHealthStore((s) => s.goals)
   const setGoals = useUserHealthStore((s) => s.setGoals)
 
+
+  const bmr = useUserHealthStore((s)=> s.bmr)
+  const maintenance = useUserHealthStore((s)=> s.maintenance)
+  const setMaintenance = useUserHealthStore((s)=> s.setMaintenance)
+  const setBMR = useUserHealthStore((s)=> s.setBMR)
+  const dailyCalorieAdjustment = useUserHealthStore((s)=> s.dailyCalorieAdjustment)
+  const setDailyCalorieAdjustment = useUserHealthStore((s)=> s.setDailyCalorieAdjustment)
   const handleUpdateUserData = async () => {
     try {
       await updateHealthInfo({
@@ -41,10 +48,10 @@ const GoalPage = () => {
         goals
     })
       router.replace("/(tabs)")
-      console.log('Works')
+      console.log('Info Page Results Uploded')
 
     } catch (error) {
-      console.log("Something", error)
+      console.log("Info Page Results not Uploaded", error)
     }
   }
   return (
@@ -75,7 +82,7 @@ const GoalPage = () => {
               <View className="bg-[#7ed957] p-3 w-full rounded-xl mt-4">
                 <TouchableOpacity className="flex-row space-x-5 items-center"
                   onPress={
-                    ()=>{setGoals("-0.5")}
+                    ()=>{setGoals(-0.5)}
                   }
                 >
                   <Image
@@ -96,7 +103,7 @@ const GoalPage = () => {
               <View className="bg-[#c1ff72] p-3 w-full rounded-xl mt-4">
                 <TouchableOpacity className="flex-row space-x-5 items-center"
                      onPress={
-                    ()=>{setGoals("-1")}
+                    ()=>{setGoals(-1)}
                   }
                 >
                   <Image
@@ -117,7 +124,7 @@ const GoalPage = () => {
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
                 <TouchableOpacity className="flex-row space-x-5 items-center"
                    onPress={
-                    ()=>{setGoals("-1.5")}
+                    ()=>{setGoals(-1.5)}
                   }
                 >
                   <Image
@@ -135,7 +142,7 @@ const GoalPage = () => {
               <View className="bg-[#ff914d] p-3 w-full rounded-xl mt-4">
                 <TouchableOpacity className="flex-row space-x-5 items-center"
                    onPress={
-                    ()=>{setGoals("-2")}
+                    ()=>{setGoals(-2)}
                   }
                 >
 
@@ -161,7 +168,7 @@ const GoalPage = () => {
                 >
                   <TouchableOpacity className="flex-row space-x-5 items-center"
                      onPress={
-                    ()=>{setGoals("+0")}
+                    ()=>{setGoals(0)}
                   }
                   >
                     <Image
@@ -180,7 +187,7 @@ const GoalPage = () => {
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
                 <TouchableOpacity className="flex-row space-x-5 items-center" 
                    onPress={
-                    ()=>{setGoals("+0.5")}
+                    ()=>{setGoals(0.5)}
                   }>
                   <Image
                     source={goalPageLogos.gain0_5}
@@ -197,7 +204,7 @@ const GoalPage = () => {
               <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
                 <TouchableOpacity className="flex-row space-x-5 items-center"
                    onPress={
-                    ()=>{setGoals("+1")}
+                    ()=>{setGoals(1)}
                   }
                 >
                   <Image
