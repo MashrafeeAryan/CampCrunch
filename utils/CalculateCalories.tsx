@@ -3,14 +3,12 @@ import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 export function calculateCalories(
   gender: string,
   weight_lbs: number,
-  weight_KG: number,
   ageYears: number,
   heightInches: number,
   goals: number,
   bmr: number,
   maintenance: number,
   activityLevel: string,
-  dailyCalorieAdjustment: number,
   setBMR: (val: number) => void,
   setMaintenance: (val: number) => void,
   setDailyCalorieAdjustment: (val: number) => void
@@ -38,5 +36,4 @@ export function calculateCalories(
   const adjustedCalories = maintenance + (goals * 3500) / 7;
   setDailyCalorieAdjustment(adjustedCalories);
 
-  return dailyCalorieAdjustment;
 }
