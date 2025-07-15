@@ -18,6 +18,7 @@ const GenderComponent = ({
   const handleGenderInput = (genderType: string) => {
     setGender(genderType);
   };
+  
   return (
     <Modal
       visible={showGenderComponent}

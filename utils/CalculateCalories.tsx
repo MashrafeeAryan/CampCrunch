@@ -33,7 +33,8 @@ export function calculateCalories(
   const maintenanceCalories = bmr * activityMultiplier;
   setMaintenance(maintenanceCalories);
 
-  const adjustedCalories = maintenance + (goals * 3500) / 7;
+  const adjustedCalories = maintenanceCalories + (goals * 3500) / 7;
   setDailyCalorieAdjustment(adjustedCalories);
+
 
 }
