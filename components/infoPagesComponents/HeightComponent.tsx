@@ -8,14 +8,16 @@ const HeightComponent = ({showHeightComponent, setShowHeightComponent,
 }) => {
 
     const handleHeightInput = (value, unit: string) => {
+      const numericValue = parseFloat(value)
     if (unit == "cm"){
-      setHeightCM(value)
-      const inch = value/2.54
+      
+      setHeightCM(numericValue)
+      const inch = numericValue/2.54
       setHeightInches(inch.toFixed(2))
     } 
     else{
-      setHeightInches(value)
-      const cm = value * 2.54
+      setHeightInches(numericValue)
+      const cm = numericValue * 2.54
       setHeightCM(cm.toFixed(2))
     }
 

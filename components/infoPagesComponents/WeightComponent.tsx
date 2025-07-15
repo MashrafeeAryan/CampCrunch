@@ -20,14 +20,15 @@ const WeightComponent = ({
 
 
   const handleWeightInput = (value, unit: string) => {
+    const numericValue = parseFloat(value)
     if (unit == "KG"){
-      setWeight_KG(value)
-      const lbs = value * 2.20462
+      setWeight_KG(numericValue)
+      const lbs = numericValue * 2.20462
       setWeight_lbs(lbs.toFixed(2))
     } 
     else{
-      setWeight_lbs(value)
-      const kg = value/2.20462
+      setWeight_lbs(numericValue)
+      const kg = numericValue/2.20462
       setWeight_KG(kg.toFixed(2))
     }
 

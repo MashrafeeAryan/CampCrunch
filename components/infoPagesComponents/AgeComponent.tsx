@@ -4,8 +4,12 @@ import { BlurView } from "expo-blur";
 import infoPageLogos from "@/assets/images/infoPageLogos";
 
 const AgeComponent = ({showAgeComponent, setShowAgeComponent, ageYears, setAgeYears}) => {
-  const handleAgeInput = (value:string) => {
-    setAgeYears(value)
+  const handleAgeInput = (value) => {
+    const numericAgeValue = parseFloat(value)
+    if (!isNaN(numericAgeValue)) {
+          setAgeYears(value)
+
+    } // Create a else with toast
   }
   return (
     <Modal visible={showAgeComponent} 
