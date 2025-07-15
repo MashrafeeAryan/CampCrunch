@@ -6,6 +6,7 @@ import ProgressRings from "@/components/ProgressRings"; // Custom progress ring 
 import { Link, usePathname } from "expo-router";
 import { router } from "expo-router";
 import { handleLogout } from "@/components/auth/authFunctions";
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 
 
 
@@ -22,6 +23,9 @@ const Index = () => {
 
   // These are the labels for the meal tabs
   const tabs = ["Breakfast", "Lunch", "Dinner", "Snacks"];
+
+  const dailyCalorieAdjustment = useUserHealthStore((s) => s.dailyCalorieAdjustment)
+  
   //NIce
   return (
   
@@ -135,7 +139,7 @@ const Index = () => {
         </View>
       </View>
       <Link href="../(infoPages)/infoHome">Info Pages</Link>
-    
+      <Text>{dailyCalorieAdjustment}</Text>
       </ScrollView>
     </SafeAreaView>
   );

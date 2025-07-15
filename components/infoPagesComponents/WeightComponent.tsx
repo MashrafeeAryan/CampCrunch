@@ -14,21 +14,33 @@ const WeightComponent = ({
   setShowWeightComponent,
   setWeight_KG,
   setWeight_lbs,
-  weight_KG, 
-  weight_lbs
+  weight_KG,
+  weight_lbs,
 }) => {
-
-
+  const [reactStateWeight_KG, setReactStateWeight_KG] = useState("0");
+  const [reactStateWeight_lbs, setReactStateWeight_lbs] = useState("0");
   const handleWeightInput = (value, unit: string) => {
-    if (unit == "KG"){
-      setWeight_KG(value)
-      const lbs = value * 2.20462
-      setWeight_lbs(lbs.toFixed(2))
-    } 
-    else{
-      setWeight_lbs(value)
-      const kg = value/2.20462
-      setWeight_KG(kg.toFixed(2))
+    // const value = parseFloat(value)
+    if (unit == "KG") {
+      setReactStateWeight_KG(value);
+      const lbs = value / 2.20462;
+      setReactStateWeight_lbs(lbs.toFixed(2));
+    } else {
+      setReactStateWeight_lbs(value);
+      const kg = value * 2.20462;
+      setReactStateWeight_KG(kg.toFixed(2));
+    }
+  };
+
+  const handleFloatValues = () => {
+    if (reactStateWeight_KG !== "" &&
+      reactStateWeight_lbs !== ""
+    ) {
+      const floatWeightKG = parseFloat(reactStateWeight_KG)
+      const floatWeightlbs = parseFloat(reactStateWeight_lbs)
+
+      setWeight_KG(floatWeightKG)
+      setWeight_lbs(floatWeightlbs)
     }
 
   }
@@ -55,9 +67,11 @@ const WeightComponent = ({
               <TextInput
                 className="bg-[#DDDDDD] p-2 w-[70] rounded-xl"
                 keyboardType="numeric"
-                onChangeText={(value)=>{handleWeightInput(value, "KG")}}
-                value={weight_KG.toString()}
-/>
+                onChangeText={(value) => {
+                  handleWeightInput(value, "KG");
+                }}
+                value={reactStateWeight_KG.toString()}
+              />
               <Text className="font-bold text-lg">lbs</Text>
               <View className="bg-black w-1 h-8 rounded-full mx-3" />
             </View>
@@ -66,8 +80,10 @@ const WeightComponent = ({
               <TextInput
                 className="bg-[#DDDDDD] p-2 w-[70] rounded-xl"
                 keyboardType="numeric"
-                onChangeText={(value)=>{handleWeightInput(value, "lbs")}}
-                value={weight_lbs.toString()}
+                onChangeText={(value) => {
+                  handleWeightInput(value, "lbs");
+                }}
+                value={reactStateWeight_lbs.toString()}
               />
               <Text className="font-bold text-lg">kg</Text>
             </View>
@@ -77,9 +93,9 @@ const WeightComponent = ({
               className="bg-black w-full h-[50] items-center justify-center rounded-xl"
               onPress={() => {
                 setShowWeightComponent(false);
-    
+                handleFloatValues()
               }}
-            >  
+            >
               <Text className="text-white font-bold text-xl">Continue</Text>
             </TouchableOpacity>
           </View>

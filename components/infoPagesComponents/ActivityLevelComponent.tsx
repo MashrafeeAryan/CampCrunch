@@ -15,7 +15,7 @@ const ActivityLevelComponent = ({
   setShowActivityLevelComponent,
   setActivityLevel
 }) => {
-  const handleActivityLevelInput = (workoutType:string) => {
+  const handleActivityLevelInput = (workoutType: string) => {
     setActivityLevel(workoutType)
   }
   return (
@@ -36,7 +36,16 @@ const ActivityLevelComponent = ({
           />
           <Text className="font-bold text-2xl">Activity Level</Text>
           <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
-            onPress={()=> {handleActivityLevelInput("Once or twice")}}
+            onPress={() => { handleActivityLevelInput("sedentary") }}
+          >
+            <Image
+              source={infoPageLogos.activityLevelImage2}
+              style={{ width: 40, height: 50 }}
+            />
+            <Text className="text-xl font-bold">Little to no exercise</Text>
+          </TouchableOpacity>
+          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
+            onPress={() => { handleActivityLevelInput("light") }}
           >
             <Image
               source={infoPageLogos.activityLevelImage2}
@@ -47,7 +56,7 @@ const ActivityLevelComponent = ({
 
 
           <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
-                        onPress={()=> {handleActivityLevelInput("Three to Five")}}
+            onPress={() => { handleActivityLevelInput("moderate") }}
 
           >
             <Image
@@ -58,7 +67,7 @@ const ActivityLevelComponent = ({
           </TouchableOpacity>
 
           <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
-            onPress={()=> {handleActivityLevelInput("More than five")}}
+            onPress={() => { handleActivityLevelInput("active") }}
           >
             <Image
               source={infoPageLogos.activityLevelImage3}
@@ -66,6 +75,26 @@ const ActivityLevelComponent = ({
             />
             <Text className="text-xl font-bold">More than Five Days</Text>
           </TouchableOpacity>
+              <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
+            onPress={() => { handleActivityLevelInput("active") }}
+          >
+            <Image
+              source={infoPageLogos.activityLevelImage3}
+              style={{ width: 50, height: 50 }}
+            />
+            <Text className="text-xl font-bold">5-6 Days</Text>
+          </TouchableOpacity>
+
+    <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
+            onPress={() => { handleActivityLevelInput("very_active") }}
+          >
+            <Image
+              source={infoPageLogos.activityLevelImage3}
+              style={{ width: 50, height: 50 }}
+            />
+            <Text className="text-xl font-bold">(Athletes) 7 Days</Text>
+          </TouchableOpacity>
+
 
 
           <View className="items-center mt-5 w-72">
