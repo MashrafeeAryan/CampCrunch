@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ScrollView } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const challenges = [
   {
@@ -32,7 +33,10 @@ const challenges = [
 
 export default function WeeklyChallenges() {
   return (
-    <View className="flex-1 bg-white  px-5 mt-10 pt-20">
+   
+
+    <SafeAreaView className="flex-1 bg-white  px-5 pt-20">
+    
       <Image
         source={require('../../assets/images/CampCrunchLogo.png')}
         className="w-20 h-20 self-center mb-2"
@@ -69,6 +73,6 @@ export default function WeeklyChallenges() {
           </View>
         ))}
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
