@@ -139,6 +139,7 @@ const Index = () => {
         </View>
       </View>
       <Link href="../(infoPages)/infoHome">Info Pages</Link>
+      <Link href="../(infoPages)/soundIntro">Sound Intro</Link>
       <Text>{dailyCalorieAdjustment}</Text>
       </ScrollView>
     </SafeAreaView>
