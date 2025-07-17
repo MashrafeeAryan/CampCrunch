@@ -75,17 +75,9 @@ const ActivityLevelComponent = ({
             />
             <Text className="text-xl font-bold">More than Five Days</Text>
           </TouchableOpacity>
-              <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
-            onPress={() => { handleActivityLevelInput("active") }}
-          >
-            <Image
-              source={infoPageLogos.activityLevelImage3}
-              style={{ width: 50, height: 50 }}
-            />
-            <Text className="text-xl font-bold">5-6 Days</Text>
-          </TouchableOpacity>
 
-    <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
+
+          <TouchableOpacity className="bg-white w-full h-15 mt-2 rounded-lg flex-row p-4 items-center space-x-2"
             onPress={() => { handleActivityLevelInput("very_active") }}
           >
             <Image

@@ -13,10 +13,14 @@ const InfoLayout = () => {
             name='allergies'
         />
         <Stack.Screen
-            name='preferences'
+            name='preferences' 
         />
         <Stack.Screen
             name='goalPage'
+        />
+
+        <Stack.Screen
+            name='soundIntro'
         />
 
     </Stack>
