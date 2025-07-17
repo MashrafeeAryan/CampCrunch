@@ -1,98 +1,125 @@
-import { useState } from "react";
-import { View, Text, TouchableOpacity, Modal, FlatList } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { router } from 'expo-router';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
-const diningHalls = [
-  "Fresh Food",
-  "Panda Express",
-  "Subway",
-  "Chick-Fil-A",
-];
+import { FoodLogos } from '../../assets/images/addFoodLogos';
 
 export default function AddFoodScreen() {
-  const [selectedHall, setSelectedHall] = useState("Fresh Food");
-  const [modalVisible, setModalVisible] = useState(false);
-  const router = useRouter()
-  const handleSelectHall = (hall) => {
-    setSelectedHall(hall);
-    setModalVisible(false);
-    router.push("/SearchFoodScreen")
-  };
+  const [selectedTab, setSelectedTab] = useState('Dining Hall');
 
+  const renderContent = () => {
+    switch (selectedTab) {
+      case 'Dining Hall':
+        return <DiningHall />;
+      case 'Campus Outlets':
+        return <CampusOutlets />;
+      case 'Manual Entry':
+        return <ManualEntry />;
+      default:
+        return null;
+    }
+  };
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      <View className="flex-1 bg-white">
-        {/* Top Bar */}
-        <View className="flex-row items-center justify-between px-4 pt-4">
-          <Ionicons name="arrow-back" size={24} color="black" />
-          <View className="absolute left-0 right-0 items-center">
-            <Text className="text-lg font-bold">Add Food</Text>
-          </View>
-        </View>
-
-        {/* Dining Hall Selector */}
-        <View className="items-center mt-5">
-          <View className="flex-row w-[95%] border border-gray-300 rounded-xl overflow-hidden">
-            {/* Left label */}
-            <View className="bg-white px-4 py-2 justify-center flex-[0.5 ] items-center">
-              <Text className="text-base font-semibold">Dining Hall</Text>
-            </View>
-
-            {/* Right display only (no onPress here) */}
-            <View className="bg-gray-300 px-5 py-2 flex-row items-center justify-between flex-1">
-              <Text className="text-base text-gray-700 mr-1">{selectedHall}</Text>
-              <Ionicons name="chevron-down" size={18} color="gray" />
-            </View>
-          </View>
-        </View>
-
-        {/* Choose Dining Hall Section */}
-        <View className="mt-7 px-5">
-          <Text className="text-lg font-bold">Choose Dining Hall</Text>
-       <TouchableOpacity
-  className="bg-gray-300 py-4 rounded-xl mt-2 px-4 flex-row items-center justify-between"
-  onPress={() => setModalVisible(true)}
->
-  <Text className="text-base font-bold">Select</Text>
-  <Ionicons name="arrow-forward" size={20} color="black" />
-</TouchableOpacity>
-        </View>
-
-        {/* Modal for selecting dining hall */}
-        <Modal
-          visible={modalVisible}
-          transparent
-          animationType="fade"
-          onRequestClose={() => setModalVisible(false)}
-        >
-          <View className="flex-1 bg-black/30 justify-center items-center">
-            <View className="bg-white w-[80%] rounded-xl p-4">
-              <Text className="text-lg font-bold mb-3">Select Dining Hall</Text>
-              <FlatList
-                data={diningHalls}
-                keyExtractor={(item) => item}
-                renderItem={({ item }) => (
-                  <TouchableOpacity
-                    className="py-3 border-b border-gray-200"
-                    onPress={() => handleSelectHall(item)}
-                  >
-                    <Text className="text-base text-gray-800">{item}</Text>
-                  </TouchableOpacity>
-                )}
-              />
-              <TouchableOpacity
-                className="mt-3 items-center"
-                onPress={() => setModalVisible(false)}
-              >
-                <Text className="text-red-500 font-semibold">Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
+      {/* Header */}
+      <View className="flex-row items-center p-4">
+        <TouchableOpacity onPress={() => router.push('/infoHome')}>
+          <Ionicons
+            name="chevron-back"
+            size={24}
+            color="black"
+          />
+        </TouchableOpacity>
+              
+        <Text className="text-lg font-bold ml-2 text-center absolute right-0 left-0 pt-4">Add Food</Text>
       </View>
+
+      {/* Tabs */}
+      <ScrollView horizontal showsHorizontalScrollIndicator={false} className="p-2 mt-6" style={{ flexGrow: 0 }}>
+        <View className="flex-row">
+          {['Dining Hall', 'Campus Outlets', 'Manual Entry'].map(tab => (
+            <TouchableOpacity
+              key={tab}
+              onPress={() => setSelectedTab(tab)}
+              className={`px-4 py-2 rounded-full m-1 ${
+                selectedTab === tab ? 'bg-yellow-400' : 'bg-gray-200'
+              }`}
+            >
+              <Text className={`${selectedTab === tab ? 'text-black font-bold' : 'text-gray-600'}`}>
+                {tab}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </ScrollView>
+
+      {/* Content */}
+      <ScrollView className="flex-1">
+        {renderContent()}
+      </ScrollView>
     </SafeAreaView>
   );
 }
+
+const DiningHall = () => (
+  <View className="flex-1 bg-gray-100 p-4 pt-8">
+    <Text className="text-xl font-bold mb-4 tracking-wide">Dining Halls</Text>
+
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <TouchableOpacity
+        className="flex-row items-center bg-white p-4 rounded-2xl mb-4 shadow-md"
+        activeOpacity={0.8}
+        onPress={() => console.log('Selected: The Fresh Food Co.')}
+      >
+        <Image
+          source={FoodLogos.freshfood}
+          className="w-16 h-16 mr-5"
+          resizeMode="contain"
+        />
+        <Text className="text-xl font-semibold tracking-wide text-gray-800">The Fresh Food Co.</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  </View>
+);
+
+const outlets = [
+  { name: 'Panda Express', image: FoodLogos.panda },
+  { name: "Moe's: Southwest Grill", image: FoodLogos.moes },
+  { name: 'Starbucks', image: FoodLogos.starbucks },
+  { name: 'Chickfile', image: FoodLogos.chickfile },
+  { name: 'Subway', image: FoodLogos.subway },
+];
+
+const CampusOutlets = () => (
+  <View className="flex-1 bg-gray-100 p-4">
+    <Text className="text-xl font-bold mb-4 tracking-wide">Available Locations</Text>
+
+    <ScrollView showsVerticalScrollIndicator={false}>
+      {outlets.map((outlet, index) => (
+        <TouchableOpacity
+          key={index}
+          className="flex-row items-center bg-white p-4 rounded-2xl mb-4 shadow-md"
+          activeOpacity={0.8}
+          onPress={() => console.log(`Selected: ${outlet.name}`)}
+        >
+          <Image
+            source={outlet.image}
+            className="w-16 h-16 mr-5"
+            resizeMode="contain"
+          />
+          <Text className="text-xl font-semibold tracking-wide text-gray-800">{outlet.name}</Text>
+        </TouchableOpacity>
+      ))}
+    </ScrollView>
+  </View>
+);
+
+const ManualEntry = () => (
+  <View className="p-4">
+    <Text className="text-base font-semibold mb-2">Manual Entry</Text>
+    <Text className="text-gray-500">Allow users to add food manually here.</Text>
+  </View>
+);
