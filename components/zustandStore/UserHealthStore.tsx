@@ -1,39 +1,39 @@
-// stores/userHealthStore.ts
-
-import { create } from 'zustand'
-import { persist, createJSONStorage } from 'zustand/middleware'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import { create } from 'zustand';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 type UserHealthStore = {
   // Data fields
-  weight_KG: number
-  weight_lbs: number
-  heightInches: number
-  heightCM: number
-  ageYears: number
-  gender: string
-  activityLevel: string
-  allergies: string
-  preferences: string
-  goals: number
-  bmr: number
-  maintenance: number
+  weight_KG: number;
+  weight_lbs: number;
+  heightInches: number;
+  heightCM: number;
+  ageYears: number;
+  gender: string;
+  activityLevel: string;
+  allergies: string;
+  preferences: string;
+  goals: number;
+  bmr: number;
+  maintenance: number;
+  dailyCalorieAdjustment: number;
 
   // Updater functions
-  setWeight_KG: (weight: number) => void
-  setWeight_lbs: (weight: number) => void
-  setHeightInches: (height: number) => void
-  setHeightCM: (height: number) => void
-  setAgeYears: (age: number) => void
-  setGender: (sex: string) => void
-  setActivityLevel: (level: string) => void
-  setAllergies: (allergy: string) => void
-  setPreferences: (preference: string) => void
-  setGoals: (goal: number) => void
-  setBMR: (bmr: number) => void
-  setMaintenance: (maintain: number) => void
-  reset: () => void
-}
+  setWeight_KG: (weight: number) => void;
+  setWeight_lbs: (weight: number) => void;
+  setHeightInches: (height: number) => void;
+  setHeightCM: (height: number) => void;
+  setAgeYears: (age: number) => void;
+  setGender: (sex: string) => void;
+  setActivityLevel: (level: string) => void;
+  setAllergies: (allergy: string) => void;
+  setPreferences: (preference: string) => void;
+  setGoals: (goal: number) => void;
+  setBMR: (bmr: number) => void;
+  setMaintenance: (maintain: number) => void;
+  setDailyCalorieAdjustment: (calories: number) => void;
+  reset: () => void;
+};
 
 export const useUserHealthStore = create<UserHealthStore>()(
   persist(
@@ -50,6 +50,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
       goals: 0,
       bmr: 0,
       maintenance: 0,
+      dailyCalorieAdjustment: 0,
 
       setWeight_KG: (weight) => set({ weight_KG: weight }),
       setWeight_lbs: (weight) => set({ weight_lbs: weight }),
@@ -63,6 +64,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setGoals: (goal) => set({ goals: goal }),
       setBMR: (bmr) => set({ bmr }),
       setMaintenance: (maintain) => set({ maintenance: maintain }),
+      setDailyCalorieAdjustment: (calories) => set({ dailyCalorieAdjustment: calories }),
 
       reset: () =>
         set({
@@ -78,6 +80,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
           goals: 0,
           bmr: 0,
           maintenance: 0,
+          dailyCalorieAdjustment: 0,
         }),
     }),
     {
@@ -85,4 +88,4 @@ export const useUserHealthStore = create<UserHealthStore>()(
       storage: createJSONStorage(() => AsyncStorage),
     }
   )
-)
+);

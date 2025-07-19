@@ -1,16 +1,16 @@
-import React, { useState } from "react";
+import infoPageLogos from "@/assets/images/infoPageLogos";
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
+import React, { useState } from "react";
 import {
   FlatList,
   Image,
+  ScrollView,
   Text,
   TouchableOpacity,
   View,
-  ScrollView,
 } from "react-native";
-import infoPageLogos from "@/assets/images/infoPageLogos";
-import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const allergies = [
@@ -21,40 +21,17 @@ const allergies = [
   { label: "Wheat", key: "wheat", image: infoPageLogos.wheat_allergy },
   { label: "Eggs", key: "eggs", image: infoPageLogos.egg_allergy },
   { label: "Sesame", key: "sesame", image: infoPageLogos.sesame_allergy },
-  {
-    label: "Tree nuts",
-    key: "tree_nuts",
-    image: infoPageLogos.tree_nuts_allergy,
-  },
-  {
-    label: "Shellfish",
-    key: "shellfish",
-    image: infoPageLogos.shellfish_allergy,
-  },
-  { label: "Peanuts", key: "peanuts", image: infoPageLogos.peanut_allergy },
-  { label: "Milk", key: "milk", image: infoPageLogos.milk_allergy },
-  { label: "Fish", key: "fish", image: infoPageLogos.fish_allergy },
-  { label: "Soy", key: "soy", image: infoPageLogos.soy_allergy },
-  { label: "Wheat", key: "wheat", image: infoPageLogos.wheat_allergy },
-  { label: "Eggs", key: "eggs", image: infoPageLogos.egg_allergy },
-  { label: "Sesame", key: "sesame", image: infoPageLogos.sesame_allergy },
-  {
-    label: "Tree nuts",
-    key: "tree_nuts",
-    image: infoPageLogos.tree_nuts_allergy,
-  },
-  {
-    label: "Shellfish",
-    key: "shellfish",
-    image: infoPageLogos.shellfish_allergy,
-  },
+  { label: "Tree nuts", key: "tree_nuts", image: infoPageLogos.tree_nuts_allergy },
+  { label: "Shellfish", key: "shellfish", image: infoPageLogos.shellfish_allergy },
 ];
 
 export default function AllergiesScreen() {
   const [selected, setSelected] = useState<string[]>([]);
+  
+  // Get the `setAllergies` function from Zustand
   const setAllergies = useUserHealthStore((s) => s.setAllergies);
 
-
+  // Toggle allergy selection
   const toggle = (key: string) => {
     setSelected((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
@@ -83,7 +60,7 @@ export default function AllergiesScreen() {
         {/* 🧾 Scrollable content: Image, Title, Allergy List */}
         <ScrollView
           contentContainerStyle={{ paddingBottom: 100 }}
-          scrollEventThrottle={16}          
+          scrollEventThrottle={16}
         >
           {/* 🧩 Allergy Options */}
           <View className="px-5 pt-2">
@@ -100,7 +77,7 @@ export default function AllergiesScreen() {
                   <TouchableOpacity
                     onPress={() => toggle(item.key)}
                     className={`flex-row items-center px-4 py-3 mb-3 rounded-xl w-[48%] ${
-                      isActive ? "bg-gray-500" : "bg-white"
+                      isActive ? "bg-[#333333]" : "bg-white"
                     }`}
                   >
                     <View
@@ -164,16 +141,15 @@ export default function AllergiesScreen() {
             <TouchableOpacity
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
               onPress={() => {
+                // Store the selected allergies in the global Zustand store
                 setAllergies(selected.toString());
                 router.push("/(infoPages)/goalPage");
               }}
             >
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
-
           </View>
         </View>
-
       </View>
     </SafeAreaView>
   );

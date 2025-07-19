@@ -17,6 +17,8 @@ expo-env.d.ts
 *.mobileprovision
 .kotlin/
 
+appwrite.js
+
 # 👉 Metro bundler cache
 .metro-health-check*
 
@@ -39,4 +41,7 @@ yarn-error.log*
 # 👉 Ignore example files
 app-example
 
-*appwriteConfig.js
+
+
+appwriteConfig.js
+
