@@ -1,11 +1,5 @@
-import React, { useState } from 'react';
-import {
-  View,
-  Text,
-  Switch,
-  TouchableOpacity,
-  ScrollView,
-} from 'react-native';
+import React, { useState } from "react";
+import { View, Text, Switch, TouchableOpacity, ScrollView } from "react-native";
 import {
   Feather,
   FontAwesome,
@@ -18,43 +12,46 @@ import { handleLogout } from '@/components/auth/authFunctions';
 import { useUserAuthStore } from '@/components/zustandStore/AuthStore';
 
 export default function SettingsScreen() {
+  const userID = useUserAuthStore((s) => s.userID);
+  const userEmail = useUserAuthStore((s) => s.userEmail);
+  const userName = useUserAuthStore((s) => s.userName);
+
   const [isDarkMode, setIsDarkMode] = useState(true);
   const [notifications, setNotifications] = useState(false);
 
   //Get it from zustand:
   const campCrunchUserName = useUserAuthStore((s)=> s.campCrunchUserName)
-  const userEmail = useUserAuthStore((s)=> s.userEmail)
   const userInfo = {
-    username: '@reallygreatsite',
-    email: 'hello@reallygreatsite.com',
-    phone: '+123-456-7890',
-    address: '123 Anywhere St., Any City, ST 12345',
+    username: userName,
+    email: userEmail,
+    phone: "+123-456-7890",
+    address: "123 Anywhere St., Any City, ST 12345",
   };
 
   const accountInfoItems = [
     {
-      label: 'Username',
+      label: "Username",
       value: userInfo.username,
       icon: <FontAwesome name="user" size={20} color="white" />,
-      key: 'username',
+      key: "username",
     },
     {
-      label: 'E-mail Address',
+      label: "E-mail Address",
       value: userInfo.email,
       icon: <MaterialCommunityIcons name="email" size={24} color="white" />,
-      key: 'email',
+      key: "email",
     },
     {
-      label: 'Phone Number',
+      label: "Phone Number",
       value: userInfo.phone,
       icon: <Feather name="phone" size={20} color="white" />,
-      key: 'phone',
+      key: "phone",
     },
     {
-      label: 'Address',
+      label: "Address",
       value: userInfo.address,
       icon: <Feather name="map-pin" size={20} color="white" />,
-      key: 'address',
+      key: "address",
     },
   ];
 

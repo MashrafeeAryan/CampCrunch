@@ -1,20 +1,18 @@
-// Importing React and useState for managing local state
-import React, { useState } from "react";
-
-// Importing basic UI components from react-native
-import { Image, Text, TouchableOpacity, View } from "react-native";
-
-// Importing AntDesign icon library for navigation icon (back arrow)
+import React, { useEffect, useState } from "react";
+import {
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
-
-// Importing router object from expo-router to handle navigation
 import { router } from "expo-router";
-
-// Importing all image/icon assets (make sure they exist in infoPageLogos)
 import infoPageLogos from "@/assets/images/infoPageLogos";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-// List of food preference options with label, key, and associated icon
+// List of preferences with label, unique key, and corresponding icon image
 const preferences = [
   { label: "Halal", key: "Halal", icon: infoPageLogos.halal },
   { label: "Vegetarian", key: "Vegetarian", icon: infoPageLogos.vegetarian },
@@ -23,9 +21,8 @@ const preferences = [
   { label: "No Beef", key: "No_beef", icon: infoPageLogos.no_beef },
 ];
 
-// Main screen component
 export default function PreferencesScreen() {
-  // State to hold selected preference keys
+  // Local state to keep track of currently selected preferences (array of keys)
   const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
   const setPreferences = useUserHealthStore((s) => s.setPreferences);
 
@@ -50,98 +47,110 @@ export default function PreferencesScreen() {
     setPreferences(formattedPreferences);
   };
 
-  // Function to toggle preference selection
+  // Zustand store method to save preferences globally
+  const setPreferences = useUserHealthStore((s) => s.setPreferences);
+
+  // Get previously saved preferences from store (string of keys separated by commas)
+  const storedPreferences = useUserHealthStore((s) => s.preferences);
+
+  // On component mount, load stored preferences into local state array
+  useEffect(() => {
+    if (storedPreferences) {
+      setSelectedPrefs(storedPreferences.split(","));
+    }
+  }, []);
+
+  // Toggle selection: if already selected, remove; if not selected, add
   const togglePref = (key: string) => {
-    setSelectedPrefs(
-      (prev) =>
-        prev.includes(key)
-          ? prev.filter((k) => k !== key) // Remove if already selected
-          : [...prev, key] // Add if not selected
+    setSelectedPrefs((prev) =>
+      prev.includes(key)
+        ? prev.filter((k) => k !== key) // remove key
+        : [...prev, key] // add key
     );
   };
 
   return (
-    <View className="flex-1 bg-[#FAFAFA] px-5 py-6 pt-10">
-      {/* Back navigation arrow (top-left corner) */}
-      <TouchableOpacity onPress={() => router.back()}>
-        <AntDesign name="arrowleft" size={28} color="black" />
-      </TouchableOpacity>
-
-      {/* Header image (represents preferences visually) */}
-      <Image
-        source={infoPageLogos.preferences_allergies_top} // Replace with correct asset path
-        className="w-40 h-40 self-center my-2"
-        resizeMode="contain" // Ensures the image scales properly
-      />
-
-      {/* Title for the screen */}
-      <Text className="text-center text-xl font-bold mb-4">
-        Any Preferences?
-      </Text>
-
-      {/* Container holding all preference buttons in a wrapped 2-column grid */}
-      <View className="flex-row flex-wrap justify-between">
-        {preferences.map((pref) => {
-          // Check if this preference is selected
-          const isActive = selectedPrefs.includes(pref.key);
-
-          return (
-            // Touchable button for each preference
-            <TouchableOpacity
-              key={pref.key}
-              onPress={() => togglePref(pref.key)}
-              className={`flex-row items-center px-4 py-3 mb-3 rounded-xl w-[48%] ${
-                isActive ? "bg-gray-500" : "bg-white"
-              }`} // Highlight with gray background if selected
-            >
-              {/* Icon inside a (light) circular background */}
-              <View
-                style={{
-                  width: 60,
-                  height: 60,
-                  borderRadius: 35, // Slightly more than half for full circle
-                  backgroundColor: "#FFFFF", // Looks like a typo: should probably be '#FFFFFF'
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  source={pref.icon}
-                  style={{ width: 60, height: 60 }}
-                  resizeMode="contain" // Maintain image proportions
-                />
-              </View>
-
-              {/* Preference label (e.g., "Vegan", "Halal") */}
-              <Text
-                className={`ml-3 pr-10 font-semibold text-base ${
-                  isActive ? "text-white font-bold" : "text-gray-800"
-                }`} // Text color/style changes if selected
-              >
-                {pref.label}
-              </Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
-
-      {/* Disclaimer below the selection options */}
-      <Text className="text-xs text-center text-gray-500 underline mb-4">
-        Disclaimer: Always double check with the food service before consumption
-      </Text>
-
-      {/* Navigation buttons at the bottom: Skip and Next */}
-      <View className="flex-row justify-between">
-        {/* Skip Button - no navigation action yet */}
+    <SafeAreaView style={{ flex: 1 }} className="bg-white">
+      <View style={{ flex: 1 }}>
+        {/* Back button positioned at top-left corner */}
         <TouchableOpacity
-          className="flex-1 bg-gray-800 py-3 rounded-xl mr-2"
-          onPress={() => {
-            router.push("/(infoPages)/goalPage");
-          }}
+          onPress={() => router.back()}
+          style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}
         >
-          <Text className="text-white text-center font-bold">Skip</Text>
+          <AntDesign name="arrowleft" size={28} color="black" />
         </TouchableOpacity>
 
+        {/* Header with top image and title */}
+        <View className="mt-3 items-center justify-center">
+          <Image
+            source={infoPageLogos.preferences_allergies_top}
+            style={{ width: 190, height: 190 }}
+            resizeMode="contain"
+          />
+          <Text className="font-bold text-2xl mt-3">Any Preferences?</Text>
+        </View>
+
+        {/* Scrollable list of preference options */}
+        <ScrollView
+          contentContainerStyle={{ paddingBottom: 140 }}
+          scrollEventThrottle={16}
+        >
+          <View className="px-5 pt-2 flex-row flex-wrap justify-between">
+            {preferences.map((pref) => {
+              // Check if current preference is selected
+              const isActive = selectedPrefs.includes(pref.key);
+
+              return (
+                <TouchableOpacity
+                  key={pref.key}
+                  onPress={() => togglePref(pref.key)}
+                  // Change background color if active
+                  className={`flex-row items-center px-4 py-3 mb-3 rounded-xl w-[48%] ${
+                    isActive ? "bg-[#333333]" : "bg-white"
+                  }`}
+                >
+                  {/* Circular white background behind icon */}
+                  <View
+                    style={{
+                      width: 50,
+                      height: 50,
+                      borderRadius: 25, // makes circle
+                      backgroundColor: "#FFFFFF",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* Preference icon centered inside circle */}
+                    <Image
+                      source={pref.icon}
+                      style={{ width: 70, height: 70 }}
+                      resizeMode="center"
+                    />
+                  </View>
+
+                  {/* Preference label text */}
+                  <Text
+                    className={`ml-3 pr-10 font-semibold text-base ${
+                      isActive ? "text-white font-bold" : "text-gray-800"
+                    }`}
+                  >
+                    {pref.label}
+                  </Text>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+        </ScrollView>
+
+        {/* Bottom area with disclaimer and navigation buttons */}
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            backgroundColor: "white",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
         {/* Next Button - would typically take user to next screen */}
         <TouchableOpacity
           className="flex-1 bg-gray-800 py-3 rounded-xl ml-2"
@@ -150,9 +159,34 @@ export default function PreferencesScreen() {
             router.push("/(infoPages)/goalPage");
           }}
         >
-          <Text className="text-white text-center font-bold">Next</Text>
-        </TouchableOpacity>
+          {/* Disclaimer text about food service */}
+          <Text className="text-xs text-center text-gray-600 underline mb-2">
+            Disclaimer: Always double check with the food service before consumption
+          </Text>
+
+          {/* Buttons for Skip and Next */}
+          <View className="flex-row justify-center space-x-7 mt-2">
+            {/* Skip button navigates to next page without saving */}
+            <TouchableOpacity
+              className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={() => router.push("/(infoPages)/goalPage")}
+            >
+              <Text className="text-white font-bold text-xl">Skip</Text>
+            </TouchableOpacity>
+
+            {/* Next button saves selected preferences and navigates */}
+            <TouchableOpacity
+              className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={() => {
+            handlePreferencesToString(selectedPrefs.toString());
+                router.push("/(infoPages)/goalPage");
+              }}
+            >
+              <Text className="text-white font-bold text-xl">Next</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }

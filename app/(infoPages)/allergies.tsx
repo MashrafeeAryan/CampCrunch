@@ -1,22 +1,21 @@
-// We are building a screen that lets users choose their food allergies.
-
-import React, { useState } from "react"; // React helps us build UI. useState lets us remember things on the screen.
-import AntDesign from "@expo/vector-icons/AntDesign"; // We are using an arrow icon from the AntDesign icon set.
-import { router } from "expo-router"; // Lets us move between different screens in the app.
+import infoPageLogos from "@/assets/images/infoPageLogos"; // Import allergy images
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore"; // Zustand global store for health data
+import AntDesign from "@expo/vector-icons/AntDesign"; // Back arrow icon
+import { router } from "expo-router"; // Navigation handler
+import React, { useEffect, useState } from "react";
 import {
-  FlatList, // A way to show a list of things that scrolls nicely.
-  Image, // Shows images.
-  Text, // Shows text.
-  TouchableOpacity, // A button you can press or touch.
-  View, // A container that holds other pieces of UI.
+  FlatList,        // Efficient scrolling list
+  Image,           // For displaying allergy icons
+  ScrollView,      // Allows vertical scrolling
+  Text,            // For rendering all text
+  TouchableOpacity,// Tappable buttons
+  View,            // Layout container
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context"; // Keeps UI within device-safe area
 
-import infoPageLogos from "@/assets/images/infoPageLogos"; // This is where we keep all the images for allergies.
-import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
-
-// 🥜 List of all common allergies we are showing to the user.
-// Each item has a name (label), a unique key, and an image.
+// 🥜 List of common allergies with icons and keys
 const allergies = [
+
   { label: "Peanuts", key: "Peanuts", image: infoPageLogos.peanut_allergy },
   { label: "Milk", key: "Milk", image: infoPageLogos.milk_allergy },
   { label: "Fish", key: "Fish", image: infoPageLogos.fish_allergy },
@@ -36,13 +35,25 @@ const allergies = [
   },
 ];
 
-// This is the main screen component that React Native will display.
+// 🎯 Main screen component for selecting food allergies
 export default function AllergiesScreen() {
-  // 🧠 We use a state to keep track of which allergies the user has selected.
-  const [selected, setSelected] = useState<string[]>([]); // Starts empty
+  // Local state to track selected allergies (e.g. ["peanuts", "milk"])
+  const [selected, setSelected] = useState<string[]>([]);
 
-  //Gets the set allergies variable and function
+  // Get function to update allergies in global Zustand store
   const setAllergies = useUserHealthStore((s) => s.setAllergies);
+
+  // Get stored allergies from Zustand to restore previous selections
+  const storedAllergies = useUserHealthStore((s) => s.allergies);
+
+  // 🔁 When screen mounts, load any previously saved allergies into local state
+  useEffect(() => {
+    if (storedAllergies) {
+      setSelected(storedAllergies.split(","));
+    }
+  }, []);
+
+  // Toggle the selected state for a specific allergy
   // This function runs when the user taps on an allergy.
   // If it's already selected, we remove it. If not, we add it.
 
@@ -76,104 +87,127 @@ export default function AllergiesScreen() {
   };
 
   const toggle = (key: string) => {
-    setSelected(
-      (prev) =>
-        prev.includes(key)
-          ? prev.filter((k) => k !== key) // Remove it if already selected
-          : [...prev, key] // Add it to the list if not selected
+    setSelected((prev) =>
+      prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
     );
   };
 
   return (
-    // 🌟 Main container for the whole screen.
-    <View className="flex-1 bg-[#FAFAFA] px-5 py-6 pt-10">
-      {/* 🔙 A back arrow button to go to the previous screen */}
-      <TouchableOpacity onPress={() => router.back()}>
-        <AntDesign name="arrowleft" size={28} color="black" />
-      </TouchableOpacity>
+    <SafeAreaView style={{ flex: 1 }} className="bg-white">
+      <View style={{ flex: 1 }}>
+        {/* 🔙 Back button at the top-left corner */}
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}
+        >
+          <AntDesign name="arrowleft" size={28} color="black" />
+        </TouchableOpacity>
 
-      {/* 🖼️ An image shown at the top of the screen */}
-      <Image
-        source={require("../../assets/images/infoPageLogos/allergies_top.png")}
-        className="w-40 h-40 self-center mb-2"
-        resizeMode="contain"
-      />
+        {/* 🖼️ Header image and title */}
+        <View className="mt-3 items-center justify-center">
+          <Image
+            source={require("../../assets/images/infoPageLogos/allergies_top.png")}
+            style={{ width: 190, height: 190 }}
+          />
+          <Text className="font-bold text-2xl mt-3">Any Allergies?</Text>
+        </View>
 
-      {/* 📝 A title asking the user if they have any allergies */}
-      <Text className="text-center text-xl font-bold mb-4">Any Allergies?</Text>
+        {/* 🧾 Scrollable list of allergy options */}
+        <ScrollView contentContainerStyle={{ paddingBottom: 100 }} scrollEventThrottle={16}>
+          <View className="px-5 pt-2">
+            <FlatList
+              data={allergies} // Display each allergy from the list
+              keyExtractor={(item) => item.key}
+              numColumns={2} // Two columns of items
+              scrollEnabled={false} // Use outer ScrollView instead
+              columnWrapperStyle={{ justifyContent: "space-between" }}
+              contentContainerStyle={{ paddingBottom: 10 }}
+              renderItem={({ item }) => {
+                const isActive = selected.includes(item.key); // Highlight if selected
+                return (
+                  // 📦 Allergy option box
+                  <TouchableOpacity
+                    onPress={() => toggle(item.key)} // Toggle selection
+                    className={`flex-row items-center px-4 py-3 mb-3 rounded-xl w-[48%] ${
+                      isActive ? "bg-[#333333]" : "bg-white"
+                    }`}
+                  >
+                    {/* 🟡 Yellow circle with allergy icon */}
+                    <View
+                      style={{
+                        width: 50,
+                        height: 50,
+                        borderRadius: 25,
+                        backgroundColor: "#FFD500",
+                        justifyContent: "center",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Image
+                        source={item.image}
+                        style={{ width: 80, height: 80 }}
+                        resizeMode="contain"
+                      />
+                    </View>
 
-      {/* 📋 This will show the list of allergies using 2 columns */}
-      <FlatList
-        data={allergies} // The list of allergies we defined above
-        keyExtractor={(item) => item.key} // Unique key for each item
-        numColumns={2} // Display 2 allergies side-by-side
-        columnWrapperStyle={{ justifyContent: "space-between" }} // Put space between columns
-        contentContainerStyle={{ paddingBottom: 20 }} // Add space at bottom of list
-        // 🧩 This function decides how to show each allergy item
-        renderItem={({ item }) => {
-          const isActive = selected.includes(item.key); // Check if this allergy is selected
-          return (
-            // 🧲 Pressing this box selects/unselects the allergy
+                    {/* 🏷️ Allergy name text */}
+                    <Text
+                      className={`ml-3 font-semibold text-base ${
+                        isActive ? "text-white font-bold text-l" : "text-gray-800"
+                      }`}
+                    >
+                      {item.label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              }}
+            />
+          </View>
+        </ScrollView>
+
+        {/* 🚀 Bottom navigation section */}
+        <View
+          style={{
+            position: "absolute",
+            bottom: 0,
+            width: "100%",
+            backgroundColor: "white",
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+          }}
+        >
+          <View style={{ alignItems: "center" }}>
+            <Text className="text-center mb-2 text-gray-600 text-base">
+              You will be able to update this at any time
+            </Text>
+          </View>
+
+          {/* 🚦 Skip and Next buttons */}
+          <View className="flex-row justify-center space-x-7 mt-2">
+            {/* ⏭️ Skip button */}
             <TouchableOpacity
-              onPress={() => toggle(item.key)} // Toggle this allergy
-              className={`flex-row items-center px-4 py-3 mb-3 rounded-xl w-[48%] ${
-                isActive ? "bg-gray-500" : "bg-white" // Gray if selected, white if not
-              }`}
+              className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={() => router.push("/(infoPages)/preferences")}
             >
-              {/* 🟡 A small round yellow background behind the allergy icon */}
-              <View
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: 25, // Makes it a circle
-                  backgroundColor: "#FFD500", // Bright yellow color
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <Image
-                  source={item.image} // Show the allergy image
-                  style={{ width: 80, height: 80 }}
-                  resizeMode="contain"
-                />
-              </View>
-
-              {/* 🏷️ Allergy name text next to the image */}
-              <Text
-                className={`ml-3 font-semibold text-base ${
-                  isActive ? "text-white font-bold text-l" : "text-gray-800"
-                }`}
-              >
-                {item.label}
-              </Text>
+              <Text className="text-white font-bold text-xl">Skip</Text>
             </TouchableOpacity>
-          );
-        }}
-      />
 
-      {/* 🚀 Navigation buttons at the bottom */}
-      <View className="flex-row justify-between">
-        {/* ❌ Skip button */}
-        <TouchableOpacity
-          className="flex-1 bg-gray-800 py-3 rounded-xl mr-2"
-          onPress={() => {
-            router.push("/(infoPages)/preferences");
-          }}
-        >
-          <Text className="text-white text-center font-bold">Skip</Text>
-        </TouchableOpacity>
+            {/* ✅ Next button that saves selection and navigates */}
+            <TouchableOpacity
+              className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
+              onPress={() => {
+                handleAllergieToString(selected.toString());
+                setAllergies(selected.toString()); // Save selected allergies
+                router.push("/(infoPages)/preferences"); // Navigate forward
+              }}
+            >
+              <Text className="text-white font-bold text-xl">Next</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        
 
-        {/* ✅ Next button that takes user to the next page */}
-        <TouchableOpacity
-          className="flex-1 bg-gray-800 py-3 rounded-xl ml-2"
-          onPress={() => {
-            handleAllergieToString(selected.toString());
-            router.push("/(infoPages)/preferences"); // Go to the goal page
-          }}
-        >
-          <Text className="text-white text-center font-bold">Next</Text>
-        </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
