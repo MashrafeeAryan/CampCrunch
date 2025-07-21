@@ -11,8 +11,8 @@ type UserHealthStore = {
   ageYears: number;
   gender: string;
   activityLevel: string;
-  allergies: string[];     // changed to array
-  preferences: string[];   // changed to array
+  allergies: string[];
+  preferences: string[];
   goals: number;
   bmr: number;
   maintenance: number;
@@ -20,6 +20,7 @@ type UserHealthStore = {
   protein: number;
   carbs: number;
   fat: number;
+  dietRecommendation: any | null; // ✅ added
 
   // Updater functions
   setWeight_KG: (weight: number) => void;
@@ -29,8 +30,8 @@ type UserHealthStore = {
   setAgeYears: (age: number) => void;
   setGender: (sex: string) => void;
   setActivityLevel: (level: string) => void;
-  setAllergies: (allergy: string[]) => void;         // updated type
-  setPreferences: (preference: string[]) => void;    // updated type
+  setAllergies: (allergy: string[]) => void;
+  setPreferences: (preference: string[]) => void;
   setGoals: (goal: number) => void;
   setBMR: (bmr: number) => void;
   setMaintenance: (maintain: number) => void;
@@ -38,6 +39,7 @@ type UserHealthStore = {
   setProtein: (protein: number) => void;
   setCarbs: (carbs: number) => void;
   setFat: (fat: number) => void;
+  setDietRecommendation: (data: any) => void; // ✅ added
   reset: () => void;
 };
 
@@ -51,8 +53,8 @@ export const useUserHealthStore = create<UserHealthStore>()(
       ageYears: 0,
       gender: '',
       activityLevel: '',
-      allergies: [],       // default to empty array
-      preferences: [],     // default to empty array
+      allergies: [],
+      preferences: [],
       goals: 0,
       bmr: 0,
       maintenance: 0,
@@ -60,6 +62,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
       protein: 0,
       carbs: 0,
       fat: 0,
+      dietRecommendation: null, // ✅ added
 
       setWeight_KG: (weight) => set({ weight_KG: weight }),
       setWeight_lbs: (weight) => set({ weight_lbs: weight }),
@@ -68,8 +71,8 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setAgeYears: (age) => set({ ageYears: age }),
       setGender: (sex) => set({ gender: sex }),
       setActivityLevel: (level) => set({ activityLevel: level }),
-      setAllergies: (allergy) => set({ allergies: allergy }),           // updated
-      setPreferences: (preference) => set({ preferences: preference }), // updated
+      setAllergies: (allergy) => set({ allergies: allergy }),
+      setPreferences: (preference) => set({ preferences: preference }),
       setGoals: (goal) => set({ goals: goal }),
       setBMR: (bmr) => set({ bmr }),
       setMaintenance: (maintain) => set({ maintenance: maintain }),
@@ -77,6 +80,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setProtein: (protein) => set({ protein }),
       setCarbs: (carbs) => set({ carbs }),
       setFat: (fat) => set({ fat }),
+      setDietRecommendation: (data) => set({ dietRecommendation: data }), // ✅ added
 
       reset: () =>
         set({
@@ -87,8 +91,8 @@ export const useUserHealthStore = create<UserHealthStore>()(
           ageYears: 0,
           gender: '',
           activityLevel: '',
-          allergies: [],       // reset to array
-          preferences: [],     // reset to array
+          allergies: [],
+          preferences: [],
           goals: 0,
           bmr: 0,
           maintenance: 0,
@@ -96,6 +100,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
           protein: 0,
           carbs: 0,
           fat: 0,
+          dietRecommendation: null, // ✅ reset as well
         }),
     }),
     {

@@ -39,22 +39,23 @@ const GoalPage = () => {
   const setProtein = useUserHealthStore((s) => s.setProtein)
   const setCarbs = useUserHealthStore((s) => s.setCarbs)
   const setFat = useUserHealthStore((s) => s.setFat)
+  const setDietRecommendation = useUserHealthStore((s) => s.setDietRecommendation)
 
   const handleUpdateUserData = async () => {
     try {
-      await updateHealthInfo({
-        userID,
-        weight_KG,
-        weight_lbs,
-        heightInches,
-        heightCM,
-        ageYears,
-        gender,
-        activityLevel,
-        preferences,
-        allergies,
-        goals
-      })
+      // await updateHealthInfo({
+      //   userID,
+      //   weight_KG,
+      //   weight_lbs,
+      //   heightInches,
+      //   heightCM,
+      //   ageYears,
+      //   gender,
+      //   activityLevel,
+      //   preferences,
+      //   allergies,
+      //   goals
+      // })
 
       if (
         weight_KG !== 0 &&
@@ -64,36 +65,36 @@ const GoalPage = () => {
         ageYears !== 0 &&
         gender !== "" &&
         activityLevel !== "" &&
-        preferences !== "" &&
-        allergies !== "" &&
+        preferences.length > 0 &&
+        allergies.length > 0 &&
         goals !== 0
       ) {
         // ✅ All fields exist
-        // calculateCalories(
-        //   gender,
-        //   weight_lbs,
-        //   ageYears,
-        //   heightInches,
-        //   goals,
-        //   bmr,
-        //   maintenance,
-        //   activityLevel,
-        //   preferences, 
-        //   allergies,
-        //   protein,
-        //   carbs, 
-        //   fat,
-        //   setBMR,
-        //   setMaintenance,
-        //   setDailyCalorieAdjustment,
-        //   setProtein,
-        //   setCarbs, 
-        //   setFat
-        // )
+        calculateCalories(
+          gender,
+          weight_lbs,
+          ageYears,
+          heightInches,
+          goals,
+          bmr,
+          maintenance,
+          activityLevel,
+          preferences,
+          allergies,
+          protein,
+          carbs,
+          fat,
+          setBMR,
+          setMaintenance,
+          setDailyCalorieAdjustment,
+          setProtein,
+          setCarbs,
+          setFat,
+          setDietRecommendation
+        )
 
       }
-      console.log("Preferences:", preferences)
-      console.log("Allergies", allergies)
+
       router.replace("/(tabs)")
       console.log('Info Page Results Uploded')
 
