@@ -1,17 +1,16 @@
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
+import ActivityLevelComponent from "@/components/infoPagesComponents/ActivityLevelComponent";
+import AgeComponent from "@/components/infoPagesComponents/AgeComponent";
+import GenderComponent from "@/components/infoPagesComponents/GenderComponent";
+import HeightComponent from "@/components/infoPagesComponents/HeightComponent";
+import WeightComponent from "@/components/infoPagesComponents/WeightComponent";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import infoPageLogos from "../../assets/images/infoPageLogos";
-import { Ionicons } from "@expo/vector-icons";
-import WeightComponent from "@/components/infoPagesComponents/WeightComponent";
-import HeightComponent from "@/components/infoPagesComponents/HeightComponent";
-import AgeComponent from "@/components/infoPagesComponents/AgeComponent";
-import { router } from "expo-router";
-import GenderComponent from "@/components/infoPagesComponents/GenderComponent";
-import ActivityLevelComponent from "@/components/infoPagesComponents/ActivityLevelComponent";
-import { useRouter } from "expo-router";
-import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
-import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 
 const infoHome = () => {
   const [showWeightComponent, setShowWeightComponent] = useState(false);

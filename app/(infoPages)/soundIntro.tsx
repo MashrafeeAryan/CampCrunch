@@ -1,16 +1,59 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { useRouter } from "expo-router";
+import React, { useEffect } from "react";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  Vibration
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-const soundIntro = () => {
+const { width } = Dimensions.get("window");
+
+export default function SoundIntro() {
+  const router = useRouter();
+
+  useEffect(() => {
+    Vibration.vibrate(500);
+    }, []);
+
+  const handlePress = () => {
+    router.push("/(infoPages)/pandaAppears"); // navigate on tap
+  };
+
   return (
-    <SafeAreaView>
-          <View>
-      <Text>soundIntro</Text>
-    </View>
-    </SafeAreaView>
-  
-  )
+    <TouchableWithoutFeedback onPress={handlePress}>
+      <SafeAreaView style={styles.container}>
+        <Text style={styles.text}>Ohh.. What is that sound?</Text>
+        <Image
+          source={require("@/assets/images/sound-intro.png")}
+          style={styles.image}
+          resizeMode="contain"
+        />
+      </SafeAreaView>
+    </TouchableWithoutFeedback>
+  );
 }
 
-export default soundIntro
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  text: {
+    fontSize: 22,
+    color: "#000",
+    textAlign: "center",
+  },
+  image: {
+    position: "absolute",
+    width: width * 0.4,
+    height: width * 0.4,
+    bottom: 10,
+    right: 10,
+  },
+});
