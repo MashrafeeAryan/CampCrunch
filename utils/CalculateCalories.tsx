@@ -1,6 +1,7 @@
+import { dietRecommendationFunctionID, functions } from "@/appwriteConfig";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 
-export function calculateCalories(
+export const calculateCalories = async(
   gender: string,
   weight_lbs: number,
   ageYears: number,
@@ -9,12 +10,20 @@ export function calculateCalories(
   bmr: number,
   maintenance: number,
   activityLevel: string,
+  preferences, 
+  allergies,
+  protein,
+  carbs, 
+  fat,
   setBMR: (val: number) => void,
   setMaintenance: (val: number) => void,
-  setDailyCalorieAdjustment: (val: number) => void
-) {
+  setDailyCalorieAdjustment: (val: number) => void,
+  setProtein: (val: number) => void,
+  setCarbs: (val: number) => void,
+  setFat: (val: number) => void
+) => {
 
-
+ 
   //📐 Imperial Mifflin-St Jeor Formula:
   if (gender === "male") {
     setBMR(66 + 6.23 * weight_lbs + 12.7 * heightInches - 6.8 * ageYears);
@@ -35,9 +44,39 @@ export function calculateCalories(
 
   const adjustedCalories = maintenanceCalories + (goals * 3500) / 7;
   setDailyCalorieAdjustment(adjustedCalories);
+  if (goals < 0) {
+    // Weight Loss: 40% Protein, 40% Carbs, 20% Fat
+    setProtein(0.4 * adjustedCalories / 4);
+    setCarbs(0.4 * adjustedCalories / 4);
+    setFat(0.2 * adjustedCalories / 9);
+  } else if (goals > 0) {
+    // Muscle Gain: 30% Protein, 50% Carbs, 20% Fat
+    setProtein(0.3 * adjustedCalories / 4);
+    setCarbs(0.5 * adjustedCalories / 4);
+    setFat(0.2 * adjustedCalories / 9);
+  } else if (goals === 0) {
+    // Maintenance: 30% Protein, 40% Carbs, 30% Fat
+    setProtein(0.3 * adjustedCalories / 4);
+    setCarbs(0.4 * adjustedCalories / 4);
+    setFat(0.3 * adjustedCalories / 9);
+  }
 
-  const protein = 0.3 * adjustedCalories / 4
-  const fat = 0.3 * adjustedCalories / 9
-  const carbs = 0.4 * adjustedCalories / 4
+  
+  try{
+    const response = await functions.createExecution(
+      dietRecommendationFunctionID,
+      JSON.stringify({
+        preferences: preferences,
+        allergies: allergies,
+        target:{
+          calories: adjustedCalories, 
+          protein: protein,
+          carbs: carbs,
+          fat: fat
+        }
+      })
+    )
+  }catch(error){
 
+  }
 }

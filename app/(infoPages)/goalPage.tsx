@@ -24,7 +24,10 @@ const GoalPage = () => {
   const allergies = useUserHealthStore((s) => s.allergies)
   const preferences = useUserHealthStore((s) => s.preferences)
   const goals = useUserHealthStore((s) => s.goals)
-  const setGoals = useUserHealthStore((s) => s.setGoals)
+  const protein = useUserHealthStore((s) => s.protein)
+  const carbs = useUserHealthStore((s) => s.carbs)
+  const fat = useUserHealthStore((s) => s.fat)
+
 
 
   const bmr = useUserHealthStore((s) => s.bmr)
@@ -32,6 +35,10 @@ const GoalPage = () => {
   const setMaintenance = useUserHealthStore((s) => s.setMaintenance)
   const setBMR = useUserHealthStore((s) => s.setBMR)
   const setDailyCalorieAdjustment = useUserHealthStore((s) => s.setDailyCalorieAdjustment)
+  const setGoals = useUserHealthStore((s) => s.setGoals)
+  const setProtein = useUserHealthStore((s) => s.setProtein)
+  const setCarbs = useUserHealthStore((s) => s.setCarbs)
+  const setFat = useUserHealthStore((s) => s.setFat)
 
   const handleUpdateUserData = async () => {
     try {
@@ -62,20 +69,31 @@ const GoalPage = () => {
         goals !== 0
       ) {
         // ✅ All fields exist
-        calculateCalories(
-          gender,
-          weight_lbs,
-          ageYears,
-          heightInches,
-          goals,
-          bmr,
-          maintenance,
-          activityLevel,
-          setBMR,
-          setMaintenance,
-          setDailyCalorieAdjustment
-        )
+        // calculateCalories(
+        //   gender,
+        //   weight_lbs,
+        //   ageYears,
+        //   heightInches,
+        //   goals,
+        //   bmr,
+        //   maintenance,
+        //   activityLevel,
+        //   preferences, 
+        //   allergies,
+        //   protein,
+        //   carbs, 
+        //   fat,
+        //   setBMR,
+        //   setMaintenance,
+        //   setDailyCalorieAdjustment,
+        //   setProtein,
+        //   setCarbs, 
+        //   setFat
+        // )
+
       }
+      console.log("Preferences:", preferences)
+      console.log("Allergies", allergies)
       router.replace("/(tabs)")
       console.log('Info Page Results Uploded')
 

@@ -17,21 +17,21 @@ import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 // 🥜 List of all common allergies we are showing to the user.
 // Each item has a name (label), a unique key, and an image.
 const allergies = [
-  { label: "Peanuts", key: "peanuts", image: infoPageLogos.peanut_allergy },
-  { label: "Milk", key: "milk", image: infoPageLogos.milk_allergy },
-  { label: "Fish", key: "fish", image: infoPageLogos.fish_allergy },
-  { label: "Soy", key: "soy", image: infoPageLogos.soy_allergy },
-  { label: "Wheat", key: "wheat", image: infoPageLogos.wheat_allergy },
-  { label: "Eggs", key: "eggs", image: infoPageLogos.egg_allergy },
-  { label: "Sesame", key: "sesame", image: infoPageLogos.sesame_allergy },
+  { label: "Peanuts", key: "Peanuts", image: infoPageLogos.peanut_allergy },
+  { label: "Milk", key: "Milk", image: infoPageLogos.milk_allergy },
+  { label: "Fish", key: "Fish", image: infoPageLogos.fish_allergy },
+  { label: "Soy", key: "Soy", image: infoPageLogos.soy_allergy },
+  { label: "Wheat", key: "Wheat", image: infoPageLogos.wheat_allergy },
+  { label: "Eggs", key: "Eggs", image: infoPageLogos.egg_allergy },
+  { label: "Sesame", key: "Sesame", image: infoPageLogos.sesame_allergy },
   {
-    label: "Tree nuts",
-    key: "tree_nuts",
+    label: "Tree Nuts",
+    key: "Tree_nuts",
     image: infoPageLogos.tree_nuts_allergy,
   },
   {
     label: "Shellfish",
-    key: "shellfish",
+    key: "Shellfish",
     image: infoPageLogos.shellfish_allergy,
   },
 ];
@@ -45,6 +45,36 @@ export default function AllergiesScreen() {
   const setAllergies = useUserHealthStore((s) => s.setAllergies);
   // This function runs when the user taps on an allergy.
   // If it's already selected, we remove it. If not, we add it.
+
+  const handleAllergieToString = (selectedParam: string) => {
+    const allowed = [
+      "Peanuts",
+      "Milk",
+      "Fish",
+      "Soy",
+      "Wheat",
+      "Eggs",
+      "Sesame",
+      "Tree_nuts",
+      "Shellfish",
+    ];
+
+    const formattedAllergies = selectedParam
+      .split(",") // Split string into array
+      .map((s) => s.trim()) // Remove extra spaces
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()) // Capitalize
+      .filter((s) => allowed.includes(s)); // Filter allowed values
+
+    // Use the result as needed
+    for (let i = 0; i < formattedAllergies.length; i++) {
+      if (formattedAllergies[i] == "Tree_nuts") {
+        formattedAllergies[i] = "Tree Nuts";
+      }
+    }
+    // Or update Zustand:
+    setAllergies(formattedAllergies);
+  };
+
   const toggle = (key: string) => {
     setSelected(
       (prev) =>
@@ -137,7 +167,7 @@ export default function AllergiesScreen() {
         <TouchableOpacity
           className="flex-1 bg-gray-800 py-3 rounded-xl ml-2"
           onPress={() => {
-            setAllergies(selected.toString());
+            handleAllergieToString(selected.toString());
             router.push("/(infoPages)/preferences"); // Go to the goal page
           }}
         >
