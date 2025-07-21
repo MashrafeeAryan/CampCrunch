@@ -16,19 +16,39 @@ import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 
 // List of food preference options with label, key, and associated icon
 const preferences = [
-  { label: "Halal", key: "halal", icon: infoPageLogos.halal },
-  { label: "Vegetarian", key: "vegetarian", icon: infoPageLogos.vegetarian },
-  { label: "Vegan", key: "vegan", icon: infoPageLogos.vegan },
-  { label: "Gluten", key: "gluten", icon: infoPageLogos.gluten },
-  { label: "No Beef", key: "no_beef", icon: infoPageLogos.no_beef },
-  { label: "Keto", key: "keto", icon: infoPageLogos.keto },
+  { label: "Halal", key: "Halal", icon: infoPageLogos.halal },
+  { label: "Vegetarian", key: "Vegetarian", icon: infoPageLogos.vegetarian },
+  { label: "Vegan", key: "Vegan", icon: infoPageLogos.vegan },
+  { label: "No Gluten", key: "No_Gluten", icon: infoPageLogos.gluten },
+  { label: "No Beef", key: "No_beef", icon: infoPageLogos.no_beef },
 ];
 
 // Main screen component
 export default function PreferencesScreen() {
   // State to hold selected preference keys
   const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
-  const setPreferences = useUserHealthStore((s)=> s.setPreferences)
+  const setPreferences = useUserHealthStore((s) => s.setPreferences);
+
+  const handlePreferencesToString = (selectedParam: string) => {
+    const allowed = ["Halal", "Vegetarian", "Vegan", "No_gluten", "No_beef"];
+
+    const formattedPreferences = selectedParam
+      .split(",") // Split string into array
+      .map((s) => s.trim()) // Remove extra spaces
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()) // Capitalize
+      .filter((s) => allowed.includes(s)); // Filter allowed values
+
+    // Use the result as needed
+    for (let i = 0; i < formattedPreferences.length; i++) {
+      if (formattedPreferences[i] == "No_beef") {
+        formattedPreferences[i] = "No Beef";
+      } else if (formattedPreferences[i] == "No_gluten") {
+        formattedPreferences[i] = "No Gluten";
+      }
+    }
+    // Or update Zustand:
+    setPreferences(formattedPreferences);
+  };
 
   // Function to toggle preference selection
   const togglePref = (key: string) => {
@@ -126,7 +146,7 @@ export default function PreferencesScreen() {
         <TouchableOpacity
           className="flex-1 bg-gray-800 py-3 rounded-xl ml-2"
           onPress={() => {
-            setPreferences(selectedPrefs.toString())
+            handlePreferencesToString(selectedPrefs.toString());
             router.push("/(infoPages)/goalPage");
           }}
         >

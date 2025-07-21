@@ -24,7 +24,10 @@ const GoalPage = () => {
   const allergies = useUserHealthStore((s) => s.allergies)
   const preferences = useUserHealthStore((s) => s.preferences)
   const goals = useUserHealthStore((s) => s.goals)
-  const setGoals = useUserHealthStore((s) => s.setGoals)
+  const protein = useUserHealthStore((s) => s.protein)
+  const carbs = useUserHealthStore((s) => s.carbs)
+  const fat = useUserHealthStore((s) => s.fat)
+
 
 
   const bmr = useUserHealthStore((s) => s.bmr)
@@ -32,22 +35,27 @@ const GoalPage = () => {
   const setMaintenance = useUserHealthStore((s) => s.setMaintenance)
   const setBMR = useUserHealthStore((s) => s.setBMR)
   const setDailyCalorieAdjustment = useUserHealthStore((s) => s.setDailyCalorieAdjustment)
+  const setGoals = useUserHealthStore((s) => s.setGoals)
+  const setProtein = useUserHealthStore((s) => s.setProtein)
+  const setCarbs = useUserHealthStore((s) => s.setCarbs)
+  const setFat = useUserHealthStore((s) => s.setFat)
+  const setDietRecommendation = useUserHealthStore((s) => s.setDietRecommendation)
 
   const handleUpdateUserData = async () => {
     try {
-      await updateHealthInfo({
-        userID,
-        weight_KG,
-        weight_lbs,
-        heightInches,
-        heightCM,
-        ageYears,
-        gender,
-        activityLevel,
-        preferences,
-        allergies,
-        goals
-      })
+      // await updateHealthInfo({
+      //   userID,
+      //   weight_KG,
+      //   weight_lbs,
+      //   heightInches,
+      //   heightCM,
+      //   ageYears,
+      //   gender,
+      //   activityLevel,
+      //   preferences,
+      //   allergies,
+      //   goals
+      // })
 
       if (
         weight_KG !== 0 &&
@@ -57,8 +65,8 @@ const GoalPage = () => {
         ageYears !== 0 &&
         gender !== "" &&
         activityLevel !== "" &&
-        preferences !== "" &&
-        allergies !== "" &&
+        preferences.length > 0 &&
+        allergies.length > 0 &&
         goals !== 0
       ) {
         // ✅ All fields exist
@@ -71,11 +79,22 @@ const GoalPage = () => {
           bmr,
           maintenance,
           activityLevel,
+          preferences,
+          allergies,
+          protein,
+          carbs,
+          fat,
           setBMR,
           setMaintenance,
-          setDailyCalorieAdjustment
+          setDailyCalorieAdjustment,
+          setProtein,
+          setCarbs,
+          setFat,
+          setDietRecommendation
         )
+
       }
+
       router.replace("/(tabs)")
       console.log('Info Page Results Uploded')
 
