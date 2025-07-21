@@ -25,6 +25,9 @@ const Index = () => {
   const tabs = ["Breakfast", "Lunch", "Dinner", "Snacks"];
 
   const dailyCalorieAdjustment = useUserHealthStore((s) => s.dailyCalorieAdjustment)
+
+  const diet = useUserHealthStore((s) => s.dietRecommendation);
+
   
   //NIce
   return (
@@ -137,6 +140,29 @@ const Index = () => {
             Recommended {focusedTab}
           </Text>
         </View>
+        {diet && diet[focusedTab.toLowerCase()]?.length > 0 ? (
+  <View className="w-full px-4 mt-2">
+    {diet[focusedTab.toLowerCase()].map((item, index) => (
+      <View
+        key={index}
+        className="bg-white p-4 mb-3 rounded-xl shadow border border-gray-200"
+      >
+        <Text className="text-base font-bold mb-1">{item.foodName}</Text>
+        <View className="flex-row flex-wrap justify-between">
+          <Text className="text-xs text-gray-700">{item.calories} cal • n</Text>
+          <Text className="text-xs text-gray-700">{item.protein}g protein</Text>
+          <Text className="text-xs text-gray-700">{item.carbohydrates}g carbs</Text>
+          <Text className="text-xs text-gray-700">{item.fat}g fat</Text>
+        </View>
+      </View>
+    ))}
+  </View>
+) : (
+  <Text className="text-center text-gray-500 text-sm mt-2">
+    No items available for {focusedTab}
+  </Text>
+)}
+
       </View>
       <Link href="../(infoPages)/infoHome">Info Pages</Link>
       <Link href="../(infoPages)/soundIntro">Sound Intro</Link>

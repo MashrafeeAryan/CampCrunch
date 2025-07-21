@@ -15,15 +15,24 @@ import { SafeAreaView } from "react-native-safe-area-context"; // Keeps UI withi
 
 // 🥜 List of common allergies with icons and keys
 const allergies = [
-  { label: "Peanuts", key: "peanuts", image: infoPageLogos.peanut_allergy },
-  { label: "Milk", key: "milk", image: infoPageLogos.milk_allergy },
-  { label: "Fish", key: "fish", image: infoPageLogos.fish_allergy },
-  { label: "Soy", key: "soy", image: infoPageLogos.soy_allergy },
-  { label: "Wheat", key: "wheat", image: infoPageLogos.wheat_allergy },
-  { label: "Eggs", key: "eggs", image: infoPageLogos.egg_allergy },
-  { label: "Sesame", key: "sesame", image: infoPageLogos.sesame_allergy },
-  { label: "Tree nuts", key: "tree_nuts", image: infoPageLogos.tree_nuts_allergy },
-  { label: "Shellfish", key: "shellfish", image: infoPageLogos.shellfish_allergy },
+
+  { label: "Peanuts", key: "Peanuts", image: infoPageLogos.peanut_allergy },
+  { label: "Milk", key: "Milk", image: infoPageLogos.milk_allergy },
+  { label: "Fish", key: "Fish", image: infoPageLogos.fish_allergy },
+  { label: "Soy", key: "Soy", image: infoPageLogos.soy_allergy },
+  { label: "Wheat", key: "Wheat", image: infoPageLogos.wheat_allergy },
+  { label: "Eggs", key: "Eggs", image: infoPageLogos.egg_allergy },
+  { label: "Sesame", key: "Sesame", image: infoPageLogos.sesame_allergy },
+  {
+    label: "Tree Nuts",
+    key: "Tree_nuts",
+    image: infoPageLogos.tree_nuts_allergy,
+  },
+  {
+    label: "Shellfish",
+    key: "Shellfish",
+    image: infoPageLogos.shellfish_allergy,
+  },
 ];
 
 // 🎯 Main screen component for selecting food allergies
@@ -45,6 +54,38 @@ export default function AllergiesScreen() {
   }, []);
 
   // Toggle the selected state for a specific allergy
+  // This function runs when the user taps on an allergy.
+  // If it's already selected, we remove it. If not, we add it.
+
+  const handleAllergieToString = (selectedParam: string) => {
+    const allowed = [
+      "Peanuts",
+      "Milk",
+      "Fish",
+      "Soy",
+      "Wheat",
+      "Eggs",
+      "Sesame",
+      "Tree_nuts",
+      "Shellfish",
+    ];
+
+    const formattedAllergies = selectedParam
+      .split(",") // Split string into array
+      .map((s) => s.trim()) // Remove extra spaces
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()) // Capitalize
+      .filter((s) => allowed.includes(s)); // Filter allowed values
+
+    // Use the result as needed
+    for (let i = 0; i < formattedAllergies.length; i++) {
+      if (formattedAllergies[i] == "Tree_nuts") {
+        formattedAllergies[i] = "Tree Nuts";
+      }
+    }
+    // Or update Zustand:
+    setAllergies(formattedAllergies);
+  };
+
   const toggle = (key: string) => {
     setSelected((prev) =>
       prev.includes(key) ? prev.filter((k) => k !== key) : [...prev, key]
@@ -155,6 +196,7 @@ export default function AllergiesScreen() {
             <TouchableOpacity
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
               onPress={() => {
+                handleAllergieToString(selected.toString());
                 setAllergies(selected.toString()); // Save selected allergies
                 router.push("/(infoPages)/preferences"); // Navigate forward
               }}
@@ -164,6 +206,7 @@ export default function AllergiesScreen() {
           </View>
         </View>
         
+
       </View>
     </SafeAreaView>
   );

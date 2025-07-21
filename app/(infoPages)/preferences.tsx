@@ -14,17 +14,38 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 // List of preferences with label, unique key, and corresponding icon image
 const preferences = [
-  { label: "Halal", key: "halal", icon: infoPageLogos.halal },
-  { label: "Vegetarian", key: "vegetarian", icon: infoPageLogos.vegetarian },
-  { label: "Vegan", key: "vegan", icon: infoPageLogos.vegan },
-  { label: "Gluten", key: "gluten", icon: infoPageLogos.gluten },
-  { label: "No Beef", key: "no_beef", icon: infoPageLogos.no_beef },
-  { label: "Keto", key: "keto", icon: infoPageLogos.keto },
+  { label: "Halal", key: "Halal", icon: infoPageLogos.halal },
+  { label: "Vegetarian", key: "Vegetarian", icon: infoPageLogos.vegetarian },
+  { label: "Vegan", key: "Vegan", icon: infoPageLogos.vegan },
+  { label: "No Gluten", key: "No_Gluten", icon: infoPageLogos.gluten },
+  { label: "No Beef", key: "No_beef", icon: infoPageLogos.no_beef },
 ];
 
 export default function PreferencesScreen() {
   // Local state to keep track of currently selected preferences (array of keys)
   const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
+  const setPreferences = useUserHealthStore((s) => s.setPreferences);
+
+  const handlePreferencesToString = (selectedParam: string) => {
+    const allowed = ["Halal", "Vegetarian", "Vegan", "No_gluten", "No_beef"];
+
+    const formattedPreferences = selectedParam
+      .split(",") // Split string into array
+      .map((s) => s.trim()) // Remove extra spaces
+      .map((s) => s.charAt(0).toUpperCase() + s.slice(1).toLowerCase()) // Capitalize
+      .filter((s) => allowed.includes(s)); // Filter allowed values
+
+    // Use the result as needed
+    for (let i = 0; i < formattedPreferences.length; i++) {
+      if (formattedPreferences[i] == "No_beef") {
+        formattedPreferences[i] = "No Beef";
+      } else if (formattedPreferences[i] == "No_gluten") {
+        formattedPreferences[i] = "No Gluten";
+      }
+    }
+    // Or update Zustand:
+    setPreferences(formattedPreferences);
+  };
 
   // Zustand store method to save preferences globally
   const setPreferences = useUserHealthStore((s) => s.setPreferences);
@@ -130,6 +151,12 @@ export default function PreferencesScreen() {
             backgroundColor: "white",
             paddingVertical: 10,
             paddingHorizontal: 20,
+        {/* Next Button - would typically take user to next screen */}
+        <TouchableOpacity
+          className="flex-1 bg-gray-800 py-3 rounded-xl ml-2"
+          onPress={() => {
+            handlePreferencesToString(selectedPrefs.toString());
+            router.push("/(infoPages)/goalPage");
           }}
         >
           {/* Disclaimer text about food service */}
@@ -151,7 +178,7 @@ export default function PreferencesScreen() {
             <TouchableOpacity
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
               onPress={() => {
-                setPreferences(selectedPrefs.toString());
+            handlePreferencesToString(selectedPrefs.toString());
                 router.push("/(infoPages)/goalPage");
               }}
             >

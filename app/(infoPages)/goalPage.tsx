@@ -12,6 +12,23 @@ import { calculateCalories } from "@/utils/CalculateCalories";
 const GoalPage = () => {
   const router = useRouter();
 
+  //Get this from zustand:
+  const userID = useUserAuthStore((s) => s.userID)
+  const weight_KG = useUserHealthStore((s) => s.weight_KG)
+  const weight_lbs = useUserHealthStore((s) => s.weight_lbs)
+  const heightInches = useUserHealthStore((s) => s.heightInches)
+  const heightCM = useUserHealthStore((s) => s.heightCM)
+  const ageYears = useUserHealthStore((s) => s.ageYears)
+  const gender = useUserHealthStore((s) => s.gender)
+  const activityLevel = useUserHealthStore((s) => s.activityLevel)
+  const allergies = useUserHealthStore((s) => s.allergies)
+  const preferences = useUserHealthStore((s) => s.preferences)
+  const goals = useUserHealthStore((s) => s.goals)
+  const protein = useUserHealthStore((s) => s.protein)
+  const carbs = useUserHealthStore((s) => s.carbs)
+  const fat = useUserHealthStore((s) => s.fat)
+
+
   // box style for selected and default box...
   const selectedStyle = "bg-[#333333]"; // darker background when selected
   const defaultStyle = "bg-white";
@@ -20,32 +37,24 @@ const GoalPage = () => {
   const textSelectedStyle = "text-white"; // darker background when selected
   const textDefaultStyle = "text-black";
 
-  // Get user data from Zustand store
-  const userID = useUserAuthStore((s) => s.userID);
-  const weight_KG = useUserHealthStore((s) => s.weight_KG);
-  const weight_lbs = useUserHealthStore((s) => s.weight_lbs);
-  const heightInches = useUserHealthStore((s) => s.heightInches);
-  const heightCM = useUserHealthStore((s) => s.heightCM);
-  const ageYears = useUserHealthStore((s) => s.ageYears);
-  const gender = useUserHealthStore((s) => s.gender);
-  const activityLevel = useUserHealthStore((s) => s.activityLevel);
-  const allergies = useUserHealthStore((s) => s.allergies);
-  const preferences = useUserHealthStore((s) => s.preferences);
-  const goals = useUserHealthStore((s) => s.goals); // Get current selected goal
-  const setGoals = useUserHealthStore((s) => s.setGoals); // Set selected goal
-
-  const bmr = useUserHealthStore((s) => s.bmr);
-  const maintenance = useUserHealthStore((s) => s.maintenance);
-  const setMaintenance = useUserHealthStore((s) => s.setMaintenance);
-  const setBMR = useUserHealthStore((s) => s.setBMR);
-  const setDailyCalorieAdjustment = useUserHealthStore((s) => s.setDailyCalorieAdjustment);
 
   // Set up state for selected goal ID
   const [selectedGoal, setSelectedGoal] = useState<number | null>(goals); // Initialize with the global goal value
+  const bmr = useUserHealthStore((s) => s.bmr)
+  const maintenance = useUserHealthStore((s) => s.maintenance)
+  const setMaintenance = useUserHealthStore((s) => s.setMaintenance)
+  const setBMR = useUserHealthStore((s) => s.setBMR)
+  const setDailyCalorieAdjustment = useUserHealthStore((s) => s.setDailyCalorieAdjustment)
+  const setGoals = useUserHealthStore((s) => s.setGoals)
+  const setProtein = useUserHealthStore((s) => s.setProtein)
+  const setCarbs = useUserHealthStore((s) => s.setCarbs)
+  const setFat = useUserHealthStore((s) => s.setFat)
+  const setDietRecommendation = useUserHealthStore((s) => s.setDietRecommendation)
 
   // Update user health information
   const handleUpdateUserData = async () => {
     try {
+
       await updateHealthInfo({
         userID,
         weight_KG,
@@ -57,8 +66,8 @@ const GoalPage = () => {
         activityLevel,
         preferences,
         allergies,
-        goals,
-      });
+        goals
+      })
 
       if (
         weight_KG !== 0 &&
@@ -68,8 +77,8 @@ const GoalPage = () => {
         ageYears !== 0 &&
         gender !== "" &&
         activityLevel !== "" &&
-        preferences !== "" &&
-        allergies !== "" &&
+        preferences.length > 0 &&
+        allergies.length > 0 &&
         goals !== 0
       ) {
         // Calculate calories if all required data is provided
@@ -82,6 +91,11 @@ const GoalPage = () => {
           bmr,
           maintenance,
           activityLevel,
+          preferences,
+          allergies,
+          protein,
+          carbs,
+          fat,
           setBMR,
           setMaintenance,
           setDailyCalorieAdjustment
@@ -89,6 +103,7 @@ const GoalPage = () => {
       }
       router.replace("/(tabs)");
       console.log("Info Page Results Uploaded");
+
     } catch (error) {
       console.log("Info Page Results not Uploaded", error);
     }
