@@ -1,16 +1,11 @@
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { router } from "expo-router";
 import infoPageLogos from "@/assets/images/infoPageLogos";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useUserUIStore } from "@/components/zustandStore/UiStore";
 
 // List of preferences with label, unique key, and corresponding icon image
 const preferences = [
@@ -25,6 +20,9 @@ export default function PreferencesScreen() {
   // Local state to keep track of currently selected preferences (array of keys)
   const [selectedPrefs, setSelectedPrefs] = useState<string[]>([]);
   const setPreferences = useUserHealthStore((s) => s.setPreferences);
+
+  const preferencesUI = useUserUIStore((s) => s.preferencesUI);
+  const setPreferencesUI = useUserUIStore((s) => s.setPreferencesUI);
 
   const handlePreferencesToString = (selectedParam: string) => {
     const allowed = ["Halal", "Vegetarian", "Vegan", "No_gluten", "No_beef"];
@@ -48,24 +46,23 @@ export default function PreferencesScreen() {
   };
 
   // Zustand store method to save preferences globally
-  const setPreferences = useUserHealthStore((s) => s.setPreferences);
 
   // Get previously saved preferences from store (string of keys separated by commas)
-  const storedPreferences = useUserHealthStore((s) => s.preferences);
 
   // On component mount, load stored preferences into local state array
   useEffect(() => {
-    if (storedPreferences) {
-      setSelectedPrefs(storedPreferences.split(","));
+    if (preferencesUI) {
+      setSelectedPrefs(preferencesUI.split(","));
     }
   }, []);
 
   // Toggle selection: if already selected, remove; if not selected, add
   const togglePref = (key: string) => {
-    setSelectedPrefs((prev) =>
-      prev.includes(key)
-        ? prev.filter((k) => k !== key) // remove key
-        : [...prev, key] // add key
+    setSelectedPrefs(
+      (prev) =>
+        prev.includes(key)
+          ? prev.filter((k) => k !== key) // remove key
+          : [...prev, key] // add key
     );
   };
 
@@ -151,17 +148,11 @@ export default function PreferencesScreen() {
             backgroundColor: "white",
             paddingVertical: 10,
             paddingHorizontal: 20,
-        {/* Next Button - would typically take user to next screen */}
-        <TouchableOpacity
-          className="flex-1 bg-gray-800 py-3 rounded-xl ml-2"
-          onPress={() => {
-            handlePreferencesToString(selectedPrefs.toString());
-            router.push("/(infoPages)/goalPage");
           }}
         >
-          {/* Disclaimer text about food service */}
           <Text className="text-xs text-center text-gray-600 underline mb-2">
-            Disclaimer: Always double check with the food service before consumption
+            Disclaimer: Always double check with the food service before
+            consumption
           </Text>
 
           {/* Buttons for Skip and Next */}
@@ -178,7 +169,8 @@ export default function PreferencesScreen() {
             <TouchableOpacity
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
               onPress={() => {
-            handlePreferencesToString(selectedPrefs.toString());
+                handlePreferencesToString(selectedPrefs.toString());
+                setPreferencesUI(selectedPrefs.toString());
                 router.push("/(infoPages)/goalPage");
               }}
             >
