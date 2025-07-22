@@ -1,9 +1,8 @@
+import React, { useState, useEffect } from "react";
 import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-import goalPageLogos from "../../assets/images/goalPageLogos";
 import { Ionicons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import goalPageLogos from "../../assets/images/goalPageLogos";
 import { useRouter } from "expo-router";
 import { updateHealthInfo } from "@/components/databaseComponents/updateHealthInfo";
 import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
@@ -12,6 +11,7 @@ import { calculateCalories } from "@/utils/CalculateCalories";
 
 const GoalPage = () => {
   const router = useRouter();
+
   //Get this from zustand:
   const userID = useUserAuthStore((s) => s.userID)
   const weight_KG = useUserHealthStore((s) => s.weight_KG)
@@ -24,17 +24,37 @@ const GoalPage = () => {
   const allergies = useUserHealthStore((s) => s.allergies)
   const preferences = useUserHealthStore((s) => s.preferences)
   const goals = useUserHealthStore((s) => s.goals)
-  const setGoals = useUserHealthStore((s) => s.setGoals)
+  const protein = useUserHealthStore((s) => s.protein)
+  const carbs = useUserHealthStore((s) => s.carbs)
+  const fat = useUserHealthStore((s) => s.fat)
 
 
+  // box style for selected and default box...
+  const selectedStyle = "bg-[#333333]"; // darker background when selected
+  const defaultStyle = "bg-white";
+  
+  // text style for selected and default box...
+  const textSelectedStyle = "text-white"; // darker background when selected
+  const textDefaultStyle = "text-black";
+
+
+  // Set up state for selected goal ID
+  const [selectedGoal, setSelectedGoal] = useState<number | null>(goals); // Initialize with the global goal value
   const bmr = useUserHealthStore((s) => s.bmr)
   const maintenance = useUserHealthStore((s) => s.maintenance)
   const setMaintenance = useUserHealthStore((s) => s.setMaintenance)
   const setBMR = useUserHealthStore((s) => s.setBMR)
   const setDailyCalorieAdjustment = useUserHealthStore((s) => s.setDailyCalorieAdjustment)
+  const setGoals = useUserHealthStore((s) => s.setGoals)
+  const setProtein = useUserHealthStore((s) => s.setProtein)
+  const setCarbs = useUserHealthStore((s) => s.setCarbs)
+  const setFat = useUserHealthStore((s) => s.setFat)
+  const setDietRecommendation = useUserHealthStore((s) => s.setDietRecommendation)
 
+  // Update user health information
   const handleUpdateUserData = async () => {
     try {
+
       await updateHealthInfo({
         userID,
         weight_KG,
@@ -57,11 +77,11 @@ const GoalPage = () => {
         ageYears !== 0 &&
         gender !== "" &&
         activityLevel !== "" &&
-        preferences !== "" &&
-        allergies !== "" &&
+        preferences.length > 0 &&
+        allergies.length > 0 &&
         goals !== 0
       ) {
-        // ✅ All fields exist
+        // Calculate calories if all required data is provided
         calculateCalories(
           gender,
           weight_lbs,
@@ -71,178 +91,185 @@ const GoalPage = () => {
           bmr,
           maintenance,
           activityLevel,
+          preferences,
+          allergies,
+          protein,
+          carbs,
+          fat,
           setBMR,
           setMaintenance,
           setDailyCalorieAdjustment
-        )
+        );
       }
-      router.replace("/(tabs)")
-      console.log('Info Page Results Uploded')
+      router.replace("/(tabs)");
+      console.log("Info Page Results Uploaded");
 
     } catch (error) {
-      console.log("Info Page Results not Uploaded", error)
+      console.log("Info Page Results not Uploaded", error);
     }
-  }
+  };
+
+  // Handle goal selection and update state
+  const handleGoalSelection = (goalID: number) => {
+    setSelectedGoal(goalID); // Update the selected goal ID in the state
+    setGoals(goalID); // Update the Zustand store with the selected goal ID
+  };
+
+  useEffect(() => {
+    // If goals are set globally, initialize local state with the current goal
+    setSelectedGoal(goals);
+  }, [goals]);
+
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }} className="bg-white">
       <View style={{ flex: 1 }}>
-        {/* Scrollable Content */}
-        <ScrollView contentContainerStyle={{ paddingBottom: 180 }}>
+        {/* 🔙 Back Arrow (top-left) - Outside scroll view */}
+        <TouchableOpacity
+          onPress={() => router.back()}
+          style={{ position: "absolute", top: 20, left: 20, zIndex: 10 }}
+        >
+          <Ionicons name="arrow-back" size={24} color="black" />
+        </TouchableOpacity>
+
+        {/* 👤 Image + Text - Center aligned */}
+        <View className="mt-3 items-center justify-center">
+          <Image
+            source={goalPageLogos.thumbsUpManLogo}
+            style={{ width: 190, height: 190 }}
+          />
+          <Text className="font-bold text-2xl mt-3">Enter your information</Text>
+        </View>
+
+        {/* 🧾 Scrollable Content */}
+        <ScrollView contentContainerStyle={{ paddingBottom: 150 }}>
           <View className="items-center flex-1">
-            {/* Arrow */}
-            <View className="absolute top-4 left-4">
-              <Ionicons name="arrow-back" size={24} color="black" />
-            </View>
-
-            {/* Image */}
-            <View className="mt-3">
-              <Image
-                source={goalPageLogos.thumbsUpManLogo}
-                style={{ width: 190, height: 190 }}
-              />
-            </View>
-
-            <View className="mt-3">
-              <Text className="font-bold text-2xl">Enter your information</Text>
-            </View>
-
-            {/* Selection Boxes */}
+            {/* Goal selection cards */}
             <View className="w-full p-7">
-              <View className="bg-[#7ed957] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center"
-                  onPress={
-                    () => { setGoals(-0.5) }
-                  }
+              {/* Goal: Lose 0.5 lbs per week */}
+              <View
+                className={`p-3 w-full rounded-xl mt-4 ${selectedGoal === -0.5 ? selectedStyle : defaultStyle}`} // White by default, gray when selected
+              >
+                <TouchableOpacity
+                  className="flex-row space-x-5 items-center"
+                  onPress={() => handleGoalSelection(-0.5)} // Set goal to lose 0.5 lbs per week
                 >
                   <Image
                     source={goalPageLogos.loose0_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[21px]">
+                    <Text className={`font-bold text-[21px] ${selectedGoal === -0.5 ? textSelectedStyle : textDefaultStyle}`}>
                       Loose 0.5 lbs per week
                     </Text>
-                    <Text className="font-bold text-[12px]">
+                    <Text className={`font-bold text-[12px]  ${selectedGoal === -0.5 ? textSelectedStyle : textDefaultStyle}`}>
                       Recommended for beginners
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View className="bg-[#c1ff72] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center"
-                  onPress={
-                    () => { setGoals(-1) }
-                  }
+              {/* Goal: Lose 1 lbs per week */}
+              <View
+                className={`p-3 w-full rounded-xl mt-4 ${selectedGoal === -1 ? selectedStyle : defaultStyle}`} // White by default, gray when selected
+              >
+                <TouchableOpacity
+                  className="flex-row space-x-5 items-center"
+                  onPress={() => handleGoalSelection(-1)} // Set goal to lose 1 lbs per week
                 >
                   <Image
                     source={goalPageLogos.gain1}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">
+                    <Text className={`font-bold text-[21px] ${selectedGoal === -1 ? textSelectedStyle : textDefaultStyle}`}>
                       Loose 1 lbs per week
                     </Text>
-                    <Text className="font-bold text-[12px]">
+                    <Text className={`font-bold text-[12px]  ${selectedGoal === -1 ? textSelectedStyle : textDefaultStyle}`}>
                       Recommended for beginners
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center"
-                  onPress={
-                    () => { setGoals(-1.5) }
-                  }
+              {/* Goal: Lose 1.5 lbs per week */}
+              <View
+                className={`p-3 w-full rounded-xl mt-4 ${selectedGoal === -1.5 ? selectedStyle : defaultStyle}`} // White by default, gray when selected
+              >
+                <TouchableOpacity
+                  className="flex-row space-x-5 items-center"
+                  onPress={() => handleGoalSelection(-1.5)} // Set goal to lose 1.5 lbs per week
                 >
                   <Image
                     source={goalPageLogos.loose1_5}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">
+                    <Text className={`font-bold text-[21px] ${selectedGoal === -1.5 ? textSelectedStyle : textDefaultStyle}`}>
                       Loose 1.5 lbs per week
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View className="bg-[#ff914d] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center"
-                  onPress={
-                    () => { setGoals(-2) }
-                  }
+              {/* Goal: Lose 2 lbs per week */}
+              <View
+                className={`p-3 w-full rounded-xl mt-4 ${selectedGoal === -2 ? selectedStyle : defaultStyle}`} // White by default, gray when selected
+              >
+                <TouchableOpacity
+                  className="flex-row space-x-5 items-center"
+                  onPress={() => handleGoalSelection(-2)} // Set goal to lose 2 lbs per week
                 >
-
                   <Image
                     source={goalPageLogos.loose2}
                     className="w-[60px] h-[60px] rounded-[30px]"
-
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">
+                    <Text className={`font-bold text-[21px] ${selectedGoal === -2 ? textSelectedStyle : textDefaultStyle}`}>
                       Loose 2 lbs per week
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View className="w-full rounded-xl mt-4 overflow-hidden">
-                <LinearGradient
-                  colors={["#a7a7a7", "#fdfdfd"]}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 0 }}
-                  className="p-3 w-full"
+              {/* Maintain weight */}
+              <View
+                className={`p-3 w-full rounded-xl mt-4 ${selectedGoal === 0 ? selectedStyle: defaultStyle}`}
+                // White by default, gray when selected
+              >
+                <TouchableOpacity
+                  className="flex-row space-x-5 items-center"
+                  onPress={() => handleGoalSelection(0)} // Set goal to maintain current weight
                 >
-                  <TouchableOpacity className="flex-row space-x-5 items-center"
-                    onPress={
-                      () => { setGoals(0) }
-                    }
-                  >
-                    <Image
-                      source={goalPageLogos.maintain}
-                      className="w-[60px] h-[60px] rounded-[30px]"
-                    />
-                    <View className="flex-1">
-                      <Text className="font-bold text-[20px]">
-                        Maintain Weight
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                </LinearGradient>
-              </View>
-
-              <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center"
-                  onPress={
-                    () => { setGoals(0.5) }
-                  }>
                   <Image
-                    source={goalPageLogos.gain0_5}
+                    source={goalPageLogos.maintain}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">
-                      Gain 0.5 lbs per week
+                    <Text className={`font-bold text-[21px] ${selectedGoal === 0 ? textSelectedStyle : textDefaultStyle}`}>Maintain weight</Text>
+                    <Text className={`font-bold text-[12px]  ${selectedGoal === 0 ? textSelectedStyle : textDefaultStyle}`}>
+                      Stay at your current weight
                     </Text>
                   </View>
                 </TouchableOpacity>
               </View>
 
-              <View className="bg-[#ffbd59] p-3 w-full rounded-xl mt-4">
-                <TouchableOpacity className="flex-row space-x-5 items-center"
-                  onPress={
-                    () => { setGoals(1) }
-                  }
+              {/* Gain weight */}
+              <View
+                className={`p-3 w-full rounded-xl mt-4 ${selectedGoal === 1 ? selectedStyle : defaultStyle}`}
+                // White by default, gray when selected
+              >
+                <TouchableOpacity
+                  className="flex-row space-x-5 items-center"
+                  onPress={() => handleGoalSelection(1)} // Set goal to gain weight
                 >
                   <Image
                     source={goalPageLogos.gain1}
                     className="w-[60px] h-[60px] rounded-[30px]"
                   />
                   <View className="flex-1">
-                    <Text className="font-bold text-[20px]">
-                      Gain 1 lbs per week
+                    <Text className={`font-bold text-[21px] ${selectedGoal === 1 ? textSelectedStyle : textDefaultStyle}`}>Gain weight</Text>
+                    <Text className={`font-bold text-[12px]  ${selectedGoal === 1 ? textSelectedStyle : textDefaultStyle}`}>
+                      Gain muscle and strength
                     </Text>
                   </View>
                 </TouchableOpacity>
@@ -251,6 +278,7 @@ const GoalPage = () => {
           </View>
         </ScrollView>
 
+        {/* 🧭 Bottom Section */}
         <View
           style={{
             position: "absolute",
@@ -261,40 +289,27 @@ const GoalPage = () => {
             paddingHorizontal: 20,
           }}
         >
-          <View style={{ position: "relative", alignItems: "center" }}>
-            {/* Transparent arrow, absolutely positioned */}
-            <Ionicons
-              name="chevron-down-outline"
-              size={70}
-              color="rgba(0, 0, 0, 0.15)" // semi-transparent black
-              style={{
-                position: "absolute",
-                top: -50, // adjust to hover over text nicely
-                left: "50%",
-                right: 0,
-                transform: [{ translateX: -35 }],
-                marginHorizontal: "auto",
-                pointerEvents: "none", // so arrow doesn't block taps
-              }}
-            />
-
-            {/* The actual text */}
+          <View style={{ alignItems: "center" }}>
             <Text className="text-center mb-2 text-gray-600 text-base">
-              You will be able to update this at any time
+              You will be able to update this at any time.
             </Text>
           </View>
 
           <View className="flex-row justify-center space-x-7 mt-2">
             <TouchableOpacity
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
-              onPress={handleUpdateUserData}
-
+              onPress={() => router.push("/(tabs)/ProfileScreen")}
             >
               <Text className="text-white font-bold text-xl">Skip</Text>
             </TouchableOpacity>
+
             <TouchableOpacity
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
-              onPress={handleUpdateUserData}
+              onPress={() => {
+                handleUpdateUserData
+                router.push('/(tabs)/ProfileScreen')  
+              }}
+              
             >
               <Text className="text-white font-bold text-xl">Next</Text>
             </TouchableOpacity>
