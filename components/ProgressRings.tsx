@@ -6,6 +6,7 @@ import { View, Text, Animated, StyleSheet, Pressable, Dimensions } from 'react-n
 
 // Import SVG support to draw vector graphics (circles)
 import Svg, { Circle } from 'react-native-svg';
+import { useUserHealthStore } from './zustandStore/UserHealthStore';
 
 // Enable the <Circle> element to be animated using React Native's Animated API
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
@@ -18,16 +19,17 @@ const ringSize = Math.min(screenWidth * 0.5, 250);
 const dynamicStrokeWidth = ringSize * 0.05; // Stroke is 5% of ring size
 
 // Define the nutrition metrics: each object contains info about one nutrient
-const metrics = [
-  { key: 'calories', color: '#3498db', value: 800, goal: 2000 },
-  { key: 'protein',  color: '#e74c3c', value: 50,  goal: 90 },
-  { key: 'carbs',    color: '#9b59b6', value: 120, goal: 250 },
-  { key: 'fat',      color: '#f1c40f', value: 40,  goal: 65 },
-];
+
 
 // This component displays animated rings and handles user interaction
-const ProgressRings = ({ size = ringSize, strokeWidth = dynamicStrokeWidth }) => {
+const ProgressRings = ({ size = ringSize, strokeWidth = dynamicStrokeWidth, protein, carbs, fat, dailyCalorieAdjustment }) => {
   // Calculate the center of the SVG canvas
+  const metrics = [
+  { key: 'calories', color: '#3498db', value: 800, goal: dailyCalorieAdjustment },
+  { key: 'protein',  color: '#e74c3c', value: 50,  goal: protein },
+  { key: 'carbs',    color: '#9b59b6', value: 120, goal: carbs },
+  { key: 'fat',      color: '#f1c40f', value: 40,  goal: fat },
+];
   const center = size / 2;
 
   // Calculate the base radius for the outermost ring
@@ -166,12 +168,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   centerValue: {
-    fontSize: 28,
+    fontSize: 23,
     fontWeight: 'bold',
     color: '#333',
   },
   centerLabel: {
-    fontSize: 14,
+    fontSize: 13,
     color: '#666',
   },
   popup: {
