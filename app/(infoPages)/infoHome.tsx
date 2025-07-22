@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, Image, ScrollView, TouchableOpacity } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-
-// Importing components and Zustand store
-import infoPageLogos from "../../assets/images/infoPageLogos";
-import WeightComponent from "@/components/infoPagesComponents/WeightComponent";
-import HeightComponent from "@/components/infoPagesComponents/HeightComponent";
+import ActivityLevelComponent from "@/components/infoPagesComponents/ActivityLevelComponent";
 import AgeComponent from "@/components/infoPagesComponents/AgeComponent";
 import GenderComponent from "@/components/infoPagesComponents/GenderComponent";
-import ActivityLevelComponent from "@/components/infoPagesComponents/ActivityLevelComponent";
-import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore"; // Zustand hook
+import HeightComponent from "@/components/infoPagesComponents/HeightComponent";
+import WeightComponent from "@/components/infoPagesComponents/WeightComponent";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
+import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import infoPageLogos from "../../assets/images/infoPageLogos";
+
 
 const InfoHome = () => {
   const [showWeightComponent, setShowWeightComponent] = useState(false);
