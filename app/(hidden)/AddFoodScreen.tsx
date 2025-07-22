@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
+import React, { useState } from 'react';
+import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FoodLogos } from '../../assets/images/addFoodLogos';
@@ -26,7 +26,9 @@ export default function AddFoodScreen() {
     <SafeAreaView className="flex-1 bg-white">
       {/* Header */}
       <View className="flex-row items-center p-4">
-        <TouchableOpacity onPress={() => router.push('/infoHome')}>
+        <TouchableOpacity onPress={() => {
+          Alert.alert("Back", "Back")
+          router.back()}}>
           <Ionicons
             name="chevron-back"
             size={24}
@@ -34,7 +36,9 @@ export default function AddFoodScreen() {
           />
         </TouchableOpacity>
               
-        <Text className="text-lg font-bold ml-2 text-center absolute right-0 left-0 pt-4">Add Food</Text>
+        <Text className="flex-1 text-lg font-bold text-center">
+    Add Food
+  </Text>
       </View>
 
       {/* Tabs */}
@@ -117,9 +121,106 @@ const CampusOutlets = () => (
   </View>
 );
 
+
 const ManualEntry = () => (
-  <View className="p-4">
-    <Text className="text-base font-semibold mb-2">Manual Entry</Text>
-    <Text className="text-gray-500">Allow users to add food manually here.</Text>
-  </View>
+  <KeyboardAvoidingView
+    className="flex-1 bg-gray-100"
+    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    keyboardVerticalOffset={100}
+  >
+    <ScrollView
+      className="p-4 flex-1"
+      keyboardShouldPersistTaps="handled"
+      showsVerticalScrollIndicator={false}
+    >
+      {/* Search Bar with Icon */}
+      <View className="bg-white flex-row items-center rounded-xl px-4 py-1 mb-6">
+        <Ionicons name="search" size={20} color="#999" className="mr-2" />
+        <TextInput
+          placeholder="Search food..."
+          placeholderTextColor="#999"
+          className="text-base text-black flex-1"
+        />
+      </View>
+
+      {/* Title */}
+      <Text className="text-center text-sm font-semibold text-gray-700 mb-4">
+        Cooking food on your own?
+      </Text>
+
+      {/* Food Name */}
+      <Text className="text-base font-bold mb-1">Food Name</Text>
+      <TextInput
+        placeholder="Enter food name"
+        placeholderTextColor="#999"
+        className="bg-white rounded-xl px-4 py-3 mb-4 text-black"
+      />
+
+      {/* Macros */}
+      <View className="flex-row justify-between mb-4">
+        <View className="flex-1 mr-2">
+          <Text className="text-base font-bold mb-1">Calories</Text>
+          <TextInput
+            placeholder="0"
+            keyboardType="numeric"
+            placeholderTextColor="#999"
+            className="bg-white rounded-xl px-4 py-3 text-black"
+          />
+        </View>
+
+        <View className="flex-1 ml-2">
+          <Text className="text-base font-bold mb-1">Carbs</Text>
+          <TextInput
+            placeholder="0"
+            keyboardType="numeric"
+            placeholderTextColor="#999"
+            className="bg-white rounded-xl px-4 py-3 text-black"
+          />
+        </View>
+      </View>
+
+      <View className="flex-row justify-between mb-4">
+        <View className="flex-1 mr-2">
+          <Text className="text-base font-bold mb-1">Protein</Text>
+          <TextInput
+            placeholder="0"
+            keyboardType="numeric"
+            placeholderTextColor="#999"
+            className="bg-white rounded-xl px-4 py-3 text-black"
+          />
+        </View>
+
+        <View className="flex-1 ml-2">
+          <Text className="text-base font-bold mb-1">Fat</Text>
+          <TextInput
+            placeholder="0"
+            keyboardType="numeric"
+            placeholderTextColor="#999"
+            className="bg-white rounded-xl px-4 py-3 text-black"
+          />
+        </View>
+      </View>
+
+      {/* Ingredients */}
+      <Text className="text-base font-bold mb-1">Ingredients</Text>
+      <TextInput
+        placeholder="Enter ingredients..."
+        placeholderTextColor="#999"
+        className="bg-white rounded-xl px-4 py-3 h-32 text-black"
+        multiline
+        textAlignVertical="top"
+      />
+
+      {/* Log Food Button */}
+      <TouchableOpacity
+        className="bg-gray-500 py-2 rounded-xl mt-6 items-center "
+        onPress={() => {
+          // TODO: Implement log food functionality
+          alert('Food logged!');
+        }}
+      >
+        <Text className="text-lg font-bold text-white">Log Food</Text>
+      </TouchableOpacity>
+    </ScrollView>
+  </KeyboardAvoidingView>
 );

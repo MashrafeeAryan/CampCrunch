@@ -25,7 +25,7 @@ export default function SettingsScreen() {
     username: userName,
     email: userEmail,
     phone: "+123-456-7890",
-    address: "123 Anywhere St., Any City, ST 12345",
+  
   };
 
   const accountInfoItems = [
@@ -47,12 +47,7 @@ export default function SettingsScreen() {
       icon: <Feather name="phone" size={20} color="white" />,
       key: "phone",
     },
-    {
-      label: "Address",
-      value: userInfo.address,
-      icon: <Feather name="map-pin" size={20} color="white" />,
-      key: "address",
-    },
+   
   ];
 
   return (
