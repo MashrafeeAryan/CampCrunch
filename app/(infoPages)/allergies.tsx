@@ -1,4 +1,5 @@
 import infoPageLogos from "@/assets/images/infoPageLogos"; // Import allergy images
+import { useUserUIStore } from "@/components/zustandStore/UiStore";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore"; // Zustand global store for health data
 import AntDesign from "@expo/vector-icons/AntDesign"; // Back arrow icon
 import { router } from "expo-router"; // Navigation handler
@@ -46,10 +47,13 @@ export default function AllergiesScreen() {
   // Get stored allergies from Zustand to restore previous selections
   const storedAllergies = useUserHealthStore((s) => s.allergies);
 
+  const allergiesUI = useUserUIStore((s)=>s.allergiesUI)
+  const setAllergiesUI = useUserUIStore((s)=>s.setAllergiesUI)
+
   // 🔁 When screen mounts, load any previously saved allergies into local state
   useEffect(() => {
-    if (storedAllergies) {
-      setSelected(storedAllergies.split(","));
+    if (allergiesUI) {
+      setSelected(allergiesUI.split(","));
     }
   }, []);
 
@@ -197,7 +201,7 @@ export default function AllergiesScreen() {
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
               onPress={() => {
                 handleAllergieToString(selected.toString());
-                setAllergies(selected.toString()); // Save selected allergies
+                setAllergiesUI(selected.toString()); // Save selected allergies
                 router.push("/(infoPages)/preferences"); // Navigate forward
               }}
             >
