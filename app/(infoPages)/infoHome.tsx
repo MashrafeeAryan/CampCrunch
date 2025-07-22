@@ -38,7 +38,7 @@ const InfoHome = () => {
   const setAgeYears = useUserHealthStore((state) => state.setAgeYears);
   const setGender = useUserHealthStore((state) => state.setGender);
   const setActivityLevel = useUserHealthStore((state) => state.setActivityLevel);
-
+  
   const router = useRouter();
 
   // Effect to load the values from Zustand on page load
@@ -51,6 +51,7 @@ const InfoHome = () => {
     setGender(gender);
     setActivityLevel(activityLevel);
   }, []); // This will only run once when the component mounts
+
 
   return (
     <SafeAreaView className="bg-white flex-1">
