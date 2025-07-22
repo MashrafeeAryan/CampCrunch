@@ -33,15 +33,22 @@ const TabsLayout = () => {
           //Change headerstyle. It is the yellow top part of the screen
           headerTitle: "CampCrunch",
           headerStyle: {
-            backgroundColor: "#F4C542",
+            backgroundColor: "#3A3A3C",// #F4C542 
             height: 80,
           },
           
           headerTitleAlign: "center",
-          headerTintColor: "#fff",
+          headerTintColor: "#F8D04A",
           headerTitleStyle: {
             fontWeight: "bold",
           },
+          headerBackground: () => (
+            <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, backgroundColor: "#3A3A3C", height:2}} className="" />
+              <View style={{ height: 5, backgroundColor: "#fff" }} className="" />
+              <View style={{ height: 5, backgroundColor: "#3A3A3C" }} />
+            </View>
+          ),
           
           
           tabBarIcon: ({ focused }) => (

@@ -1,13 +1,13 @@
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import React from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import CalendarStrip from "@/components/CalendarStrip";
-import MealBox from "@/components/MealBox";
 import { useRouter } from "expo-router";
+import React from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const CalendarScreen = () => {
   const router = useRouter()
   const handleAddFood = () => {
+ 
     router.push("/AddFoodScreen")
   }
   return (
