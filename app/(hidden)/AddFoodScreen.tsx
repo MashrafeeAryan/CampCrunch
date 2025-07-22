@@ -27,7 +27,7 @@ export default function AddFoodScreen() {
       {/* Header */}
       <View className="flex-row items-center p-4">
         <TouchableOpacity onPress={() => {
-          Alert.alert("Back", "Back")
+         
           router.back()}}>
           <Ionicons
             name="chevron-back"
