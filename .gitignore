@@ -17,7 +17,6 @@ expo-env.d.ts
 *.mobileprovision
 .kotlin/
 
-appwrite.js
 
 # 👉 Metro bundler cache
 .metro-health-check*

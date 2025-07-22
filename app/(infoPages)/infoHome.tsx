@@ -7,7 +7,7 @@ import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import infoPageLogos from "../../assets/images/infoPageLogos";
