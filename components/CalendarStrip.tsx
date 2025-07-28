@@ -1,20 +1,29 @@
 // React Native core components used for layout, interaction, and measurement
+import Entypo from '@expo/vector-icons/Entypo';
+import Foundation from '@expo/vector-icons/Foundation';
 import {
-  FlatList,        // A performant horizontal/vertical scrolling list
-  Text,             // Used to render text on the screen
+  Dimensions // Used to get screen width for responsive sizing
+  ,
+
+
+
+
+
+
+  FlatList, // A performant horizontal/vertical scrolling list
+  Text, // Used to render text on the screen
   TouchableOpacity, // Makes items clickable/tappable
-  View,             // Basic container/view element
-  Dimensions        // Used to get screen width for responsive sizing
+  View,Image
 } from "react-native";
+import streakIcons from "../assets/images/ProfilePageIcons";
 
 // React hooks for managing component state, references, and memoized values
-import { useState, useMemo, useRef } from "react";
+import { useMemo, useRef, useState } from "react";
 
 // Moment.js is used to easily work with and format dates
 import moment from "moment";
 
 // Ionicons library for displaying arrow icons in the calendar
-import { Ionicons } from "@expo/vector-icons";
 
 // Get the full width of the device screen so we can layout the calendar accordingly
 const screenWidth = Dimensions.get("window").width;
@@ -78,97 +87,125 @@ const CalendarStrip = () => {
   };
 
   // Width available for the calendar dates (after accounting for left and right arrows)
-  const calendarWidth = screenWidth - 80;
-
-  // Dynamically calculate the width of each date box so 5 fit within the calendarWidth
+  const arrowWidth = 50;
+  const calendarWidth = screenWidth - arrowWidth * 2;
   const dateBoxWidth = calendarWidth / 5 - 4; // 4px buffer between boxes
 
   return (
-    <View style={{ paddingVertical: 10 }}>
+    <View style={{ paddingVertical: 10 }} className="mx-10">
       {/* Show the current month and year (e.g., "June 2025") */}
-      <Text
+      <Text className="mt-3"
         style={{
-          fontSize: 18,
+          fontSize:20,
           fontWeight: "bold",
-          marginLeft: 16,
+          marginLeft: arrowWidth+3,
           marginBottom: 10,
         }}
       >
         {moment(focusedDay).format("MMMM YYYY")}
       </Text>
+      <Image
+  source={streakIcons.fireIcon}
+  style={{ width: 32, height: 32, marginBottom: 8, right:10 }}
+/>
+
 
       {/* Arrows and date strip are arranged horizontally */}
       <View
+        className="flex-row items-center justify-between mx-1"
         style={{
-          flexDirection: "row",            // Layout children side-by-side
-          alignItems: "center",            // Vertically center all items
-          justifyContent: "space-between", // Space out arrow - calendar - arrow
-          paddingHorizontal: 10,           // Add spacing to left/right of strip
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+          paddingHorizontal: 0,
+          width: screenWidth,
         }}
       >
+         
+        
         {/* Left arrow button */}
-        <TouchableOpacity onPress={() => scrollToIndex(currentChunkIndex - 1)}>
-          <Ionicons name="chevron-back" size={24} color="black" />
-        </TouchableOpacity>
+        <View style={{ width: arrowWidth, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => scrollToIndex(currentChunkIndex - 1)}>
+          <Entypo name="arrow-left" size={28} color="black" />
+          </TouchableOpacity>
+        </View>
 
         {/* FlatList that shows a chunk of 5 days at a time */}
         <FlatList
-          ref={flatListRef}                      // Needed to scroll programmatically
-          data={pagedDays}                       // Array of 5-day chunks
-          horizontal                             // Horizontal scrolling
-          pagingEnabled                          // Snap one chunk at a time
-          showsHorizontalScrollIndicator={false} // Hide scroll bar
-          keyExtractor={(_, index) => index.toString()} // Unique key for each chunk
-          initialScrollIndex={initialChunkIndex}        // Start at today's chunk
+          ref={flatListRef}
+          data={pagedDays}
+          horizontal
+          pagingEnabled
+          showsHorizontalScrollIndicator={false}
+          keyExtractor={(_, index) => index.toString()}
+          initialScrollIndex={initialChunkIndex}
           getItemLayout={(_, index) => ({
-            length: calendarWidth,              // Each item takes full calendarWidth
-            offset: calendarWidth * index,      // Distance from start
+            length: calendarWidth,
+            offset: calendarWidth * index,
             index,
           })}
+          style={{ width: calendarWidth }}
+          contentContainerStyle={{ width: calendarWidth * pagedDays.length }}
           onMomentumScrollEnd={(e) => {
-            // After scrolling stops, calculate which chunk is now visible
             const newIndex = Math.round(
               e.nativeEvent.contentOffset.x / calendarWidth
             );
             setCurrentChunkIndex(newIndex);
+
+            // Get the new visible chunk
+            const newChunk = pagedDays[newIndex];
+            // Check if focusedDay is in the new chunk
+            const isFocusedDayVisible = newChunk.some(
+              (d) => d.format("YYYY-MM-DD") === focusedDay
+            );
+            // If not, select the first date in the new chunk
+            if (!isFocusedDayVisible && newChunk.length > 0) {
+              setFocusedDay(newChunk[0].format("YYYY-MM-DD"));
+            }
           }}
           renderItem={({ item }) => (
-            // Render each 5-day chunk as a row of date buttons
-            <View
+            <View className="flex-row justify-between"
               style={{
                 flexDirection: "row",
                 width: calendarWidth,
-                justifyContent: "space-between", // Even spacing between days
+                justifyContent: "space-between",
               }}
             >
-              {/* Render each individual day in the chunk */}
               {item.map((day) => {
-                const dateStr = day.format("YYYY-MM-DD");       // Format day to string
-                const isSelected = dateStr === focusedDay;      // Check if selected
-
+                const dateStr = day.format("YYYY-MM-DD");
+                const isSelected = dateStr === focusedDay;
                 return (
                   <TouchableOpacity
-                    key={dateStr}                         // Unique key for day
-                    onPress={() => setFocusedDay(dateStr)} // When tapped, set as selected
+                    className="py-3 px-2"
+                    key={dateStr}
+                    onPress={() => setFocusedDay(dateStr)}
                     style={{
-                      backgroundColor: isSelected ? "#F5BE2F" : "#f2f2f2", // Highlight selected
-                      borderRadius: 10,
-                      paddingVertical: 10,
+                      backgroundColor: isSelected ? "#F5BE2F" : "transparent",
+                      borderRadius: 999,
+                      paddingVertical: isSelected ? 6 : 6,
+                      paddingHorizontal: isSelected ? 20 : 0,
                       alignItems: "center",
-                      width: dateBoxWidth,               // Dynamically fit 5 days per row
+                      justifyContent: "center",
+                      minWidth: isSelected ? 48 : dateBoxWidth,
+                      width: isSelected ? undefined : dateBoxWidth,
+                      alignSelf: "center",
                     }}
                   >
-                    {/* Show weekday (Mon, Tue, etc.) */}
-                    <Text style={{ color: "#888" }}>{day.format("ddd")}</Text>
-
-                    {/* Show day number (e.g., 14) */}
+                    <Text style={{
+                      color: isSelected ? "#fff" : "#888",
+                      fontWeight: isSelected ? "bold" : "normal"
+                    }}>
+                       {day.format("D")}
+                     
+                    </Text>
                     <Text
                       style={{
-                        color: isSelected ? "#fff" : "#000", // White if selected
+                        color: isSelected ? "#fff" : "#000",
                         fontWeight: "bold",
                       }}
                     >
-                      {day.format("D")}
+                      {day.format("ddd")}
+                     
                     </Text>
                   </TouchableOpacity>
                 );
@@ -178,9 +215,11 @@ const CalendarStrip = () => {
         />
 
         {/* Right arrow button */}
-        <TouchableOpacity onPress={() => scrollToIndex(currentChunkIndex + 1)}>
-          <Ionicons name="chevron-forward" size={24} color="black" />
-        </TouchableOpacity>
+        <View style={{ width: arrowWidth, alignItems: "center" }}>
+          <TouchableOpacity onPress={() => scrollToIndex(currentChunkIndex + 1)}>
+          <Foundation name="arrow-right" size={28} color="black" />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
