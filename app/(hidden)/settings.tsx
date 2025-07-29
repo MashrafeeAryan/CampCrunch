@@ -1,23 +1,34 @@
-import React, { useState } from "react";
-import { View, Text, Switch, TouchableOpacity, ScrollView } from "react-native";
-import {
-  Feather,
-  FontAwesome,
-  MaterialIcons,
-  MaterialCommunityIcons,
-  Entypo,
-} from '@expo/vector-icons';
-import { router } from 'expo-router';
 import { handleLogout } from '@/components/auth/authFunctions';
 import { useUserAuthStore } from '@/components/zustandStore/AuthStore';
+import {
+  Entypo,
+  Feather,
+  FontAwesome,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from '@expo/vector-icons';
+import { router } from 'expo-router';
+import React, { useState } from "react";
+import { ScrollView, Switch, Text, TouchableOpacity, View } from "react-native";
+
+import { useThemeStore } from '@/components/zustandStore/themeStore';
+import { darkTheme } from '@/utils/themeColors';
+
+// Theme style helpers
+const getTextStyle = (theme) => (theme === 'dark' ? { color: darkTheme.text } : {});
+const getCardStyle = (theme) => (theme === 'dark' ? { backgroundColor: darkTheme.card } : {});
+const getBackgroundStyle = (theme) => (theme === 'dark' ? { backgroundColor: darkTheme.background } : {});
 
 export default function SettingsScreen() {
+  const theme = useThemeStore((state) => state.theme);
+
+  const toggleTheme = useThemeStore((state) => state.toggleTheme);
+
+  const [notifications, setNotifications] = useState(false);
+
   const userID = useUserAuthStore((s) => s.userID);
   const userEmail = useUserAuthStore((s) => s.userEmail);
   const userName = useUserAuthStore((s) => s.userName);
-
-  const [isDarkMode, setIsDarkMode] = useState(true);
-  const [notifications, setNotifications] = useState(false);
 
   //Get it from zustand:
   const campCrunchUserName = useUserAuthStore((s)=> s.campCrunchUserName)
@@ -51,9 +62,10 @@ export default function SettingsScreen() {
   ];
 
   return (
-    <ScrollView
+    <ScrollView 
       className="flex-1 bg-[#FAFAFA] px-5 pt-10"
-      contentContainerStyle={{ paddingBottom: 60 }}
+      contentContainerStyle={{ paddingBottom: 60 }} 
+      style={getBackgroundStyle(theme)}
     >
       {/* Top Header */}
       <View className="flex-row justify-between items-center mb-6">
@@ -61,19 +73,19 @@ export default function SettingsScreen() {
           onPress={() => router.back()}
           className="flex-row items-center"
         >
-          <Feather name="arrow-left" size={24} color="black" />
+          <Feather name="arrow-left" size={24} color={theme === 'dark' ? darkTheme.text : 'black'} />
         </TouchableOpacity>
 
-        <TouchableOpacity className="flex-row items-center space-x-1">
-          <Entypo name="help-with-circle" size={20} color="black" />
-          <Text className="font-bold text-sm">Help</Text>
+        <TouchableOpacity className="flex-row items-center space-x-1" >
+          <Entypo name="help-with-circle" size={20} color={theme === 'dark' ? darkTheme.text : 'black'} />
+          <Text className="font-bold text-sm" style={getTextStyle(theme)}>Help</Text>
         </TouchableOpacity>
       </View>
 
       {/* Section Title */}
       <View className="mb-4">
-        <Text className="text-xl font-bold">Account</Text>
-        <Text className="text-xl font-bold">Information</Text>
+        <Text className="text-xl font-bold" style={getTextStyle(theme)}>Account</Text>
+        <Text className="text-xl font-bold" style={getTextStyle(theme)}>Information</Text>
       </View>
 
       {/* Account Info */}
@@ -83,64 +95,64 @@ export default function SettingsScreen() {
           className="flex-row items-center justify-between py-3 border-b border-gray-200"
         >
           <View className="flex-row items-center space-x-3 w-[80%]">
-            <View className="w-10 h-10 bg-black rounded-lg justify-center items-center">
+            <View className="w-10 h-10 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
               {item.icon}
             </View>
             <View>
-              <Text className="font-semibold">{item.label}</Text>
-              <Text className="text-sm text-gray-600">{item.value}</Text>
+              <Text className="font-semibold" style={getTextStyle(theme)}>{item.label}</Text>
+              <Text className="text-sm text-gray-600" style={getTextStyle(theme)}>{item.value}</Text>
             </View>
           </View>
 
-          <TouchableOpacity className="w-8 h-8 bg-black rounded-lg justify-center items-center">
-            <Feather name="chevron-right" size={20} color="white" />
+          <TouchableOpacity className="w-8 h-8 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
+            <Feather name="chevron-right" size={20} color={theme === 'dark' ? darkTheme.text : 'white'} />
           </TouchableOpacity>
         </View>
       ))}
 
       {/* Privacy Section */}
       <View className="mt-6 mb-4">
-        <Text className="text-xl font-bold">Privacy</Text>
+        <Text className="text-xl font-bold" style={getTextStyle(theme)}>Privacy</Text>
       </View>
 
       {/* Password (no toggle, just arrow) */}
       <View className="flex-row items-center justify-between py-3 border-b border-gray-200">
         <View className="flex-row items-center space-x-3">
-          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center">
-            <FontAwesome name="lock" size={20} color="white" />
+          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
+            <FontAwesome name="lock" size={20} color={theme === 'dark' ? darkTheme.text : 'white'} />
           </View>
-          <Text className="font-semibold">Password</Text>
+          <Text className="font-semibold" style={getTextStyle(theme)}>Password</Text>
         </View>
-        <TouchableOpacity className="w-8 h-8 bg-black rounded-lg justify-center items-center">
-          <Feather name="chevron-right" size={20} color="white" />
+        <TouchableOpacity className="w-8 h-8 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
+          <Feather name="chevron-right" size={20} color={theme === 'dark' ? darkTheme.text : 'white'} />
         </TouchableOpacity>
       </View>
 
       {/* 2FA */}
       <View className="flex-row items-center justify-between py-3 border-b border-gray-200">
         <View className="flex-row items-center space-x-3">
-          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center">
-            <MaterialIcons name="security" size={20} color="white" />
+          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
+            <MaterialIcons name="security" size={20} color={theme === 'dark' ? darkTheme.text : 'white'} />
           </View>
-          <Text className="font-semibold">Two-factor authentication</Text>
+          <Text className="font-semibold" style={getTextStyle(theme)}>Two-factor authentication</Text>
         </View>
-        <TouchableOpacity className="w-8 h-8 bg-black rounded-lg justify-center items-center">
-          <Feather name="chevron-right" size={20} color="white" />
+        <TouchableOpacity className="w-8 h-8 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
+          <Feather name="chevron-right" size={20} color={theme === 'dark' ? darkTheme.text : 'white'} />
         </TouchableOpacity>
       </View>
 
       {/* App Section */}
       <View className="mt-6 mb-4">
-        <Text className="text-xl font-bold">App</Text>
+        <Text className="text-xl font-bold" style={getTextStyle(theme)}>App</Text>
       </View>
 
       {/* Notifications */}
       <View className="flex-row items-center justify-between py-3 border-b border-gray-200">
         <View className="flex-row items-center space-x-3">
-          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center">
-            <Feather name="bell" size={20} color="white" />
+          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
+            <Feather name="bell" size={20} color={theme === 'dark' ? darkTheme.text : 'white'} />
           </View>
-          <Text className="font-semibold">Notifications & Message</Text>
+          <Text className="font-semibold" style={getTextStyle(theme)}>Notifications & Message</Text>
         </View>
         <Switch
           value={notifications}
@@ -151,30 +163,28 @@ export default function SettingsScreen() {
       {/* Theme Toggle */}
       <View className="flex-row items-center justify-between py-3 border-b border-gray-200">
         <View className="flex-row items-center space-x-3">
-          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center">
-            <Feather name="moon" size={20} color="white" />
+          <View className="w-10 h-10 bg-black rounded-lg justify-center items-center" style={getCardStyle(theme)}>
+            <Feather name="moon" size={20} color={theme === 'dark' ? darkTheme.text : 'white'} />
           </View>
           <View>
-            <Text className="font-semibold">Theme</Text>
-            <Text className="text-sm text-gray-600">Dark Mode</Text>
+            <Text className="font-semibold" style={getTextStyle(theme)}>Theme</Text>
+            <Text className="text-sm text-gray-600" style={getTextStyle(theme)}>Dark Mode</Text>
           </View>
         </View>
         <Switch
-          value={isDarkMode}
-          onValueChange={() => setIsDarkMode(!isDarkMode)}
+          value={theme === 'dark'}
+          onValueChange={toggleTheme}
         />
       </View>
 
       {/* Sign Out + Privacy Row */}
       <View className="flex-row justify-between items-center mt-10">
-        <TouchableOpacity className="bg-yellow-400 rounded-full py-3 px-6 w-[48%]"
-          onPress={
-            () => {handleLogout(router)}
-          }
+        <TouchableOpacity className="bg-yellow-400 rounded-full py-3 px-6 w-[48%]" style={getCardStyle(theme)}
+          onPress={() => {handleLogout(router)}}
         >
-          <Text className="text-center font-bold text-black">Sign Out</Text>
+          <Text className="text-center font-bold text-black" style={getTextStyle(theme)}>Sign Out</Text>
         </TouchableOpacity>
-        <Text className="text-xs text-gray-500">Privacy & Policy</Text>
+        <Text className="text-xs text-gray-500" style={getTextStyle(theme)}>Privacy & Policy</Text>
       </View>
     </ScrollView>
   );
