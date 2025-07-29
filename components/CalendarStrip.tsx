@@ -104,10 +104,7 @@ const CalendarStrip = () => {
       >
         {moment(focusedDay).format("MMMM YYYY")}
       </Text>
-      <Image
-  source={streakIcons.fireIcon}
-  style={{ width: 32, height: 32, marginBottom: 8, right:10 }}
-/>
+   
 
 
       {/* Arrows and date strip are arranged horizontally */}
