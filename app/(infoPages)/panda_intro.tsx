@@ -12,7 +12,7 @@ export default function PandaIntro() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity style={styles.imageWrapper} onPress={handlePress} activeOpacity={0.8}>
+      <TouchableOpacity onPress={handlePress} activeOpacity={0.8}>
         <Image
           source={require("@/assets/images/panda_intro.png")} // check this path
           style={styles.image}
