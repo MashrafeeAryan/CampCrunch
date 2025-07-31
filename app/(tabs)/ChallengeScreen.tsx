@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, ScrollView } from 'react-native';
+import { Image, ScrollView, Text, View } from 'react-native';
 import { ProgressBar } from 'react-native-paper';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -38,7 +38,7 @@ export default function WeeklyChallenges() {
     <SafeAreaView className="flex-1 bg-white  px-5 pt-20">
     
       <Image
-        source={require('../../assets/images/CampCrunchLogo.png')}
+        source={require('../../assets/images/challengesLogos/trophy.png')}
         className="w-20 h-20 self-center mb-2"
       />
       <Text className="text-2xl font-bold text-center mb-5">Weekly Challenges</Text>
