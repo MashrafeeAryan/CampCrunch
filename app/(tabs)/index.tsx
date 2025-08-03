@@ -162,7 +162,7 @@ const Index = () => {
                   <TouchableOpacity className="mt-4">
                     <Text className="text-[#D4AF37] font-bold">View</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity className="mt-4">
+                  <TouchableOpacity className="mt-4" onPress={()=>{router.push("../SearchFoodScreen")}}>
                     <Text className="text-[#D4AF37] font-bold">Add to Plan ➔</Text>
                   </TouchableOpacity>
                 </View>
