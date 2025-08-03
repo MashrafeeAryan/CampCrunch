@@ -20,7 +20,13 @@ type UserHealthStore = {
   protein: number;
   carbs: number;
   fat: number;
-  dietRecommendation: any | null; // ✅ added
+  dietRecommendation: any | null;
+
+  caloriesConsumed: number;
+  proteinConsumed: number;
+  fatConsumed: number;
+  carbsConsumed: number;
+  lastResetDate: string;
 
   // Updater functions
   setWeight_KG: (weight: number) => void;
@@ -39,7 +45,14 @@ type UserHealthStore = {
   setProtein: (protein: number) => void;
   setCarbs: (carbs: number) => void;
   setFat: (fat: number) => void;
-  setDietRecommendation: (data: any) => void; // ✅ added
+  setDietRecommendation: (data: any) => void;
+
+  setCaloriesConsumed: (val: number) => void;
+  setProteinConsumed: (val: number) => void;
+  setFatConsumed: (val: number) => void;
+  setCarbsConsumed: (val: number) => void;
+
+  checkAndResetDailyIntake: () => void;
   reset: () => void;
 };
 
@@ -62,7 +75,13 @@ export const useUserHealthStore = create<UserHealthStore>()(
       protein: 0,
       carbs: 0,
       fat: 0,
-      dietRecommendation: null, // ✅ added
+      dietRecommendation: null,
+
+      caloriesConsumed: 0,
+      proteinConsumed: 0,
+      fatConsumed: 0,
+      carbsConsumed: 0,
+      lastResetDate: '',
 
       setWeight_KG: (weight) => set({ weight_KG: weight }),
       setWeight_lbs: (weight) => set({ weight_lbs: weight }),
@@ -80,7 +99,28 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setProtein: (protein) => set({ protein }),
       setCarbs: (carbs) => set({ carbs }),
       setFat: (fat) => set({ fat }),
-      setDietRecommendation: (data) => set({ dietRecommendation: data }), // ✅ added
+      setDietRecommendation: (data) => set({ dietRecommendation: data }),
+
+      setCaloriesConsumed: (val) => set({ caloriesConsumed: val }),
+      setProteinConsumed: (val) => set({ proteinConsumed: val }),
+      setFatConsumed: (val) => set({ fatConsumed: val }),
+      setCarbsConsumed: (val) => set({ carbsConsumed: val }),
+
+      checkAndResetDailyIntake: () => {
+        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        set((state) => {
+          if (state.lastResetDate !== today) {
+            return {
+              caloriesConsumed: 0,
+              proteinConsumed: 0,
+              fatConsumed: 0,
+              carbsConsumed: 0,
+              lastResetDate: today,
+            };
+          }
+          return {};
+        });
+      },
 
       reset: () =>
         set({
@@ -100,7 +140,13 @@ export const useUserHealthStore = create<UserHealthStore>()(
           protein: 0,
           carbs: 0,
           fat: 0,
-          dietRecommendation: null, // ✅ reset as well
+          dietRecommendation: null,
+
+          caloriesConsumed: 0,
+          proteinConsumed: 0,
+          fatConsumed: 0,
+          carbsConsumed: 0,
+          lastResetDate: '',
         }),
     }),
     {

@@ -22,13 +22,13 @@ const dynamicStrokeWidth = ringSize * 0.05; // Stroke is 5% of ring size
 
 
 // This component displays animated rings and handles user interaction
-const ProgressRings = ({ size = ringSize, strokeWidth = dynamicStrokeWidth, protein, carbs, fat, dailyCalorieAdjustment }) => {
+const ProgressRings = ({ size = ringSize, strokeWidth = dynamicStrokeWidth, protein, carbs, fat, dailyCalorieAdjustment, proteinConsumed, fatConsumed, carbsConsumed, caloriesConsumed }) => {
   // Calculate the center of the SVG canvas
   const metrics = [
-  { key: 'calories', color: '#3498db', value: 800, goal: dailyCalorieAdjustment },
-  { key: 'protein',  color: '#e74c3c', value: 50,  goal: protein },
-  { key: 'carbs',    color: '#9b59b6', value: 120, goal: carbs },
-  { key: 'fat',      color: '#f1c40f', value: 40,  goal: fat },
+  { key: 'calories', color: '#3498db', value: caloriesConsumed, goal: dailyCalorieAdjustment },
+  { key: 'protein',  color: '#e74c3c', value: proteinConsumed,  goal: protein },
+  { key: 'carbs',    color: '#9b59b6', value: carbsConsumed, goal: carbs },
+  { key: 'fat',      color: '#f1c40f', value: fatConsumed,  goal: fat },
 ];
   const center = size / 2;
 
@@ -64,7 +64,7 @@ const ProgressRings = ({ size = ringSize, strokeWidth = dynamicStrokeWidth, prot
     });
 
     Animated.stagger(200, anims).start();
-  }, []);
+  }, [caloriesConsumed, proteinConsumed, carbsConsumed, fatConsumed, dailyCalorieAdjustment, protein, carbs, fat]);
 
   // Show popup when a ring is tapped
   const handleRingPress = (metric, evt) => {
