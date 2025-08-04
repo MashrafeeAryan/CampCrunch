@@ -7,6 +7,7 @@ import { Link, usePathname, router } from "expo-router";
 import { handleLogout } from "@/components/auth/authFunctions";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import Toast from 'react-native-toast-message';
+import moment from "moment";
 
 const Index = () => {
   const [pressed, setPressed] = useState(false);
@@ -22,34 +23,71 @@ const Index = () => {
   const proteinConsumed = useUserHealthStore((s) => s.proteinConsumed);
   const carbsConsumed = useUserHealthStore((s) => s.carbsConsumed);
   const caloriesConsumed = useUserHealthStore((s) => s.caloriesConsumed);
+  const foodMap = useUserHealthStore((s)=>s.foodMap)
+
+
 
   const setProteinConsumed = useUserHealthStore((s) => s.setProteinConsumed);
   const setCarbsConsumed = useUserHealthStore((s) => s.setCarbsConsumed);
   const setCaloriesConsumed = useUserHealthStore((s) => s.setCaloriesConsumed);
   const setFatConsumed = useUserHealthStore((s) => s.setFatConsumed);
+  const setFoodMap = useUserHealthStore((s)=> s.setFoodMap)
+  const today = moment().format("YYYY-MM-DD");
 
 
   const handleAddToPlan = (
-    proteinVal: number,
-    fatVal: number,
-    carbsVal: number,
-    caloriesVal: number,
-    foodName: string
-  ) => {
-    setProteinConsumed(proteinConsumed + Number(proteinVal));
-    setFatConsumed(fatConsumed + Number(fatVal));
-    setCarbsConsumed(carbsConsumed + Number(carbsVal));
-    setCaloriesConsumed(caloriesConsumed + Number(caloriesVal));
+  proteinVal: number,
+  fatVal: number,
+  carbsVal: number,
+  caloriesVal: number,
+  foodName: string,
+  focusedTab: string,
+  today: string
+) => {
+  // Update nutrition totals
+  setProteinConsumed(proteinConsumed + Number(proteinVal));
+  setFatConsumed(fatConsumed + Number(fatVal));
+  setCarbsConsumed(carbsConsumed + Number(carbsVal));
+  setCaloriesConsumed(caloriesConsumed + Number(caloriesVal));
 
-    Toast.show({
-      type: 'success',
-      text1: `${foodName} added`,
-      position: 'bottom',
-      visibilityTime: 2000,
-      bottomOffset: 60,
-      props: {},
-    });
+  // Prepare new food item
+  const newFoodItem = {
+    foodName,
+    calories: caloriesVal,
   };
+
+  // Copy current map or initialize
+  const updatedMap = { ...foodMap };
+
+  // Ensure date entry exists
+  if (!updatedMap[today]) {
+    updatedMap[today] = {};
+  }
+
+  // Ensure meal type entry exists
+  if (!updatedMap[today][focusedTab]) {
+    updatedMap[today][focusedTab] = [];
+  }
+
+  // Add new food to the correct list
+  updatedMap[today][focusedTab].push(newFoodItem);
+
+  // Save updated map to Zustand
+  setFoodMap(updatedMap);
+
+  // Show toast
+  Toast.show({
+    type: 'success',
+    text1: `${foodName} added`,
+    position: 'bottom',
+    visibilityTime: 2000,
+    bottomOffset: 60,
+    props: {},
+  });
+
+console.log(JSON.stringify(foodMap, null, 2));
+};
+
 
   return (
     <SafeAreaView className="flex-1 bg-white">
@@ -173,7 +211,9 @@ const Index = () => {
                           Number(item.fat),
                           Number(item.carbohydrates),
                           Number(item.calories),
-                          item.foodName
+                          item.foodName,
+                          focusedTab,
+                          today
                         );
                       }}
                     >

@@ -2,6 +2,20 @@ import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+// ✅ Updated FoodItem to match your real structure
+type FoodItem = {
+  foodName: string;
+  calories: number;
+};
+
+type FoodMap = {
+  [date: string]: {
+    Breakfast: FoodItem[];
+    Lunch: FoodItem[];
+    Dinner: FoodItem[];
+  };
+};
+
 type UserHealthStore = {
   // Data fields
   weight_KG: number;
@@ -28,6 +42,8 @@ type UserHealthStore = {
   carbsConsumed: number;
   lastResetDate: string;
 
+  foodMap: FoodMap;
+
   // Updater functions
   setWeight_KG: (weight: number) => void;
   setWeight_lbs: (weight: number) => void;
@@ -51,6 +67,13 @@ type UserHealthStore = {
   setProteinConsumed: (val: number) => void;
   setFatConsumed: (val: number) => void;
   setCarbsConsumed: (val: number) => void;
+
+  setFoodMap: (map: FoodMap) => void;
+  updateFoodMap: (
+    date: string,
+    mealType: keyof FoodMap[string],
+    foodItem: FoodItem
+  ) => void;
 
   checkAndResetDailyIntake: () => void;
   reset: () => void;
@@ -83,6 +106,8 @@ export const useUserHealthStore = create<UserHealthStore>()(
       carbsConsumed: 0,
       lastResetDate: '',
 
+      foodMap: {},
+
       setWeight_KG: (weight) => set({ weight_KG: weight }),
       setWeight_lbs: (weight) => set({ weight_lbs: weight }),
       setHeightInches: (height) => set({ heightInches: height }),
@@ -106,8 +131,27 @@ export const useUserHealthStore = create<UserHealthStore>()(
       setFatConsumed: (val) => set({ fatConsumed: val }),
       setCarbsConsumed: (val) => set({ carbsConsumed: val }),
 
+      setFoodMap: (map) => set({ foodMap: map }),
+      updateFoodMap: (date, mealType, foodItem) =>
+        set((state) => {
+          const day = state.foodMap[date] || {
+            Breakfast: [],
+            Lunch: [],
+            Dinner: [],
+          };
+          return {
+            foodMap: {
+              ...state.foodMap,
+              [date]: {
+                ...day,
+                [mealType]: [...day[mealType], foodItem],
+              },
+            },
+          };
+        }),
+
       checkAndResetDailyIntake: () => {
-        const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+        const today = new Date().toISOString().split('T')[0];
         set((state) => {
           if (state.lastResetDate !== today) {
             return {
@@ -147,6 +191,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
           fatConsumed: 0,
           carbsConsumed: 0,
           lastResetDate: '',
+          foodMap: {},
         }),
     }),
     {
