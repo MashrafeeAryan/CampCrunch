@@ -41,7 +41,11 @@ export default function WelcomeScreen() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
     <View className="flex-1 bg-gray-50 justify-center items-center px-6">
-
+ <TouchableOpacity onPress={() => {router.replace('/(auth)/SignUpScreen')}}>
+        <Text className="text-sm text-black underline">
+          New to the app? Sign Up now!
+        </Text>
+      </TouchableOpacity>
       {/* Greeting on top */}
       <Text className="text-5xl font-extrabold text-gray-900 mb-2">
         Welcome!
@@ -125,11 +129,7 @@ export default function WelcomeScreen() {
       </TouchableOpacity>
 
       {/* SignUp Page */}
-      <TouchableOpacity onPress={() => {router.replace('/(auth)/SignUpScreen')}}>
-        <Text className="text-sm text-black underline">
-          New to the app? Sign Up now!
-        </Text>
-      </TouchableOpacity>
+     
     </View>
     </TouchableWithoutFeedback>
   );

@@ -4,47 +4,42 @@ import { ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CalendarStrip from "@/components/CalendarStrip";
 import moment from "moment";
-
-// Dummy food data keyed by date
-const foodMap = {
-  "2023-08-18": {
-    breakfast: [],
-    lunch: [{ name: "Fried Chicken x2 (*location*)", kcal: 450 }],
-    dinner: [
-      { name: "Alfredo Pasta (*location*)", kcal: 800 },
-      { name: "Oreo Milkshake (*location*)", kcal: 600 },
-    ],
-  },
-};
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 
 const CalendarScreen = () => {
   const router = useRouter();
   const today = moment().format("YYYY-MM-DD");
   const [selectedDate, setSelectedDate] = useState(today);
 
+  const foodMap = useUserHealthStore((s) => s.foodMap);
+
   const handleAddFood = () => {
     router.push("/AddFoodScreen");
   };
 
-  const renderMealSection = (title, items) => {
-    const totalKcal = items.reduce((sum, item) => sum + item.kcal, 0);
+  const renderMealSection = (title, items = []) => {
+    const totalKcal = items.reduce((sum, item) => sum + (item.calories || 0), 0);
 
     return (
       <View className="border-gray-300 border-2 p-4 rounded-2xl w-11/12 bg-white mb-6">
         <View className="flex-row justify-between">
           <Text className="font-bold text-lg">{title.toUpperCase()}</Text>
-          <Text className="font-bold text-lg">{totalKcal} KCAL</Text>
+          <Text className="font-bold text-lg">{totalKcal.toFixed(0)} KCAL</Text>
         </View>
 
-        {items.map((item, index) => (
-          <View key={index}>
-            <View className="h-px bg-gray-300 my-4 w-full" />
-            <View className="flex-row justify-between">
-              <Text>{item.name}</Text>
-              <Text>{item.kcal} KCAL</Text>
+        {items.length === 0 ? (
+          <Text className="text-gray-400 mt-4">No food added</Text>
+        ) : (
+          items.map((item, index) => (
+            <View key={index}>
+              <View className="h-px bg-gray-300 my-4 w-full" />
+              <View className="flex-row justify-between">
+                <Text>{item.foodName}</Text>
+                <Text>{item.calories.toFixed(0)} KCAL</Text>
+              </View>
             </View>
-          </View>
-        ))}
+          ))
+        )}
 
         <View className="items-center mt-4">
           <TouchableOpacity
@@ -58,10 +53,11 @@ const CalendarScreen = () => {
     );
   };
 
-  const foodData = foodMap[selectedDate] || {
-    breakfast: [],
-    lunch: [],
-    dinner: [],
+  // Ensure correct capitalization to match your actual foodMap keys
+  const foodData = foodMap?.[selectedDate] ?? {
+    Breakfast: [],
+    Lunch: [],
+    Dinner: [],
   };
 
   return (
@@ -69,15 +65,14 @@ const CalendarScreen = () => {
       <ScrollView contentContainerStyle={{ alignItems: "center", paddingBottom: 30 }}>
         <Text className="font-bold text-2xl mt-4">Today's Meals</Text>
 
-        {/* Inject selected date + handler */}
         <CalendarStrip
           selectedDate={selectedDate}
           onSelectDate={(date) => setSelectedDate(date)}
         />
 
-        {renderMealSection("Breakfast", foodData.breakfast)}
-        {renderMealSection("Lunch", foodData.lunch)}
-        {renderMealSection("Dinner", foodData.dinner)}
+        {renderMealSection("Breakfast", foodData.Breakfast)}
+        {renderMealSection("Lunch", foodData.Lunch)}
+        {renderMealSection("Dinner", foodData.Dinner)}
       </ScrollView>
     </SafeAreaView>
   );

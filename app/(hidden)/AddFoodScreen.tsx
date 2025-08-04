@@ -1,14 +1,15 @@
 import { Ionicons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import {router, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { FoodLogos } from '../../assets/images/addFoodLogos';
+import SearchFoodScreen from './SearchFoodScreen';
 
 export default function AddFoodScreen() {
   const [selectedTab, setSelectedTab] = useState('Dining Hall');
-
+  const router = useRouter()
   const renderContent = () => {
     switch (selectedTab) {
       case 'Dining Hall':
@@ -69,6 +70,7 @@ export default function AddFoodScreen() {
 }
 
 const DiningHall = () => (
+  
   <View className="flex-1 bg-gray-100 p-4 pt-8">
     <Text className="text-xl font-bold mb-4 tracking-wide">Dining Halls</Text>
 
@@ -76,7 +78,10 @@ const DiningHall = () => (
       <TouchableOpacity
         className="flex-row items-center bg-white p-4 rounded-2xl mb-4 shadow-md"
         activeOpacity={0.8}
-        onPress={() => console.log('Selected: The Fresh Food Co.')}
+        onPress={() =>
+          router.push("SearchFoodScreen")
+        }
+
       >
         <Image
           source={FoodLogos.freshfood}
@@ -87,7 +92,7 @@ const DiningHall = () => (
       </TouchableOpacity>
     </ScrollView>
   </View>
-);
+)
 
 const outlets = [
   { name: 'Panda Express', image: FoodLogos.panda },

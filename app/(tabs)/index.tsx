@@ -3,101 +3,147 @@ import { View, Text, ScrollView, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProgressRings from "@/components/ProgressRings"; // Custom progress ring component
-import { Link, usePathname } from "expo-router";
-import { router } from "expo-router";
+import { Link, usePathname, router } from "expo-router";
 import { handleLogout } from "@/components/auth/authFunctions";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
-
-
+import Toast from 'react-native-toast-message';
+import moment from "moment";
 
 const Index = () => {
-  // Set static values for calorie tracking
-  const calories = 900;
-  const goal = 2000;
-
-  // This keeps track of whether the "Adjust Goals" button is pressed
   const [pressed, setPressed] = useState(false);
-
-  // This tracks which tab is selected (e.g., "Breakfast", "Lunch", etc.)
   const [focusedTab, setFocusedTab] = useState("Breakfast");
-
-  // These are the labels for the meal tabs
   const tabs = ["Breakfast", "Lunch", "Dinner", "Snacks"];
 
-  const dailyCalorieAdjustment = useUserHealthStore((s) => s.dailyCalorieAdjustment)
-
+  const dailyCalorieAdjustment = useUserHealthStore((s) => s.dailyCalorieAdjustment);
   const diet = useUserHealthStore((s) => s.dietRecommendation);
-  const protein = useUserHealthStore((s)=>s.protein)
-  const carbs = useUserHealthStore((s)=>s.carbs)
-  const fat = useUserHealthStore((s)=>s.fat)
+  const protein = useUserHealthStore((s) => s.protein);
+  const carbs = useUserHealthStore((s) => s.carbs);
+  const fat = useUserHealthStore((s) => s.fat);
+  const fatConsumed = useUserHealthStore((s) => s.fatConsumed);
+  const proteinConsumed = useUserHealthStore((s) => s.proteinConsumed);
+  const carbsConsumed = useUserHealthStore((s) => s.carbsConsumed);
+  const caloriesConsumed = useUserHealthStore((s) => s.caloriesConsumed);
+  const foodMap = useUserHealthStore((s)=>s.foodMap)
 
 
-  //NIce
+
+  const setProteinConsumed = useUserHealthStore((s) => s.setProteinConsumed);
+  const setCarbsConsumed = useUserHealthStore((s) => s.setCarbsConsumed);
+  const setCaloriesConsumed = useUserHealthStore((s) => s.setCaloriesConsumed);
+  const setFatConsumed = useUserHealthStore((s) => s.setFatConsumed);
+  const setFoodMap = useUserHealthStore((s)=> s.setFoodMap)
+  const today = moment().format("YYYY-MM-DD");
+
+
+  const handleAddToPlan = (
+  proteinVal: number,
+  fatVal: number,
+  carbsVal: number,
+  caloriesVal: number,
+  foodName: string,
+  focusedTab: string,
+  today: string
+) => {
+  // Update nutrition totals
+  setProteinConsumed(proteinConsumed + Number(proteinVal));
+  setFatConsumed(fatConsumed + Number(fatVal));
+  setCarbsConsumed(carbsConsumed + Number(carbsVal));
+  setCaloriesConsumed(caloriesConsumed + Number(caloriesVal));
+
+  // Prepare new food item
+  const newFoodItem = {
+    foodName,
+    calories: caloriesVal,
+  };
+
+  // Copy current map or initialize
+  const updatedMap = { ...foodMap };
+
+  // Ensure date entry exists
+  if (!updatedMap[today]) {
+    updatedMap[today] = {};
+  }
+
+  // Ensure meal type entry exists
+  if (!updatedMap[today][focusedTab]) {
+    updatedMap[today][focusedTab] = [];
+  }
+
+  // Add new food to the correct list
+  updatedMap[today][focusedTab].push(newFoodItem);
+
+  // Save updated map to Zustand
+  setFoodMap(updatedMap);
+
+  // Show toast
+  Toast.show({
+    type: 'success',
+    text1: `${foodName} added`,
+    position: 'bottom',
+    visibilityTime: 2000,
+    bottomOffset: 60,
+    props: {},
+  });
+
+console.log(JSON.stringify(foodMap, null, 2));
+};
+
+
   return (
-
-    // SafeAreaView keeps content out of notches and rounded screen edges
     <SafeAreaView className="flex-1 bg-white">
       <ScrollView>
-        {/* Main content wrapper, centered horizontally */}
         <View className="items-center">
-          {/* Shows animated progress ring visual for calorie tracking */}
-          <ProgressRings protein={protein} carbs={carbs} fat={fat} dailyCalorieAdjustment={dailyCalorieAdjustment.toFixed(0)} />
+          <ProgressRings
+            protein={protein.toFixed(0)}
+            carbs={carbs.toFixed(0)}
+            fat={fat.toFixed(0)}
+            dailyCalorieAdjustment={dailyCalorieAdjustment.toFixed(0)}
+            proteinConsumed={proteinConsumed.toFixed(0)}
+            fatConsumed={fatConsumed.toFixed(0)}
+            carbsConsumed={carbsConsumed.toFixed(0)}
+            caloriesConsumed={caloriesConsumed.toFixed(0)}
+          />
 
-          {/* Title for the section, aligned to the left with padding */}
           <View className="w-full px-4 mt-2">
-            <Text className="text-left text-lg font-semibold">
-              Your Nutrition Goals
-            </Text>
+            <Text className="text-left text-lg font-semibold">Your Nutrition Goals</Text>
           </View>
 
-          {/* Horizontal scroll section for showing nutrient summary boxes */}
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            className="p-4"
-          >
-            {/* Each box below shows data for one macro (Calories, Protein, etc.) */}
-
+          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="p-4">
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#3498db] border-2">
-              <Text className="text-2xl font-bold text-[#3498db]">800</Text>
+              <Text className="text-2xl font-bold text-[#3498db]">{caloriesConsumed.toFixed(0)}</Text>
               <Text className="text-xs text-gray-700">Daily Calories</Text>
               <Text className="text-xs text-gray-500">of {dailyCalorieAdjustment.toFixed(0)}</Text>
             </View>
 
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#e74c3c] border-2">
-              <Text className="text-2xl font-bold text-[#e74c3c]">150</Text>
+              <Text className="text-2xl font-bold text-[#e74c3c]">{proteinConsumed.toFixed(0)}</Text>
               <Text className="text-xs text-gray-700">Daily Protein</Text>
               <Text className="text-xs text-gray-500">of {protein.toFixed(0)}</Text>
             </View>
 
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#9b59b6] border-2">
-              <Text className="text-2xl font-bold text-[#9b59b6]">200</Text>
+              <Text className="text-2xl font-bold text-[#9b59b6]">{carbsConsumed.toFixed(0)}</Text>
               <Text className="text-xs text-gray-700">Daily Carbs</Text>
               <Text className="text-xs text-gray-500">of {carbs.toFixed(0)}</Text>
             </View>
 
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#f1c40f] border-2">
-              <Text className="text-2xl font-bold text-[#f1c40f]">800</Text>
+              <Text className="text-2xl font-bold text-[#f1c40f]">{fatConsumed.toFixed(0)}</Text>
               <Text className="text-xs text-gray-700">Daily Fat</Text>
               <Text className="text-xs text-gray-500">of {fat.toFixed(0)}</Text>
             </View>
 
-            {/* Adds some padding to the end of the scroll view */}
             <View style={{ width: 10 }} />
           </ScrollView>
 
-          {/* "Adjust Goals" button aligned to the right side of the screen */}
           <View className="w-full px-4 items-end">
             <TouchableOpacity
-              // Conditionally set background based on if it's been pressed
               className={`rounded-md p-2 border-[#f8d04a] border-2 ${pressed ? "bg-[#f1c40f]" : "bg-transparent"
                 }`}
               onPress={() => {
                 setPressed(true);
                 router.push("../(infoPages)/infoHome");
-
-              }}// Updates pressed state when tapped
-
+              }}
             >
               <Text
                 className={`${pressed ? "text-white" : "text-[#f1c40f]"
@@ -108,36 +154,34 @@ const Index = () => {
             </TouchableOpacity>
           </View>
 
-          {/* Meal selection tabs: Breakfast, Lunch, Dinner, Snacks */}
           <View className="flex-row mt-5">
             {tabs.map((tab, index) => (
               <TouchableOpacity
-                key={tab} // React requires a unique key when mapping elements
-                onPress={() => setFocusedTab(tab)} // Set the focused tab when pressed
+                key={tab}
+                onPress={() => setFocusedTab(tab)}
                 className={`
-                px-4 py-3
-                ${index === 0 ? "rounded-l-lg" : ""
-                  }   // Rounded left corner for first button
-                ${index === tabs.length - 1 ? "rounded-r-lg" : ""
-                  } // Rounded right corner for last button
-                ${focusedTab === tab ? "bg-[#D4AF37]" : "bg-[#FFFBF0]"
-                  } // Highlight the selected tab
-              `}
+                  px-4 py-3
+                  ${index === 0 ? "rounded-l-lg" : ""}
+                  ${index === tabs.length - 1 ? "rounded-r-lg" : ""}
+                  ${focusedTab === tab ? "bg-[#D4AF37]" : "bg-[#FFFBF0]"}
+                `}
               >
                 <Text
                   className={`font-bold ${focusedTab === tab ? "text-white" : "text-black"
-                    }`} // Change text color if selected
+                    }`}
                 >
                   {tab}
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
+
           <View className="w-full px-4 mt-2">
             <Text className="text-left text-lg font-semibold">
               Recommended {focusedTab}
             </Text>
           </View>
+
           {diet && diet[focusedTab.toLowerCase()]?.length > 0 ? (
             <View className="w-full px-4 mt-2">
               {diet[focusedTab.toLowerCase()].map((item, index) => (
@@ -147,25 +191,35 @@ const Index = () => {
                 >
                   <Text className="text-base font-bold mb-1">{item.foodName}</Text>
                   <View className="flex-row flex-wrap space-x-1">
-                    <Text className="text-xs text-gray-700">{item.calories.toFixed(2)} cal</Text>
+                    <Text className="text-xs text-gray-700">{Number(item.calories).toFixed(2)} cal</Text>
                     <Text className="text-xs text-gray-700">•</Text>
-                    <Text className="text-xs text-gray-700">{item.protein.toFixed(2)}g protein</Text>
+                    <Text className="text-xs text-gray-700">{Number(item.protein).toFixed(2)}g protein</Text>
                     <Text className="text-xs text-gray-700">•</Text>
-
-                    <Text className="text-xs text-gray-700">{item.carbohydrates.toFixed(2)}g carbs</Text>
+                    <Text className="text-xs text-gray-700">{Number(item.carbohydrates).toFixed(2)}g carbs</Text>
                     <Text className="text-xs text-gray-700">•</Text>
-
-                    <Text className="text-xs text-gray-700">{item.fat.toFixed(2)}g fat</Text>
+                    <Text className="text-xs text-gray-700">{Number(item.fat).toFixed(2)}g fat</Text>
                   </View>
                   <View className="flex-row space-x-5">
-
-                  <TouchableOpacity className="mt-4">
-                    <Text className="text-[#D4AF37] font-bold">View</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity className="mt-4">
-                    <Text className="text-[#D4AF37] font-bold">Add to Plan ➔</Text>
-                  </TouchableOpacity>
-                </View>
+                    <TouchableOpacity className="mt-4">
+                      <Text className="text-[#D4AF37] font-bold">View</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      className="mt-4"
+                      onPress={() => {
+                        handleAddToPlan(
+                          Number(item.protein),
+                          Number(item.fat),
+                          Number(item.carbohydrates),
+                          Number(item.calories),
+                          item.foodName,
+                          focusedTab,
+                          today
+                        );
+                      }}
+                    >
+                      <Text className="text-[#D4AF37] font-bold">Add to Plan ➔</Text>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               ))}
             </View>
@@ -174,8 +228,8 @@ const Index = () => {
               No items available for {focusedTab}
             </Text>
           )}
-
         </View>
+
         <Link href="../(infoPages)/infoHome">Info Pages</Link>
         <Link href="../(infoPages)/soundIntro">Sound Intro</Link>
         <Text>{dailyCalorieAdjustment}</Text>
