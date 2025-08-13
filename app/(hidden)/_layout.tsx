@@ -4,13 +4,16 @@ import { Stack } from 'expo-router'
 
 const HiddenLayout = () => {
   return (
-    <Stack screenOptions={{headerShown:false}}>  
-        <Stack.Screen 
-            name='AddFoodScreen'
-        />
-         <Stack.Screen 
-            name='SearchFoodScreen'
-        />
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen
+        name='AddFoodScreen'
+      />
+      <Stack.Screen
+        name='SearchFoodScreen'
+      />
+      <Stack.Screen
+        name='AdjustGoalsScreen'
+      />
     </Stack>
   )
 }

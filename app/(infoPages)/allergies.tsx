@@ -88,6 +88,7 @@ export default function AllergiesScreen() {
     }
     // Or update Zustand:
     setAllergies(formattedAllergies);
+    console.log(formattedAllergies)
   };
 
   const toggle = (key: string) => {

@@ -43,6 +43,7 @@ export default function PreferencesScreen() {
     }
     // Or update Zustand:
     setPreferences(formattedPreferences);
+    console.log(formattedPreferences)
   };
 
   // Zustand store method to save preferences globally

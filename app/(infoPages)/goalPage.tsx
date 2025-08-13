@@ -98,7 +98,11 @@ const GoalPage = () => {
           fat,
           setBMR,
           setMaintenance,
-          setDailyCalorieAdjustment
+          setDailyCalorieAdjustment,
+          setProtein,
+          setCarbs,
+          setFat,
+          setDietRecommendation
         );
       }
       router.replace("/(tabs)");
@@ -306,8 +310,7 @@ const GoalPage = () => {
             <TouchableOpacity
               className="bg-black w-32 h-[50px] items-center justify-center rounded-xl"
               onPress={() => {
-                handleUpdateUserData
-                router.push('/(tabs)/ProfileScreen')  
+                handleUpdateUserData()
               }}
               
             >
