@@ -1,6 +1,6 @@
 // Import necessary components and hooks from React Native and React
 import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import ProgressRings from "@/components/ProgressRings"; // Custom progress ring component
 import { Link, usePathname, router } from "expo-router";
@@ -23,7 +23,7 @@ const Index = () => {
   const proteinConsumed = useUserHealthStore((s) => s.proteinConsumed);
   const carbsConsumed = useUserHealthStore((s) => s.carbsConsumed);
   const caloriesConsumed = useUserHealthStore((s) => s.caloriesConsumed);
-  const foodMap = useUserHealthStore((s)=>s.foodMap)
+  const foodMap = useUserHealthStore((s) => s.foodMap)
 
 
 
@@ -31,68 +31,70 @@ const Index = () => {
   const setCarbsConsumed = useUserHealthStore((s) => s.setCarbsConsumed);
   const setCaloriesConsumed = useUserHealthStore((s) => s.setCaloriesConsumed);
   const setFatConsumed = useUserHealthStore((s) => s.setFatConsumed);
-  const setFoodMap = useUserHealthStore((s)=> s.setFoodMap)
+  const setFoodMap = useUserHealthStore((s) => s.setFoodMap)
   const today = moment().format("YYYY-MM-DD");
 
+  useEffect(() => {
+    useUserHealthStore.getState().checkAndResetDailyIntake();
+  }, []);
 
   const handleAddToPlan = (
-  proteinVal: number,
-  fatVal: number,
-  carbsVal: number,
-  caloriesVal: number,
-  foodName: string,
-  focusedTab: string,
-  today: string
-) => {
-  // Update nutrition totals
-  setProteinConsumed(proteinConsumed + Number(proteinVal));
-  setFatConsumed(fatConsumed + Number(fatVal));
-  setCarbsConsumed(carbsConsumed + Number(carbsVal));
-  setCaloriesConsumed(caloriesConsumed + Number(caloriesVal));
+    proteinVal: number,
+    fatVal: number,
+    carbsVal: number,
+    caloriesVal: number,
+    foodName: string,
+    focusedTab: string,
+    today: string
+  ) => {
+    // Update nutrition totals
+    setProteinConsumed(proteinConsumed + Number(proteinVal));
+    setFatConsumed(fatConsumed + Number(fatVal));
+    setCarbsConsumed(carbsConsumed + Number(carbsVal));
+    setCaloriesConsumed(caloriesConsumed + Number(caloriesVal));
 
-  // Prepare new food item
-  const newFoodItem = {
-    foodName,
-    calories: caloriesVal,
-  };
+    // Prepare new food item
+    const newFoodItem = {
+      foodName,
+      calories: caloriesVal,
+    };
 
-  // Copy current map or initialize
-  const updatedMap = { ...foodMap };
+    // Copy current map or initialize
+    const updatedMap = { ...foodMap };
 
-  // Ensure date entry exists
-  if (!updatedMap[today]) {
-    updatedMap[today] = {};
-  }
+    // Ensure date entry exists
+    if (!updatedMap[today]) {
+      updatedMap[today] = {};
+    }
 
-  // Ensure meal type entry exists
-  if (!updatedMap[today][focusedTab]) {
-    updatedMap[today][focusedTab] = [];
-  }
+    // Ensure meal type entry exists
+    if (!updatedMap[today][focusedTab]) {
+      updatedMap[today][focusedTab] = [];
+    }
 
-  // Add new food to the correct list
-  updatedMap[today][focusedTab].push(newFoodItem);
+    // Add new food to the correct list
+    updatedMap[today][focusedTab].push(newFoodItem);
 
-  // Save updated map to Zustand
-  setFoodMap(updatedMap);
+    // Save updated map to Zustand
+    setFoodMap(updatedMap);
 
-  // Show toast
-  Toast.show({
-    type: 'success',
-    text1: `${foodName} added`,
-    position: 'bottom',
-    visibilityTime: 2000,
-    bottomOffset: 60,
-    props: {},
-  });
-
-console.log(JSON.stringify(foodMap, null, 2));
-};
+    // Show toast
+    Toast.show({
+      type: 'success',
+      text1: `${foodName} added`,
+      position: 'bottom',
+      visibilityTime: 2000,
+      bottomOffset: 60,
+      props: {},
+    });
+   };
 
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
-      <ScrollView>
-        <View className="items-center">
+    <SafeAreaView className="flex-1 bg-white"
+    edges={["left", "right"]}>
+      <ScrollView >
+        <View className="items-center mt-5">
           <ProgressRings
             protein={protein.toFixed(0)}
             carbs={carbs.toFixed(0)}
@@ -142,7 +144,7 @@ console.log(JSON.stringify(foodMap, null, 2));
                 }`}
               onPress={() => {
                 setPressed(true);
-                router.push("../(infoPages)/infoHome");
+                router.push("../(hidden)/AdjustGoalsScreen");
               }}
             >
               <Text
