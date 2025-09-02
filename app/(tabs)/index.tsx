@@ -6,15 +6,29 @@ import ProgressRings from "@/components/ProgressRings"; // Custom progress ring 
 import { Link, usePathname, router } from "expo-router";
 import { handleLogout } from "@/components/auth/authFunctions";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 import moment from "moment";
+import ViewFoodDescriptionComponent from "@/components/homePageComponents/ViewFoodDescriptionComponent";
 
 const Index = () => {
   const [pressed, setPressed] = useState(false);
   const [focusedTab, setFocusedTab] = useState("Breakfast");
   const tabs = ["Breakfast", "Lunch", "Dinner", "Snacks"];
 
-  const dailyCalorieAdjustment = useUserHealthStore((s) => s.dailyCalorieAdjustment);
+  const [showViewFoodComponent, setShowViewFoodComponent] = useState(false);
+  const [selectedFood, setSelectedFood] = useState<{
+    protein: number;
+    fat: number;
+    carbs: number;
+    calories: number;
+    foodName: string;
+    allergies: string[];
+    description: string;
+  } | null>(null);
+
+  const dailyCalorieAdjustment = useUserHealthStore(
+    (s) => s.dailyCalorieAdjustment
+  );
   const diet = useUserHealthStore((s) => s.dietRecommendation);
   const protein = useUserHealthStore((s) => s.protein);
   const carbs = useUserHealthStore((s) => s.carbs);
@@ -23,20 +37,39 @@ const Index = () => {
   const proteinConsumed = useUserHealthStore((s) => s.proteinConsumed);
   const carbsConsumed = useUserHealthStore((s) => s.carbsConsumed);
   const caloriesConsumed = useUserHealthStore((s) => s.caloriesConsumed);
-  const foodMap = useUserHealthStore((s) => s.foodMap)
-
-
+  const foodMap = useUserHealthStore((s) => s.foodMap);
 
   const setProteinConsumed = useUserHealthStore((s) => s.setProteinConsumed);
   const setCarbsConsumed = useUserHealthStore((s) => s.setCarbsConsumed);
   const setCaloriesConsumed = useUserHealthStore((s) => s.setCaloriesConsumed);
   const setFatConsumed = useUserHealthStore((s) => s.setFatConsumed);
-  const setFoodMap = useUserHealthStore((s) => s.setFoodMap)
+  const setFoodMap = useUserHealthStore((s) => s.setFoodMap);
   const today = moment().format("YYYY-MM-DD");
 
   useEffect(() => {
     useUserHealthStore.getState().checkAndResetDailyIntake();
   }, []);
+
+  const handleShowView = (
+    proteinVal: number,
+    fatVal: number,
+    carbsVal: number,
+    caloriesVal: number,
+    foodName: string,
+    allergiesList: string[],
+    shortDescription: string
+  ) => {
+    setSelectedFood({
+      protein: proteinVal,
+      fat: fatVal,
+      carbs: carbsVal,
+      calories: caloriesVal,
+      foodName,
+      allergies: allergiesList,
+      description: shortDescription,
+    });
+    setShowViewFoodComponent(true);
+  };
 
   const handleAddToPlan = (
     proteinVal: number,
@@ -80,20 +113,18 @@ const Index = () => {
 
     // Show toast
     Toast.show({
-      type: 'success',
+      type: "success",
       text1: `${foodName} added`,
-      position: 'bottom',
+      position: "bottom",
       visibilityTime: 2000,
       bottomOffset: 60,
       props: {},
     });
-   };
-
+  };
 
   return (
-    <SafeAreaView className="flex-1 bg-white"
-    edges={["left", "right"]}>
-      <ScrollView >
+    <SafeAreaView className="flex-1 bg-white" edges={["left", "right"]}>
+      <ScrollView>
         <View className="items-center mt-5">
           <ProgressRings
             protein={protein.toFixed(0)}
@@ -107,30 +138,50 @@ const Index = () => {
           />
 
           <View className="w-full px-4 mt-2">
-            <Text className="text-left text-lg font-semibold">Your Nutrition Goals</Text>
+            <Text className="text-left text-lg font-semibold">
+              Your Nutrition Goals
+            </Text>
           </View>
 
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} className="p-4">
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            className="p-4"
+          >
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#3498db] border-2">
-              <Text className="text-2xl font-bold text-[#3498db]">{caloriesConsumed.toFixed(0)}</Text>
+              <Text className="text-2xl font-bold text-[#3498db]">
+                {caloriesConsumed.toFixed(0)}
+              </Text>
               <Text className="text-xs text-gray-700">Daily Calories</Text>
-              <Text className="text-xs text-gray-500">of {dailyCalorieAdjustment.toFixed(0)}</Text>
+              <Text className="text-xs text-gray-500">
+                of {dailyCalorieAdjustment.toFixed(0)}
+              </Text>
             </View>
 
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#e74c3c] border-2">
-              <Text className="text-2xl font-bold text-[#e74c3c]">{proteinConsumed.toFixed(0)}</Text>
+              <Text className="text-2xl font-bold text-[#e74c3c]">
+                {proteinConsumed.toFixed(0)}
+              </Text>
               <Text className="text-xs text-gray-700">Daily Protein</Text>
-              <Text className="text-xs text-gray-500">of {protein.toFixed(0)}</Text>
+              <Text className="text-xs text-gray-500">
+                of {protein.toFixed(0)}
+              </Text>
             </View>
 
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#9b59b6] border-2">
-              <Text className="text-2xl font-bold text-[#9b59b6]">{carbsConsumed.toFixed(0)}</Text>
+              <Text className="text-2xl font-bold text-[#9b59b6]">
+                {carbsConsumed.toFixed(0)}
+              </Text>
               <Text className="text-xs text-gray-700">Daily Carbs</Text>
-              <Text className="text-xs text-gray-500">of {carbs.toFixed(0)}</Text>
+              <Text className="text-xs text-gray-500">
+                of {carbs.toFixed(0)}
+              </Text>
             </View>
 
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#f1c40f] border-2">
-              <Text className="text-2xl font-bold text-[#f1c40f]">{fatConsumed.toFixed(0)}</Text>
+              <Text className="text-2xl font-bold text-[#f1c40f]">
+                {fatConsumed.toFixed(0)}
+              </Text>
               <Text className="text-xs text-gray-700">Daily Fat</Text>
               <Text className="text-xs text-gray-500">of {fat.toFixed(0)}</Text>
             </View>
@@ -191,18 +242,41 @@ const Index = () => {
                   key={index}
                   className="bg-white p-4 mb-3 rounded-xl shadow border border-gray-200"
                 >
-                  <Text className="text-base font-bold mb-1">{item.foodName}</Text>
+                  <Text className="text-base font-bold mb-1">
+                    {item.foodName}
+                  </Text>
                   <View className="flex-row flex-wrap space-x-1">
-                    <Text className="text-xs text-gray-700">{Number(item.calories).toFixed(2)} cal</Text>
+                    <Text className="text-xs text-gray-700">
+                      {Number(item.calories).toFixed(2)} cal
+                    </Text>
                     <Text className="text-xs text-gray-700">•</Text>
-                    <Text className="text-xs text-gray-700">{Number(item.protein).toFixed(2)}g protein</Text>
+                    <Text className="text-xs text-gray-700">
+                      {Number(item.protein).toFixed(2)}g protein
+                    </Text>
                     <Text className="text-xs text-gray-700">•</Text>
-                    <Text className="text-xs text-gray-700">{Number(item.carbohydrates).toFixed(2)}g carbs</Text>
+                    <Text className="text-xs text-gray-700">
+                      {Number(item.carbohydrates).toFixed(2)}g carbs
+                    </Text>
                     <Text className="text-xs text-gray-700">•</Text>
-                    <Text className="text-xs text-gray-700">{Number(item.fat).toFixed(2)}g fat</Text>
+                    <Text className="text-xs text-gray-700">
+                      {Number(item.fat).toFixed(2)}g fat
+                    </Text>
                   </View>
                   <View className="flex-row space-x-5">
-                    <TouchableOpacity className="mt-4">
+                    <TouchableOpacity
+                      className="mt-4"
+                      onPress={() => {
+                        handleShowView(
+                          Number(item.protein),
+                          Number(item.fat),
+                          Number(item.carbohydrates),
+                          Number(item.calories),
+                          item.foodName,
+                          item.allergies,
+                          item.shortDescription
+                        );
+                      }}
+                    >
                       <Text className="text-[#D4AF37] font-bold">View</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -219,7 +293,9 @@ const Index = () => {
                         );
                       }}
                     >
-                      <Text className="text-[#D4AF37] font-bold">Add to Plan ➔</Text>
+                      <Text className="text-[#D4AF37] font-bold">
+                        Add to Plan ➔
+                      </Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -236,6 +312,19 @@ const Index = () => {
         <Link href="../(infoPages)/soundIntro">Sound Intro</Link>
         <Text>{dailyCalorieAdjustment}</Text>
       </ScrollView>
+       {selectedFood && (
+      <ViewFoodDescriptionComponent
+        showViewFoodComponent={showViewFoodComponent}
+        setShowViewFoodComponent={setShowViewFoodComponent}
+        foodName={selectedFood.foodName}
+        calories={selectedFood.calories}
+        carbs={selectedFood.carbs}
+        protein={selectedFood.protein}
+        fat={selectedFood.fat}
+        description={selectedFood.description}
+        allergies={selectedFood.allergies}
+      />
+    )}
     </SafeAreaView>
   );
 };

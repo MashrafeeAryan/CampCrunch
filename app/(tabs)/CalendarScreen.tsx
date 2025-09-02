@@ -13,8 +13,10 @@ const CalendarScreen = () => {
 
   const foodMap = useUserHealthStore((s) => s.foodMap);
 
-  const handleAddFood = () => {
-    router.push("/AddFoodScreen");
+  const handleAddFood = (title: string) => {
+    router.push({
+      pathname: "/AddFoodScreen",        // or the actual path to your screen
+    });
   };
 
   const renderMealSection = (title, items = []) => {
@@ -44,7 +46,7 @@ const CalendarScreen = () => {
         <View className="items-center mt-4">
           <TouchableOpacity
             className="border-2 border-[#f8d04a] rounded-full py-2 px-4"
-            onPress={handleAddFood}
+            onPress={() => handleAddFood(title)}
           >
             <Text className="text-yellow-500 font-bold">Add Food +</Text>
           </TouchableOpacity>

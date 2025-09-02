@@ -25,6 +25,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useUserHealthStore } from '@/components/zustandStore/UserHealthStore';
 import { List } from "react-native-paper";
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
+import { calculateCalories } from "@/utils/CalculateCalories";
+import { updateHealthInfo } from "@/components/databaseComponents/updateHealthInfo";
 
 
 
@@ -79,26 +82,45 @@ const activityLevels = [
 
 export default function AdjustGoalsScreen() {
 
+  // Read values
+  const userID = useUserAuthStore((s) => s.userID)
+  const ageYears = useUserHealthStore((s) => s.ageYears);
+  const heightCM = useUserHealthStore((s) => s.heightCM);
+  const heightInches = useUserHealthStore((s) => s.heightInches);
+  const weight_KG = useUserHealthStore((s) => s.weight_KG);
+  const weight_lbs = useUserHealthStore((s) => s.weight_lbs);
+  const gender = useUserHealthStore((s) => s.gender);
+  const activityLevel = useUserHealthStore((s) => s.activityLevel);
+  const selectedAllergies = useUserHealthStore((s) => s.allergies);
+  const selectedPreferences = useUserHealthStore((s) => s.preferences);
+  const goals = useUserHealthStore((s) => s.goals);
 
-  const {
-    ageYears,
-    heightCM,
-    weight_KG,
-    gender,
-    activityLevel,
-    allergies: selectedAllergies,
-    preferences: selectedPreferences,
-    goals,
+  const bmr = useUserHealthStore((s) => s.bmr);
+  const maintenance = useUserHealthStore((s) => s.maintenance);
+  const protein = useUserHealthStore((s) => s.protein);
+  const carbs = useUserHealthStore((s) => s.carbs);
+  const fat = useUserHealthStore((s) => s.fat);
 
-    setAgeYears,
-    setHeightCM,
-    setWeight_KG,
-    setGender,
-    setActivityLevel,
-    setAllergies,
-    setPreferences,
-    setGoals,
-  } = useUserHealthStore();
+  // Setters
+  const setAgeYears = useUserHealthStore((s) => s.setAgeYears);
+  const setHeightCM = useUserHealthStore((s) => s.setHeightCM);
+  const setHeightInches = useUserHealthStore((s) => s.setHeightInches);
+  const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG);
+  const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs);
+  const setGender = useUserHealthStore((s) => s.setGender);
+  const setActivityLevel = useUserHealthStore((s) => s.setActivityLevel);
+  const setAllergies = useUserHealthStore((s) => s.setAllergies);
+  const setPreferences = useUserHealthStore((s) => s.setPreferences);
+  const setGoals = useUserHealthStore((s) => s.setGoals);
+
+  const setBMR = useUserHealthStore((s) => s.setBMR);
+  const setMaintenance = useUserHealthStore((s) => s.setMaintenance);
+  const setProtein = useUserHealthStore((s) => s.setProtein);
+  const setCarbs = useUserHealthStore((s) => s.setCarbs);
+  const setFat = useUserHealthStore((s) => s.setFat);
+  const setDailyCalorieAdjustment = useUserHealthStore((s) => s.setDailyCalorieAdjustment);
+  const setDietRecommendation = useUserHealthStore((s) => s.setDietRecommendation);
+
 
 
   const router = useRouter(); // for navigation
@@ -134,6 +156,79 @@ export default function AdjustGoalsScreen() {
     weight: '',
   });
 
+ // Accept latest values as arguments
+const handleUpdateUserData = async ({
+  userID,
+  weight_KG,
+  weight_lbs,
+  heightInches,
+  heightCM,
+  ageYears,
+  gender,
+  activityLevel,
+  preferences,
+  allergies,
+  goals,
+}) => {
+  try {
+    // Save to database
+    await updateHealthInfo({
+      userID,
+      weight_KG,
+      weight_lbs,
+      heightInches,
+      heightCM,
+      ageYears,
+      gender,
+      activityLevel,
+      preferences,
+      allergies,
+      goals,
+    });
+
+    // Run calculations if everything is filled
+    if (
+      weight_KG !== 0 &&
+      weight_lbs !== 0 &&
+      heightInches !== 0 &&
+      heightCM !== 0 &&
+      ageYears !== 0 &&
+      gender !== "" &&
+      activityLevel !== "" &&
+      preferences.length > 0 &&
+      allergies.length > 0 &&
+      goals !== 0
+    ) {
+      calculateCalories(
+        gender,
+        weight_lbs,
+        ageYears,
+        heightInches,
+        goals,
+        bmr,
+        maintenance,
+        activityLevel,
+        preferences,
+        allergies,
+        protein,
+        carbs,
+        fat,
+        setBMR,
+        setMaintenance,
+        setDailyCalorieAdjustment,
+        setProtein,
+        setCarbs,
+        setFat,
+        setDietRecommendation
+      );
+    }
+
+    console.log("Results Uploaded");
+  } catch (error) {
+    console.log("Results not Uploaded", error);
+  }
+};
+
   const handleSave = () => {
     const ageNum = parseInt(age);
     const heightNum = parseFloat(height);
@@ -152,7 +247,7 @@ export default function AdjustGoalsScreen() {
       newErrors.height = 'Please enter a valid height';
     }
     if (isNaN(weightNum) || weightNum < 20 || weightNum > 300) {
-      newErrors.weight = 'Please wenter a valid weight';
+      newErrors.weight = 'Please enter a valid weight';
     }
 
     setErrors(newErrors);
@@ -168,6 +263,17 @@ export default function AdjustGoalsScreen() {
     setAllergies(allergyValues);
     setPreferences(prefValues);
     setGoals(weightValue);
+    handleUpdateUserData({
+      userID,
+      ageYears: ageNum,
+      heightCM: heightNum,
+      weight_KG: weightNum,
+      gender: genderValue,
+      activityLevel: activityValue,
+      preferences: prefValues,
+      allergies: allergyValues,
+      goals: weightValue,
+    });
 
     router.back();
   };
@@ -240,12 +346,12 @@ export default function AdjustGoalsScreen() {
             placeholder="Select Allergies"
             mode="BADGE"
             maxHeight={450}
-            // listMode="SCROLLVIEW"
-            // badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
-            // theme="DARK"
+          // listMode="SCROLLVIEW"
+          // badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
+          // theme="DARK"
           />
         </View>
- 
+
 
       ),
     },

@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import {router, useRouter } from 'expo-router';
+import {router, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,6 +8,8 @@ import { FoodLogos } from '../../assets/images/addFoodLogos';
 import SearchFoodScreen from './SearchFoodScreen';
 
 export default function AddFoodScreen() {
+  const { foodType } = useLocalSearchParams<{ foodType?: string }>()
+
   const [selectedTab, setSelectedTab] = useState('Dining Hall');
   const router = useRouter()
   const renderContent = () => {
