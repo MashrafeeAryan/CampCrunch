@@ -7,7 +7,7 @@ export default function ChumpzIntro() {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push("/(infoPages)/chumpz_growth");
+    router.push("/(infoPages)/5_chumpz_growth");
   };
 
   return (

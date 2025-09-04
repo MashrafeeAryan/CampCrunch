@@ -1,13 +1,12 @@
 // Import necessary components and hooks from React Native and React
-import { View, Text, ScrollView, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
 import ProgressRings from "@/components/ProgressRings"; // Custom progress ring component
-import { Link, usePathname, router } from "expo-router";
-import { handleLogout } from "@/components/auth/authFunctions";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
-import Toast from 'react-native-toast-message';
+import { Link, router } from "expo-router";
 import moment from "moment";
+import React, { useEffect, useState } from "react";
+import { ScrollView, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Toast from 'react-native-toast-message';
 
 const Index = () => {
   const [pressed, setPressed] = useState(false);
@@ -233,7 +232,7 @@ const Index = () => {
         </View>
 
         <Link href="../(infoPages)/infoHome">Info Pages</Link>
-        <Link href="../(infoPages)/soundIntro">Sound Intro</Link>
+        <Link href="../(infoPages)/0_soundIntro">Sound Intro</Link>
         <Text>{dailyCalorieAdjustment}</Text>
       </ScrollView>
     </SafeAreaView>

@@ -7,14 +7,14 @@ export default function ChumpzGrowth() {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push("/(infoPages)/chumpz_intro"); // connect this to info page
+    router.push("/(infoPages)/6_chumpz_info");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.imageWrapper} onPress={handlePress} activeOpacity={0.8}>
         <Image
-          source={require("@/assets/images/chumpz_info.png")} // check this path
+          source={require("@/assets/images/chumpz_growth.png")} // check this path
           style={styles.image}
           resizeMode="contain"
         />

@@ -3,18 +3,18 @@ import React from "react";
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function ChumpzGrowth() {
+export default function PandaIntro() {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push("/(infoPages)/chumpz_info");
+    router.push("/(infoPages)/4_chumpz_intro");
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity style={styles.imageWrapper} onPress={handlePress} activeOpacity={0.8}>
         <Image
-          source={require("@/assets/images/chumpz_growth.png")} // check this path
+          source={require("@/assets/images/panda_explain.png")} // check this path
           style={styles.image}
           resizeMode="contain"
         />

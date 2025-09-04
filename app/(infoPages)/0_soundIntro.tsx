@@ -16,11 +16,11 @@ export default function SoundIntro() {
   const router = useRouter();
 
   useEffect(() => {
-    Vibration.vibrate(500);
+    // Vibration.vibrate(500);
     }, []);
 
   const handlePress = () => {
-    router.push("/(infoPages)/pandaAppears"); // navigate on tap
+    router.push("/(infoPages)/1_pandaAppears"); // navigate on tap
   };
 
   return (

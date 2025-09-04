@@ -16,7 +16,7 @@ export default function SoundStart() {
   const router = useRouter();
 
   const handlePress = () => {
-    router.push("/(infoPages)/panda_intro");
+    router.push("/(infoPages)/2_panda_intro");
   };
 
   return (
