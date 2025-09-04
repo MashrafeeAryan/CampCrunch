@@ -1,6 +1,6 @@
 import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 import { useThemeStore } from '@/components/zustandStore/themeStore';
-import { getBackgroundStyle, getTextStyle,getSectionBorderStyle } from '@/utils/themeHelpers';
+import { getBackgroundStyle, getSectionBorderStyle, getTextStyle } from '@/utils/themeHelpers';
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -70,8 +70,8 @@ const ProfileScreen = () => {
           {/* Stats */}
           <View className="flex-row justify-around py-5">
             {[
-              { label: "Nutri-Level", value: 5 },
-              { label: "NutriBuds", value: 10 },
+              // { label: "Nutri-Level", value: 5 },
+              // { label: "NutriBuds", value: 10 },
               { label: "Fuel-Streak", value: 200 },
               { label: "Bonus Bucks", value: "$150" },
             ].map((item, index) => (
@@ -132,6 +132,8 @@ const ProfileScreen = () => {
             </Text>
           </View>
 
+        {/* Uncomment the following code for achievements section in the Profile Page */}
+
         {/* Achievements */}
         {/* </View>
           <View className="bg-white rounded-2xl mx-4 mt-6 p-4">
@@ -154,9 +156,7 @@ const ProfileScreen = () => {
         </View>
         <View className="h-10">*/}
 
-        <TouchableOpacity onPress={() => router.push('/(infoPages)/infoHome')}>
-          <Text style={getTextStyle(theme)}>Hi there</Text>
-        </TouchableOpacity>
+
 
         </View> 
       </ScrollView>

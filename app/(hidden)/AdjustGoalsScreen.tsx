@@ -126,6 +126,8 @@ export default function AdjustGoalsScreen() {
   const [height, setHeight] = useState(heightCM > 0 ? heightCM.toString() : '');
   const [weight, setWeight] = useState(weight_KG > 0 ? weight_KG.toString() : '');
 
+  // Color of the input and Dropdown box
+  const boxColor = '#D3D3D3'
 
 
   const [errors, setErrors] = useState({
@@ -199,6 +201,8 @@ export default function AdjustGoalsScreen() {
             setItems={setWeightItems}
             placeholder="Select weight goal"
             maxHeight={450}
+            style={{backgroundColor:boxColor}}
+
           />
         </View>
       ),
@@ -218,6 +222,7 @@ export default function AdjustGoalsScreen() {
             setItems={setPrefItems}
             placeholder="Select Preferences"
             mode="BADGE"
+            style={{backgroundColor:boxColor}}
           // badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
           // theme="DARK"
           />
@@ -240,6 +245,7 @@ export default function AdjustGoalsScreen() {
             placeholder="Select Allergies"
             mode="BADGE"
             maxHeight={450}
+            style={{backgroundColor:'#E0E0E0'}}
             // listMode="SCROLLVIEW"
             // badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
             // theme="DARK"
@@ -269,7 +275,8 @@ export default function AdjustGoalsScreen() {
                 setErrors((prev) => ({ ...prev, age: '' }));
               }}
               placeholder="Enter age"
-              className="border border-gray-300 rounded-lg px-4 py-[15px] bg-white text-black"
+              className="border border-1 border-black rounded-lg px-4 py-[15px] text-black"
+              style={{backgroundColor:'#E0E0E0'}}
             />
             {errors.age ? (
               <Text className="text-red-500 text-xs mt-1">{errors.age}</Text>
@@ -285,7 +292,8 @@ export default function AdjustGoalsScreen() {
                 setErrors((prev) => ({ ...prev, height: '' }));
               }}
               placeholder="Enter height"
-              className="border border-gray-300 rounded-lg px-4 py-[15px] bg-white text-black"
+              className="border border-1 border-black rounded-lg px-4 py-[15px] text-black"
+              style={{backgroundColor:'#E0E0E0'}}
             />
             {errors.height ? (
               <Text className="text-red-500 text-xs mt-1">{errors.height}</Text>
@@ -308,7 +316,8 @@ export default function AdjustGoalsScreen() {
               setErrors((prev) => ({ ...prev, weight: '' }));
             }}
             placeholder="Enter weight"
-            className="border border-gray-300 rounded-lg px-4 py-[15px] bg-white text-black"
+            className="border border-1 border-black rounded-lg px-4 py-[15px] text-black"
+            style={{backgroundColor:'#E0E0E0'}}
           />
           {errors.weight ? (
             <Text className="text-red-500 text-xs mt-1">{errors.weight}</Text>
@@ -330,6 +339,7 @@ export default function AdjustGoalsScreen() {
             setValue={setGenderValue}
             setItems={setGenderItems}
             placeholder="Select gender"
+            style={{backgroundColor:boxColor}}
           />
         </View>
       ),
@@ -347,6 +357,7 @@ export default function AdjustGoalsScreen() {
             setValue={setActivityValue}
             setItems={setActivityItems}
             placeholder="Select activity level"
+            style={{backgroundColor:boxColor}}
           />
         </View>
       ),
@@ -366,7 +377,7 @@ export default function AdjustGoalsScreen() {
   ];
 
   return (
-    <SafeAreaView className="flex-1 bg-[#C7BEBD]">
+    <SafeAreaView className="flex-1 bg-[#ffffff]">
       {/* Tapping outside the inputs dismisses the keyboard */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
