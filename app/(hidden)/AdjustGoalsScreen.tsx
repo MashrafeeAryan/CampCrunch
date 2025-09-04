@@ -1,4 +1,4 @@
-// Expo Router hook for navigation
+ // Expo Router hook for navigation
 import { useRouter } from "expo-router";
 
 // React core
@@ -28,6 +28,7 @@ import { List } from "react-native-paper";
 import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 import { calculateCalories } from "@/utils/CalculateCalories";
 import { updateHealthInfo } from "@/components/databaseComponents/updateHealthInfo";
+import { UpdateDatabaseInfo } from "@/components/databaseComponents/updateDatabaseInfo";
 
 
 
@@ -172,7 +173,7 @@ const handleUpdateUserData = async ({
 }) => {
   try {
     // Save to database
-    await updateHealthInfo({
+    await UpdateDatabaseInfo({
       userID,
       weight_KG,
       weight_lbs,

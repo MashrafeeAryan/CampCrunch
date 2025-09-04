@@ -12,6 +12,7 @@ import { ID } from "appwrite";
 // Zustand is where we store our user's info, like ID, name, email (like a backpack for user data)
 import { useUserAuthStore } from "../zustandStore/AuthStore";
 import { useUserHealthStore } from "../zustandStore/UserHealthStore";
+import { useUserUIStore } from "../zustandStore/UiStore";
 // This helps us move to different screens in the app (like changing pages)
 
 // This function helps a new person sign up to our app
@@ -94,8 +95,11 @@ export async function handleLogout(router) {
     //Reset the store
     useUserHealthStore.getState().reset();
     useUserAuthStore.getState().reset();
+    useUserUIStore.getState().reset();
 
+    router.dismissAll(); // clears other routes from history
     router.replace("/(auth)/LoginScreen");
+    console.log("Logout successful");
   } catch (error) {
     console.log("Logout Failed", error);
   }

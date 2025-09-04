@@ -158,15 +158,6 @@ const Index = () => {
               </Text>
             </View>
 
-            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#e74c3c] border-2">
-              <Text className="text-2xl font-bold text-[#e74c3c]">
-                {proteinConsumed.toFixed(0)}
-              </Text>
-              <Text className="text-xs text-gray-700">Daily Protein</Text>
-              <Text className="text-xs text-gray-500">
-                of {protein.toFixed(0)}
-              </Text>
-            </View>
 
             <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#9b59b6] border-2">
               <Text className="text-2xl font-bold text-[#9b59b6]">
@@ -175,6 +166,16 @@ const Index = () => {
               <Text className="text-xs text-gray-700">Daily Carbs</Text>
               <Text className="text-xs text-gray-500">
                 of {carbs.toFixed(0)}
+              </Text>
+            </View>
+
+            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#e74c3c] border-2">
+              <Text className="text-2xl font-bold text-[#e74c3c]">
+                {proteinConsumed.toFixed(0)}
+              </Text>
+              <Text className="text-xs text-gray-700">Daily Protein</Text>
+              <Text className="text-xs text-gray-500">
+                of {protein.toFixed(0)}
               </Text>
             </View>
 
@@ -307,24 +308,23 @@ const Index = () => {
             </Text>
           )}
         </View>
-
-        <Link href="../(infoPages)/infoHome">Info Pages</Link>
         <Link href="../(infoPages)/soundIntro">Sound Intro</Link>
-        <Text>{dailyCalorieAdjustment}</Text>
+        <Link href="../(auth)/SignUpScreen">SignUp</Link>
+        <Link href="../(infoPages)/infoHome">Info Pages</Link>
       </ScrollView>
-       {selectedFood && (
-      <ViewFoodDescriptionComponent
-        showViewFoodComponent={showViewFoodComponent}
-        setShowViewFoodComponent={setShowViewFoodComponent}
-        foodName={selectedFood.foodName}
-        calories={selectedFood.calories}
-        carbs={selectedFood.carbs}
-        protein={selectedFood.protein}
-        fat={selectedFood.fat}
-        description={selectedFood.description}
-        allergies={selectedFood.allergies}
-      />
-    )}
+      {selectedFood && (
+        <ViewFoodDescriptionComponent
+          showViewFoodComponent={showViewFoodComponent}
+          setShowViewFoodComponent={setShowViewFoodComponent}
+          foodName={selectedFood.foodName}
+          calories={selectedFood.calories}
+          carbs={selectedFood.carbs}
+          protein={selectedFood.protein}
+          fat={selectedFood.fat}
+          description={selectedFood.description}
+          allergies={selectedFood.allergies}
+        />
+      )}
     </SafeAreaView>
   );
 };
