@@ -34,7 +34,7 @@ type UserHealthStore = {
   protein: number;
   carbs: number;
   fat: number;
-  dietRecommendation: any | null;
+  dietRecommendation: {};
 
   caloriesConsumed: number;
   proteinConsumed: number;
@@ -98,7 +98,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
       protein: 0,
       carbs: 0,
       fat: 0,
-      dietRecommendation: null,
+      dietRecommendation: {},
 
       caloriesConsumed: 0,
       proteinConsumed: 0,
@@ -184,7 +184,7 @@ export const useUserHealthStore = create<UserHealthStore>()(
           protein: 0,
           carbs: 0,
           fat: 0,
-          dietRecommendation: null,
+          dietRecommendation: {},
 
           caloriesConsumed: 0,
           proteinConsumed: 0,

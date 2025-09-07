@@ -9,6 +9,7 @@ import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import Toast from "react-native-toast-message";
 import moment from "moment";
 import ViewFoodDescriptionComponent from "@/components/homePageComponents/ViewFoodDescriptionComponent";
+import ClearZustandButton from "@/components/redButton/clearZustand";
 
 const Index = () => {
   const [pressed, setPressed] = useState(false);
@@ -46,6 +47,7 @@ const Index = () => {
   const setFoodMap = useUserHealthStore((s) => s.setFoodMap);
   const today = moment().format("YYYY-MM-DD");
 
+  const maintenance = useUserHealthStore((s) => s.maintenance);
   useEffect(() => {
     useUserHealthStore.getState().checkAndResetDailyIntake();
   }, []);
@@ -308,6 +310,7 @@ const Index = () => {
             </Text>
           )}
         </View>
+        <Text className="text-center text-gray-400 text-xs mt-10 mb-5">{maintenance}</Text>
         <Link href="../(infoPages)/soundIntro">Sound Intro</Link>
         <Link href="../(auth)/SignUpScreen">SignUp</Link>
         <Link href="../(infoPages)/infoHome">Info Pages</Link>
@@ -325,7 +328,9 @@ const Index = () => {
           allergies={selectedFood.allergies}
         />
       )}
+    <ClearZustandButton />
     </SafeAreaView>
+
   );
 };
 

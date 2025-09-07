@@ -1,4 +1,4 @@
- // Expo Router hook for navigation
+// Expo Router hook for navigation
 import { useRouter } from "expo-router";
 
 // React core
@@ -29,8 +29,6 @@ import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
 import { calculateCalories } from "@/utils/CalculateCalories";
 import { updateHealthInfo } from "@/components/databaseComponents/updateHealthInfo";
 import { UpdateDatabaseInfo } from "@/components/databaseComponents/updateDatabaseInfo";
-
-
 
 // ======== DATA CONSTANTS ========
 // These are static options for each dropdown input
@@ -157,105 +155,112 @@ export default function AdjustGoalsScreen() {
     weight: '',
   });
 
- // Accept latest values as arguments
-const handleUpdateUserData = async ({
-  userID,
-  weight_KG,
-  weight_lbs,
-  heightInches,
-  heightCM,
-  ageYears,
-  gender,
-  activityLevel,
-  preferences,
-  allergies,
-  goals,
-}) => {
-  try {
-    // Save to database
-    await UpdateDatabaseInfo({
-      userID,
-      weight_KG,
-      weight_lbs,
-      heightInches,
-      heightCM,
-      ageYears,
-      gender,
-      activityLevel,
-      preferences,
-      allergies,
-      goals,
-    });
-
-    // Run calculations if everything is filled
-    if (
-      weight_KG !== 0 &&
-      weight_lbs !== 0 &&
-      heightInches !== 0 &&
-      heightCM !== 0 &&
-      ageYears !== 0 &&
-      gender !== "" &&
-      activityLevel !== "" &&
-      preferences.length > 0 &&
-      allergies.length > 0 &&
-      goals !== 0
-    ) {
-      calculateCalories(
-        gender,
+  // Accept latest values as arguments
+  const handleUpdateUserData = async ({
+    userID,
+    weight_KG,
+    weight_lbs,
+    heightInches,
+    heightCM,
+    ageYears,
+    gender,
+    activityLevel,
+    preferences,
+    allergies,
+    goals,
+  }) => {
+    try {
+      // Save to database
+      await UpdateDatabaseInfo({
+        userID,
+        weight_KG,
         weight_lbs,
-        ageYears,
         heightInches,
-        goals,
-        bmr,
-        maintenance,
+        heightCM,
+        ageYears,
+        gender,
         activityLevel,
         preferences,
         allergies,
-        protein,
-        carbs,
-        fat,
-        setBMR,
-        setMaintenance,
-        setDailyCalorieAdjustment,
-        setProtein,
-        setCarbs,
-        setFat,
-        setDietRecommendation
-      );
-    }
+        goals,
+      });
 
-    console.log("Results Uploaded");
-  } catch (error) {
-    console.log("Results not Uploaded", error);
-  }
-};
+      // Run calculations if everything is filled
+      if (
+        weight_KG !== 0 &&
+        weight_lbs !== 0 &&
+        heightInches !== 0 &&
+        heightCM !== 0 &&
+        ageYears !== 0 &&
+        gender !== "" &&
+        activityLevel !== "" &&
+        preferences.length > 0 &&
+        allergies.length > 0 &&
+        goals !== 0
+      ) {
+        calculateCalories(
+          gender,
+          weight_lbs,
+          ageYears,
+          heightInches,
+          goals,
+          bmr,
+          maintenance,
+          activityLevel,
+          preferences,
+          allergies,
+          protein,
+          carbs,
+          fat,
+          setBMR,
+          setMaintenance,
+          setDailyCalorieAdjustment,
+          setProtein,
+          setCarbs,
+          setFat,
+          setDietRecommendation
+        );
+      }
+
+      console.log("Results Uploaded");
+    } catch (error) {
+      console.log("Results not Uploaded", error);
+    }
+  };
 
   const handleSave = () => {
-    const ageNum = parseInt(age);
-    const heightNum = parseFloat(height);
-    const weightNum = parseFloat(weight);
+    // --- Convert inputs safely ---
+    const ageNum = age.trim() === "" ? NaN : parseInt(age, 10);
+    const heightNum = height.trim() === "" ? NaN : parseFloat(height);
+    const weightNum = weight.trim() === "" ? NaN : parseFloat(weight);
 
+    // --- New error object ---
     const newErrors = {
       age: '',
       height: '',
       weight: '',
     };
 
-    if (isNaN(ageNum) || ageNum < 5 || ageNum > 123) {
-      newErrors.age = 'Please enter a valid age. (5+)';
+    // --- Validation ---
+    if (isNaN(ageNum) || ageNum < 10 || ageNum > 123) {
+      newErrors.age = 'Please enter a valid age (10–123)';
     }
     if (isNaN(heightNum) || heightNum < 50 || heightNum > 300) {
-      newErrors.height = 'Please enter a valid height';
+      newErrors.height = 'Please enter a valid height (50–300 cm)';
     }
     if (isNaN(weightNum) || weightNum < 20 || weightNum > 300) {
-      newErrors.weight = 'Please enter a valid weight';
+      newErrors.weight = 'Please enter a valid weight (20–300 kg)';
     }
 
+    // --- If any error messages exist, stop here ---
     setErrors(newErrors);
     const hasErrors = Object.values(newErrors).some((msg) => msg !== '');
-    if (hasErrors) return;
+    if (hasErrors) {
+      console.log("Validation failed:", newErrors);
+      return;
+    }
 
-    // ✅ Save to Zustand store
+    // ✅ Only save when all inputs are valid
     setAgeYears(ageNum);
     setHeightCM(heightNum);
     setWeight_KG(weightNum);
@@ -264,6 +269,7 @@ const handleUpdateUserData = async ({
     setAllergies(allergyValues);
     setPreferences(prefValues);
     setGoals(weightValue);
+
     handleUpdateUserData({
       userID,
       ageYears: ageNum,
@@ -278,6 +284,7 @@ const handleUpdateUserData = async ({
 
     router.back();
   };
+
 
 
   // --- Form layout using a VirtualizedList ---
