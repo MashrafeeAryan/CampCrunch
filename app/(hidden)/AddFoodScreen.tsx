@@ -97,10 +97,10 @@ const DiningHall = () => (
 )
 
 const outlets = [
-  { name: 'Panda Express', image: FoodLogos.panda },
+  { name: 'Panda Express', image: FoodLogos.panda, link: '/PandaExpressSearch' },
   { name: "Moe's: Southwest Grill", image: FoodLogos.moes },
   { name: 'Starbucks', image: FoodLogos.starbucks },
-  { name: 'Chickfile', image: FoodLogos.chickfile },
+  { name: 'Chick-Fil-A', image: FoodLogos.chickfile },
   { name: 'Subway', image: FoodLogos.subway },
 ];
 
@@ -114,7 +114,7 @@ const CampusOutlets = () => (
           key={index}
           className="flex-row items-center bg-white p-4 rounded-2xl mb-4 shadow-md"
           activeOpacity={0.8}
-          onPress={() => console.log(`Selected: ${outlet.name}`)}
+          onPress={() => {router.push(outlet.link)}}
         >
           <Image
             source={outlet.image}

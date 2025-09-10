@@ -14,6 +14,9 @@ const HiddenLayout = () => {
       <Stack.Screen
         name='AdjustGoalsScreen'
       />
+      <Stack.Screen
+        name='PandaExpressSearch'
+      />
     </Stack>
   )
 }
