@@ -135,26 +135,27 @@ export default function PandaExpressSearch() {
     fetchFoods(true);
   };
 
-  const handleShowView = (
-    proteinVal,
-    fatVal,
-    carbsVal,
-    caloriesVal,
+const handleShowView = (
+  proteinVal,
+  fatVal,
+  carbsVal,
+  caloriesVal,
+  foodName,
+  allergiesList,
+  shortDescription
+) => {
+  setSelectedFood({
+    protein: proteinVal,
+    fat: fatVal,
+    carbs: carbsVal,
+    calories: caloriesVal,
     foodName,
-    allergiesList,
-    shortDescription
-  ) => {
-    setSelectedFood({
-      protein: proteinVal,
-      fat: fatVal,
-      carbs: carbsVal,
-      calories: caloriesVal,
-      foodName,
-      allergies: allergiesList,
-      description: shortDescription,
-    });
-    setShowViewFoodComponent(true);
-  };
+    allergies: (allergiesList || []).map((a) => a.toLowerCase()), // 👈 normalize
+    description: shortDescription,
+  });
+  setShowViewFoodComponent(true);
+};
+
 
   const renderFoodItem = ({ item }) => (
     <View className="bg-white p-4 mb-3 rounded-xl shadow border border-gray-200">
@@ -309,7 +310,7 @@ export default function PandaExpressSearch() {
                 <Text className="text-center text-base font-semibold">
                   {meal}
                 </Text>
-              </TouchableOpacity>
+              </TouchableOpacity> 
             ))}
 
             <TouchableOpacity

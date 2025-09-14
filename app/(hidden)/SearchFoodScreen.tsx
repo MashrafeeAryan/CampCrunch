@@ -18,7 +18,7 @@ import {
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import moment from "moment";
 import Toast from "react-native-toast-message";
-import { router, useLocalSearchParams } from "expo-router";
+import { router } from "expo-router";
 import ViewFoodDescriptionComponent from "@/components/homePageComponents/ViewFoodDescriptionComponent";
 
 const PAGE_LIMIT = 20;
@@ -49,7 +49,20 @@ export default function SearchFoodScreen() {
   const setCaloriesConsumed = useUserHealthStore((s) => s.setCaloriesConsumed);
   const setFatConsumed = useUserHealthStore((s) => s.setFatConsumed);
   const setFoodMap = useUserHealthStore((s) => s.setFoodMap);
-  const today = moment().format("YYYY-MM-DD");
+
+  // 🔥 Auto-updating date
+  const [today, setToday] = useState(moment().format("YYYY-MM-DD"));
+  const [todayDifferentFormat, setTodayDifferentFormat] = useState(
+    moment().format("MM/DD/YYYY")
+  );
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setToday(moment().format("YYYY-MM-DD"));
+      setTodayDifferentFormat(moment().format("MM/DD/YYYY"));
+    }, 60 * 1000); // refresh every minute
+    return () => clearInterval(interval);
+  }, []);
 
   const [showViewFoodComponent, setShowViewFoodComponent] = useState(false);
   const [selectedFood, setSelectedFood] = useState<{
@@ -62,6 +75,47 @@ export default function SearchFoodScreen() {
     description: string;
   } | null>(null);
 
+  // 🔥 Utility to detect meal type
+  const getMealType = () => {
+    const now = new Date();
+    const currentHour = now.getHours();
+    const currentMinute = now.getMinutes();
+    const day = now.getDay(); // Sunday=0, Monday=1, ... Saturday=6
+
+    const isWeekend = day === 0 || day === 6;
+
+    const isBetween = (startHour, startMinute, endHour, endMinute) => {
+      const nowMinutes = currentHour * 60 + currentMinute;
+      const startMinutes = startHour * 60 + startMinute;
+      const endMinutes = endHour * 60 + endMinute;
+      return nowMinutes >= startMinutes && nowMinutes < endMinutes;
+    };
+
+    if (!isWeekend) {
+      // Mon - Fri
+      if (isBetween(7, 0, 10, 30)) return "Breakfast";
+      if (isBetween(10, 30, 15, 30)) return "Lunch";
+      if (isBetween(15, 30, 20, 0)) return "Dinner";
+    } else {
+      // Sat - Sun
+      if (isBetween(9, 0, 14, 0)) return "Breakfast"; // brunch merged into breakfast
+      if (isBetween(10, 30, 15, 30)) return "Lunch";
+      if (isBetween(15, 30, 19, 0)) return "Dinner";
+    }
+
+    return "Breakfast"; // fallback
+  };
+
+  // 🔥 Meal type in state, auto-updating
+  const [currentMealType, setCurrentMealType] = useState(getMealType());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentMealType(getMealType());
+    }, 60 * 1000); // update every minute
+    return () => clearInterval(interval);
+  }, []);
+
   const handleAddToPlan = (
     proteinVal: number,
     fatVal: number,
@@ -71,56 +125,48 @@ export default function SearchFoodScreen() {
     focusedTab: string,
     today: string
   ) => {
-    // Update nutrition totals
     setProteinConsumed(proteinConsumed + Number(proteinVal));
     setFatConsumed(fatConsumed + Number(fatVal));
     setCarbsConsumed(carbsConsumed + Number(carbsVal));
     setCaloriesConsumed(caloriesConsumed + Number(caloriesVal));
 
-    console.log(focusedTab);
-    // Prepare new food item
-    const newFoodItem = {
-      foodName,
-      calories: caloriesVal,
-    };
+    const newFoodItem = { foodName, calories: caloriesVal };
 
-    // Copy current map or initialize
     const updatedMap = { ...foodMap };
 
-    // Ensure date entry exists
     if (!updatedMap[today]) {
       updatedMap[today] = {};
     }
 
-    // Ensure meal type entry exists
     if (!updatedMap[today][focusedTab]) {
       updatedMap[today][focusedTab] = [];
     }
 
-    // Add new food to the correct list
     updatedMap[today][focusedTab].push(newFoodItem);
 
-    // Save updated map to Zustand
     setFoodMap(updatedMap);
-    console.log("This function works");
 
-    // Show toast
     Toast.show({
       type: "success",
-      text1: `${foodName} added`,
+      text1: `${foodName} added to ${focusedTab}`,
       position: "bottom",
       visibilityTime: 2000,
       bottomOffset: 60,
-      props: {},
     });
   };
+
   const fetchFoods = useCallback(
     async (isRefresh = false) => {
       if (loading || (!hasMore && !isRefresh)) return;
       setLoading(true);
 
       try {
-        const queries = [Query.limit(PAGE_LIMIT), Query.orderAsc("foodName")];
+        const queries = [
+          Query.limit(PAGE_LIMIT),
+          Query.equal("date", todayDifferentFormat),
+          Query.equal("foodType", currentMealType), // 🔥 filter by meal type
+          Query.orderAsc("foodName"),
+        ];
 
         if (query.trim()) {
           queries.push(Query.search("foodName", query));
@@ -156,7 +202,7 @@ export default function SearchFoodScreen() {
         setRefreshing(false);
       }
     },
-    [query, lastDoc, hasMore, loading]
+    [query, lastDoc, hasMore, loading, todayDifferentFormat, currentMealType]
   );
 
   useEffect(() => {
@@ -166,9 +212,8 @@ export default function SearchFoodScreen() {
       setHasMore(true);
       fetchFoods(true);
     }, 300); // debounce
-
     return () => clearTimeout(timeout);
-  }, [query]);
+  }, [query, todayDifferentFormat, currentMealType]); // 🔥 refresh when meal type changes
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -177,6 +222,7 @@ export default function SearchFoodScreen() {
     setHasMore(true);
     fetchFoods(true);
   };
+
   const handleShowView = (
     proteinVal: number,
     fatVal: number,
@@ -198,7 +244,6 @@ export default function SearchFoodScreen() {
     setShowViewFoodComponent(true);
   };
 
-  // ✅ Updated list-style card UI
   const renderFoodItem = ({ item }) => (
     <View className="bg-white p-4 mb-3 rounded-xl shadow border border-gray-200">
       <Text className="text-base font-bold mb-1">
@@ -228,7 +273,6 @@ export default function SearchFoodScreen() {
         </Text>
       </View>
 
-      {/* Action buttons */}
       <View className="flex-row space-x-5">
         <TouchableOpacity
           className="mt-4"
@@ -255,7 +299,7 @@ export default function SearchFoodScreen() {
               Number(item.carbohydrates),
               Number(item.calories),
               item.foodName,
-              item.foodType, // coming from params now
+              currentMealType, // 🔥 use live-updating meal type
               today
             );
           }}
@@ -268,7 +312,6 @@ export default function SearchFoodScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
-      {/* Header */}
       <View className="flex-row items-center justify-between px-4 pt-4">
         <TouchableOpacity
           onPress={() => {
@@ -282,7 +325,6 @@ export default function SearchFoodScreen() {
         </View>
       </View>
 
-      {/* Search */}
       <View className="flex-row items-center bg-gray-200 rounded-xl px-4 py-2 mx-4 mt-4">
         <Ionicons name="search" size={20} color="gray" />
         <TextInput
@@ -294,7 +336,6 @@ export default function SearchFoodScreen() {
         />
       </View>
 
-      {/* Food List */}
       <FlatList
         className="mt-4 px-4"
         data={foods}

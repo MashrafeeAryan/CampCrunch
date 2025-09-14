@@ -9,26 +9,19 @@ import {
 } from "react-native";
 import { BlurView } from "expo-blur";
 
-// Example local images for allergies
-import wheat_allergy from "../../assets/images/infoPageLogos";
-import peanut_allergy from "../../assets/images/infoPageLogos";
-import fish_allergy from "../../assets/images/infoPageLogos";
-import soy_allergy from "../../assets/images/infoPageLogos";
-import egg_allergy from "../../assets/images/infoPageLogos";
-import sesame_allergy from "../../assets/images/infoPageLogos";
-import tree_nuts_allergy from "../../assets/images/infoPageLogos";
-import shellfish_allergy from "../../assets/images/infoPageLogos";
-import milk_allergy from "../../assets/images/infoPageLogos";
+import infoPageLogos from "@/assets/images/infoPageLogos"; // Import allergy images
 
+// ✅ Object mapping instead of array
 const allergyIcons = {
-  wheat: { label: "Wheat", img: wheat_allergy },
-  milk: { label: "Milk", img: milk_allergy },
-  egg: { label: "Egg", img: egg_allergy },
-  fish: { label: "Fish", img: fish_allergy },
-  soy: { label: "Soy", img: soy_allergy },
-  sesame: { label: "Sesame", img: sesame_allergy },
-  shellfish: { label: "Shellfish", img: shellfish_allergy },
-  // add more allergies here as needed
+  peanuts: { label: "Peanuts", image: infoPageLogos.peanut_allergy },
+  milk: { label: "Milk", image: infoPageLogos.milk_allergy },
+  fish: { label: "Fish", image: infoPageLogos.fish_allergy },
+  soy: { label: "Soy", image: infoPageLogos.soy_allergy },
+  wheat: { label: "Wheat", image: infoPageLogos.wheat_allergy },
+  eggs: { label: "Eggs", image: infoPageLogos.egg_allergy },
+  sesame: { label: "Sesame", image: infoPageLogos.sesame_allergy },
+  "tree nuts": { label: "Tree Nuts", image: infoPageLogos.tree_nuts_allergy },
+  shellfish: { label: "Shellfish", image: infoPageLogos.shellfish_allergy },
 };
 
 const ViewFoodComponent = ({
@@ -40,7 +33,7 @@ const ViewFoodComponent = ({
   protein,
   fat,
   description,
-  allergies, // <-- expects array like ["wheat", "milk"]
+  allergies = [], // expects array like ["milk", "wheat"]
 }) => {
   return (
     <Modal
@@ -82,14 +75,15 @@ const ViewFoodComponent = ({
                   <Text className="font-semibold mb-2">Allergies:</Text>
                   <View className="flex-row flex-wrap gap-4">
                     {allergies.map((allergy, idx) => {
-                      const item = allergyIcons[allergy.toLowerCase()];
+                      const key = allergy.toLowerCase();
+                      const item = allergyIcons[key];
                       if (!item) return null; // skip unknown allergies
 
                       return (
                         <View key={idx} className="items-center">
                           <View className="bg-yellow-400 p-3 rounded-full">
                             <Image
-                              source={item.img}
+                              source={item.image}
                               style={{ width: 30, height: 30 }}
                               resizeMode="contain"
                             />
