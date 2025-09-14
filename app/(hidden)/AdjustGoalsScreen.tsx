@@ -1,36 +1,40 @@
-// Expo Router hook for navigation
+// Import the router hook from Expo Router, used for navigating between screens
 import { useRouter } from "expo-router";
 
-// React core
+// Import React and the useState hook for managing local component state
 import React, { useState } from "react";
 
-// React Native components
+// Import fundamental React Native components for UI building
 import {
-  Text,
-  View,
-  TouchableWithoutFeedback,
-  Keyboard,
-  TouchableOpacity,
-  TextInput,
-  KeyboardAvoidingView,
-  Platform,
-  VirtualizedList,
+  Text,                        // Displays text labels
+  View,                        // Basic container for layout
+  TouchableWithoutFeedback,    // Detects taps without showing a visual effect
+  Keyboard,                    // Controls the software keyboard
+  TouchableOpacity,            // Touchable element with opacity feedback
+  TextInput,                   // User text input field
+  KeyboardAvoidingView,        // Automatically moves UI when keyboard appears
+  Platform,                    // Detects platform (iOS/Android)
+  VirtualizedList,             // Efficient list renderer for large/dynamic lists
 } from "react-native";
 
-// DropDownPicker for dropdown input fields
+// Import a third-party dropdown component for selection fields
 import DropDownPicker from "react-native-dropdown-picker";
 
-// SafeAreaView helps avoid notches or system UI overlapping content
+// Import SafeAreaView for rendering UI inside safe screen boundaries (notch, status bar, etc.)
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useUserHealthStore } from '@/components/zustandStore/UserHealthStore';
-import { List } from "react-native-paper";
-
-
+// Import Zustand store hooks and utility functions (business logic layer)
+import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
+import { List } from "react-native-paper"; // UI component library (unused here)
+import { useUserAuthStore } from "@/components/zustandStore/AuthStore";
+import { calculateCalories } from "@/utils/CalculateCalories";
+import { updateHealthInfo } from "@/components/databaseComponents/updateHealthInfo";
+import { UpdateDatabaseInfo } from "@/components/databaseComponents/updateDatabaseInfo";
 
 // ======== DATA CONSTANTS ========
-// These are static options for each dropdown input
+// Predefined static options for dropdowns in the form
 
+// Weight management goal options
 const weightGoals = [
   { label: "Lose 2 lbs/week", value: -2 },
   { label: "Lose 1.5 lbs/week", value: -1.5 },
@@ -40,6 +44,7 @@ const weightGoals = [
   { label: "Gain 1 lb weight", value: 1 },
 ];
 
+// Dietary preference options
 const preferences = [
   { label: "Halal", value: "Halal" },
   { label: "Vegetarian", value: "Vegetarian" },
@@ -48,6 +53,7 @@ const preferences = [
   { label: "No Beef", value: "No Beef" },
 ];
 
+// Allergy options
 const allergies = [
   { label: "Peanuts", value: "Peanuts" },
   { label: "Milk", value: "Milk" },
@@ -60,12 +66,14 @@ const allergies = [
   { label: "Shellfish", value: "Shellfish" },
 ];
 
+// Gender options
 const genders = [
   { label: "Male", value: "Male" },
   { label: "Female", value: "Female" },
   { label: "Other", value: "Other" },
 ];
 
+// Physical activity level options
 const activityLevels = [
   { label: "Little to no exercise", value: "sedentary" },
   { label: "1-2 times per week", value: "light" },
@@ -74,125 +82,121 @@ const activityLevels = [
   { label: "Athlete (7 days)", value: "very_active" },
 ];
 
-
 // ======== MAIN SCREEN COMPONENT ========
-
+// Main UI screen for adjusting personal health and diet goals
 export default function AdjustGoalsScreen() {
+  // ---- READ values from Zustand stores (global state) ----
+  // Authentication
+  const userID = useUserAuthStore((s) => s.userID);
 
+  // Health-related info
+  const ageYears = useUserHealthStore((s) => s.ageYears);
+  const heightCM = useUserHealthStore((s) => s.heightCM);
+  const heightInches = useUserHealthStore((s) => s.heightInches);
+  const weight_KG = useUserHealthStore((s) => s.weight_KG);
+  const weight_lbs = useUserHealthStore((s) => s.weight_lbs);
+  const gender = useUserHealthStore((s) => s.gender);
+  const activityLevel = useUserHealthStore((s) => s.activityLevel);
+  const selectedAllergies = useUserHealthStore((s) => s.allergies);
+  const selectedPreferences = useUserHealthStore((s) => s.preferences);
+  const goals = useUserHealthStore((s) => s.goals);
 
-  const {
-    ageYears,
-    heightCM,
-    weight_KG,
-    gender,
-    activityLevel,
-    allergies: selectedAllergies,
-    preferences: selectedPreferences,
-    goals,
+  // Nutritional data
+  const bmr = useUserHealthStore((s) => s.bmr);
+  const maintenance = useUserHealthStore((s) => s.maintenance);
+  const protein = useUserHealthStore((s) => s.protein);
+  const carbs = useUserHealthStore((s) => s.carbs);
+  const fat = useUserHealthStore((s) => s.fat);
 
-    setAgeYears,
-    setHeightCM,
-    setWeight_KG,
-    setGender,
-    setActivityLevel,
-    setAllergies,
-    setPreferences,
-    setGoals,
-  } = useUserHealthStore();
+  // ---- SETTER functions from Zustand stores ----
+  const setAgeYears = useUserHealthStore((s) => s.setAgeYears);
+  const setHeightCM = useUserHealthStore((s) => s.setHeightCM);
+  const setHeightInches = useUserHealthStore((s) => s.setHeightInches);
+  const setWeight_KG = useUserHealthStore((s) => s.setWeight_KG);
+  const setWeight_lbs = useUserHealthStore((s) => s.setWeight_lbs);
+  const setGender = useUserHealthStore((s) => s.setGender);
+  const setActivityLevel = useUserHealthStore((s) => s.setActivityLevel);
+  const setAllergies = useUserHealthStore((s) => s.setAllergies);
+  const setPreferences = useUserHealthStore((s) => s.setPreferences);
+  const setGoals = useUserHealthStore((s) => s.setGoals);
 
+  const setBMR = useUserHealthStore((s) => s.setBMR);
+  const setMaintenance = useUserHealthStore((s) => s.setMaintenance);
+  const setProtein = useUserHealthStore((s) => s.setProtein);
+  const setCarbs = useUserHealthStore((s) => s.setCarbs);
+  const setFat = useUserHealthStore((s) => s.setFat);
+  const setDailyCalorieAdjustment = useUserHealthStore(
+    (s) => s.setDailyCalorieAdjustment
+  );
+  const setDietRecommendation = useUserHealthStore(
+    (s) => s.setDietRecommendation
+  );
 
-  const router = useRouter(); // for navigation
+  // Router hook for navigation between app screens
+  const router = useRouter();
 
-  // --- Dropdown open states ---
+  // ---- LOCAL UI state ----
+  // Track which dropdown is currently open
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
 
-  // --- Dropdown values ---
+  // Current selected dropdown values (defaulting to store values)
   const [genderValue, setGenderValue] = useState(gender);
   const [activityValue, setActivityValue] = useState(activityLevel);
   const [prefValues, setPrefValues] = useState<string[]>(selectedPreferences);
   const [allergyValues, setAllergyValues] = useState<string[]>(selectedAllergies);
   const [weightValue, setWeightValue] = useState(goals);
 
-
-  // --- Dropdown items (choices) ---
+  // Dropdown option items (copied from constants into local state so they can be updated)
   const [weightItems, setWeightItems] = useState(weightGoals);
   const [prefItems, setPrefItems] = useState(preferences);
   const [allergyItems, setAllergyItems] = useState(allergies);
   const [genderItems, setGenderItems] = useState(genders);
   const [activityItems, setActivityItems] = useState(activityLevels);
 
-  // --- Text input states ---
-  const [age, setAge] = useState(ageYears > 0 ? ageYears.toString() : '');
-  const [height, setHeight] = useState(heightCM > 0 ? heightCM.toString() : '');
-  const [weight, setWeight] = useState(weight_KG > 0 ? weight_KG.toString() : '');
+  // User input for text fields (converted from store values if available)
+  const [age, setAge] = useState(ageYears > 0 ? ageYears.toString() : "");
+  const [height, setHeight] = useState(heightCM > 0 ? heightCM.toString() : "");
+  const [weight, setWeight] = useState(weight_KG > 0 ? weight_KG.toString() : "");
 
-
-
+  // Track validation error messages for input fields
   const [errors, setErrors] = useState({
-    age: '',
-    height: '',
-    weight: '',
+    age: "",
+    height: "",
+    weight: "",
   });
 
-  const handleSave = () => {
-    const ageNum = parseInt(age);
-    const heightNum = parseFloat(height);
-    const weightNum = parseFloat(weight);
-
-    const newErrors = {
-      age: '',
-      height: '',
-      weight: '',
-    };
-
-    if (isNaN(ageNum) || ageNum < 5 || ageNum > 123) {
-      newErrors.age = 'Please enter a valid age. (5+)';
-    }
-    if (isNaN(heightNum) || heightNum < 50 || heightNum > 300) {
-      newErrors.height = 'Please enter a valid height';
-    }
-    if (isNaN(weightNum) || weightNum < 20 || weightNum > 300) {
-      newErrors.weight = 'Please wenter a valid weight';
-    }
-
-    setErrors(newErrors);
-    const hasErrors = Object.values(newErrors).some((msg) => msg !== '');
-    if (hasErrors) return;
-
-    // ✅ Save to Zustand store
-    setAgeYears(ageNum);
-    setHeightCM(heightNum);
-    setWeight_KG(weightNum);
-    setGender(genderValue);
-    setActivityLevel(activityValue);
-    setAllergies(allergyValues);
-    setPreferences(prefValues);
-    setGoals(weightValue);
-
-    router.back();
+  // Example function for saving user input (currently just logs values)
+  const handleUpdateUserData = async () => {
+    console.log("Goals: ", weightValue);
+    console.log("Preferences: ", prefValues);
+    console.log("Gender", genderValue);
+    console.log("Activity Level", activityValue);
+    console.log("Allergies", allergyValues );
+    console.log("Age", age);
+    console.log("Height", height);
+    console.log("Weight", weight);
+    console.log("This function runs!");
   };
 
-
-  // --- Form layout using a VirtualizedList ---
+  // ---- UI FORM CONFIG ----
+  // Define sections of the form, each with an ID and a render function
   const formSections = [
+    // Title header
     {
       id: "header",
       render: () => (
         <Text className="text-2xl font-bold mb-6">Adjust Goals</Text>
       ),
     },
-
-
-
-
+    // Weight goal dropdown
     {
       id: "weightGoal",
       render: () => (
-        <View style={{ zIndex: openDropdown === 'weightGoal' ? 1000 : 1 }}>
+        <View style={{ zIndex: openDropdown === "weightGoal" ? 1000 : 1 }}>
           <Text className="mb-2">Weight Goal</Text>
           <DropDownPicker
-            open={openDropdown === 'weightGoal'}
-            setOpen={(open) => setOpenDropdown(open ? 'weightGoal' : null)}
+            open={openDropdown === "weightGoal"}
+            setOpen={(open) => setOpenDropdown(open ? "weightGoal" : null)}
             value={weightValue}
             items={weightItems}
             setValue={setWeightValue}
@@ -203,35 +207,45 @@ export default function AdjustGoalsScreen() {
         </View>
       ),
     },
+    // Preferences dropdown (multi-select)
     {
       id: "preferences",
       render: () => (
-        <View style={{ zIndex: openDropdown === 'preferences' ? 1000 : 1, marginTop: 20 }}>
+        <View
+          style={{
+            zIndex: openDropdown === "preferences" ? 1000 : 1,
+            marginTop: 20,
+          }}
+        >
           <Text className="mb-2">Food Preferences</Text>
           <DropDownPicker
-            open={openDropdown === 'preferences'}
-            setOpen={(open) => setOpenDropdown(open ? 'preferences' : null)}
+            open={openDropdown === "preferences"}
+            setOpen={(open) => setOpenDropdown(open ? "preferences" : null)}
             multiple={true}
             value={prefValues}
             items={prefItems}
             setValue={setPrefValues}
             setItems={setPrefItems}
             placeholder="Select Preferences"
-            mode="BADGE"
-          // badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
-          // theme="DARK"
+            mode="BADGE" // Display selected items as badges
           />
         </View>
       ),
     },
+    // Allergies dropdown (multi-select)
     {
       id: "allergies",
       render: () => (
-        <View style={{ zIndex: openDropdown === 'allergies' ? 1000 : 1, marginTop: 20 }}>
+        <View
+          style={{
+            zIndex: openDropdown === "allergies" ? 1000 : 1,
+            marginTop: 20,
+          }}
+        >
           <Text className="mb-2">Allergies</Text>
           <DropDownPicker
-            open={openDropdown === 'allergies'}
-            setOpen={(open) => setOpenDropdown(open ? 'allergies' : null)}
+            open={openDropdown === "allergies"}
+            setOpen={(open) => setOpenDropdown(open ? "allergies" : null)}
             multiple={true}
             value={allergyValues}
             items={allergyItems}
@@ -240,25 +254,23 @@ export default function AdjustGoalsScreen() {
             placeholder="Select Allergies"
             mode="BADGE"
             maxHeight={450}
-            // listMode="SCROLLVIEW"
-            // badgeDotColors={["#e76f51", "#00b4d8", "#e9c46a", "#e76f51", "#8ac926", "#00b4d8", "#e9c46a"]}
-            // theme="DARK"
           />
         </View>
- 
-
       ),
     },
+    // Info section header
     {
       id: "yourInfoHeader",
       render: () => (
         <Text className="text-xl font-bold mt-6 mb-4">Your Info</Text>
       ),
     },
+    // Age + Height text inputs
     {
       id: "ageHeight",
       render: () => (
         <View className="flex-row gap-4">
+          {/* Age input field */}
           <View className="flex-1">
             <Text className="mb-2">Age</Text>
             <TextInput
@@ -266,15 +278,17 @@ export default function AdjustGoalsScreen() {
               value={age}
               onChangeText={(val) => {
                 setAge(val);
-                setErrors((prev) => ({ ...prev, age: '' }));
+                setErrors((prev) => ({ ...prev, age: "" }));
               }}
               placeholder="Enter age"
               className="border border-gray-300 rounded-lg px-4 py-[15px] bg-white text-black"
             />
+            {/* Error message for invalid age */}
             {errors.age ? (
               <Text className="text-red-500 text-xs mt-1">{errors.age}</Text>
             ) : null}
           </View>
+          {/* Height input field */}
           <View className="flex-1">
             <Text className="mb-2">Height (cm)</Text>
             <TextInput
@@ -282,11 +296,12 @@ export default function AdjustGoalsScreen() {
               value={height}
               onChangeText={(val) => {
                 setHeight(val);
-                setErrors((prev) => ({ ...prev, height: '' }));
+                setErrors((prev) => ({ ...prev, height: "" }));
               }}
               placeholder="Enter height"
               className="border border-gray-300 rounded-lg px-4 py-[15px] bg-white text-black"
             />
+            {/* Error message for invalid height */}
             {errors.height ? (
               <Text className="text-red-500 text-xs mt-1">{errors.height}</Text>
             ) : null}
@@ -294,7 +309,7 @@ export default function AdjustGoalsScreen() {
         </View>
       ),
     },
-
+    // Weight text input
     {
       id: "weight",
       render: () => (
@@ -305,26 +320,32 @@ export default function AdjustGoalsScreen() {
             value={weight}
             onChangeText={(val) => {
               setWeight(val);
-              setErrors((prev) => ({ ...prev, weight: '' }));
+              setErrors((prev) => ({ ...prev, weight: "" }));
             }}
             placeholder="Enter weight"
             className="border border-gray-300 rounded-lg px-4 py-[15px] bg-white text-black"
           />
+          {/* Error message for invalid weight */}
           {errors.weight ? (
             <Text className="text-red-500 text-xs mt-1">{errors.weight}</Text>
           ) : null}
         </View>
       ),
     },
-
+    // Gender dropdown
     {
       id: "gender",
       render: () => (
-        <View style={{ zIndex: openDropdown === 'gender' ? 1000 : 1, marginTop: 20 }}>
+        <View
+          style={{
+            zIndex: openDropdown === "gender" ? 1000 : 1,
+            marginTop: 20,
+          }}
+        >
           <Text className="mb-2">Gender</Text>
           <DropDownPicker
-            open={openDropdown === 'gender'}
-            setOpen={(open) => setOpenDropdown(open ? 'gender' : null)}
+            open={openDropdown === "gender"}
+            setOpen={(open) => setOpenDropdown(open ? "gender" : null)}
             value={genderValue}
             items={genderItems}
             setValue={setGenderValue}
@@ -334,14 +355,20 @@ export default function AdjustGoalsScreen() {
         </View>
       ),
     },
+    // Activity level dropdown
     {
       id: "activityLevel",
       render: () => (
-        <View style={{ zIndex: openDropdown === 'activityLevel' ? 1000 : 1, marginTop: 20 }}>
+        <View
+          style={{
+            zIndex: openDropdown === "activityLevel" ? 1000 : 1,
+            marginTop: 20,
+          }}
+        >
           <Text className="mb-2">Activity Level</Text>
           <DropDownPicker
-            open={openDropdown === 'activityLevel'}
-            setOpen={(open) => setOpenDropdown(open ? 'activityLevel' : null)}
+            open={openDropdown === "activityLevel"}
+            setOpen={(open) => setOpenDropdown(open ? "activityLevel" : null)}
             value={activityValue}
             items={activityItems}
             setValue={setActivityValue}
@@ -351,10 +378,11 @@ export default function AdjustGoalsScreen() {
         </View>
       ),
     },
+    // Save button
     {
       id: "saveButton",
       render: () => (
-        <TouchableOpacity onPress={handleSave}>
+        <TouchableOpacity onPress={handleUpdateUserData}>
           <View className="mt-6">
             <Text className="bg-blue-600 text-white text-center py-3 rounded-lg text-base font-semibold">
               Save Changes
@@ -365,33 +393,32 @@ export default function AdjustGoalsScreen() {
     },
   ];
 
+  // ---- RENDER SCREEN ----
   return (
     <SafeAreaView className="flex-1 bg-[#C7BEBD]">
-      {/* Tapping outside the inputs dismisses the keyboard */}
+      {/* Dismiss the keyboard when tapping outside of input fields */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : undefined}
           style={{ flex: 1 }}
         >
-          {/* VirtualizedList is used instead of FlatList for performance */}
+          {/* Render the form as a VirtualizedList for performance on long lists */}
           <VirtualizedList
-            data={formSections}
-            initialNumToRender={4}
-            keyExtractor={(item) => item.id}
-            getItemCount={(data) => data.length}
-            getItem={(data, index) => data[index]}
-            renderItem={({ item }) => (
+            data={formSections}                        // Section definitions
+            initialNumToRender={4}                     // Render first 4 items initially
+            keyExtractor={(item) => item.id}           // Unique key for each section
+            getItemCount={(data) => data.length}       // Total number of items
+            getItem={(data, index) => data[index]}     // Get item by index
+            renderItem={({ item }) => (                // Render each form section
               <View className="px-5 py-[5px] overflow-visible">
                 {item.render()}
               </View>
             )}
-            keyboardShouldPersistTaps="handled"
-            contentContainerStyle={{ paddingBottom: 10 }}
+            keyboardShouldPersistTaps="handled"        // Allow taps while keyboard open
+            contentContainerStyle={{ paddingBottom: 10 }} // Add padding at bottom
           />
-
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 }
-

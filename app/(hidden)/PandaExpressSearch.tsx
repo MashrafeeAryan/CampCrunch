@@ -6,6 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -13,7 +14,7 @@ import { Query } from "appwrite";
 import {
   DatabaseID,
   databases,
-  foodDatasetCollectionID,
+  pandaExpressCollectionID,
 } from "@/appwriteConfig";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import moment from "moment";
@@ -23,7 +24,7 @@ import ViewFoodDescriptionComponent from "@/components/homePageComponents/ViewFo
 
 const PAGE_LIMIT = 20;
 
-export default function SearchFoodScreen() {
+export default function PandaExpressSearch() {
   const [foods, setFoods] = useState([]);
   const [query, setQuery] = useState("");
   const [lastDoc, setLastDoc] = useState(null);
@@ -31,16 +32,9 @@ export default function SearchFoodScreen() {
   const [loading, setLoading] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
 
-  const dailyCalorieAdjustment = useUserHealthStore(
-    (s) => s.dailyCalorieAdjustment
-  );
-  const diet = useUserHealthStore((s) => s.dietRecommendation);
-  const protein = useUserHealthStore((s) => s.protein);
-  const carbs = useUserHealthStore((s) => s.carbs);
-  const fat = useUserHealthStore((s) => s.fat);
-  const fatConsumed = useUserHealthStore((s) => s.fatConsumed);
   const proteinConsumed = useUserHealthStore((s) => s.proteinConsumed);
   const carbsConsumed = useUserHealthStore((s) => s.carbsConsumed);
+  const fatConsumed = useUserHealthStore((s) => s.fatConsumed);
   const caloriesConsumed = useUserHealthStore((s) => s.caloriesConsumed);
   const foodMap = useUserHealthStore((s) => s.foodMap);
 
@@ -50,80 +44,23 @@ export default function SearchFoodScreen() {
   const setFatConsumed = useUserHealthStore((s) => s.setFatConsumed);
   const setFoodMap = useUserHealthStore((s) => s.setFoodMap);
 
-  // 🔥 Auto-updating date
-  const [today, setToday] = useState(moment().format("YYYY-MM-DD"));
-  const [todayDifferentFormat, setTodayDifferentFormat] = useState(
-    moment().format("MM/DD/YYYY")
-  );
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setToday(moment().format("YYYY-MM-DD"));
-      setTodayDifferentFormat(moment().format("MM/DD/YYYY"));
-    }, 60 * 1000); // refresh every minute
-    return () => clearInterval(interval);
-  }, []);
+  const today = moment().format("YYYY-MM-DD");
 
   const [showViewFoodComponent, setShowViewFoodComponent] = useState(false);
-  const [selectedFood, setSelectedFood] = useState<{
-    protein: number;
-    fat: number;
-    carbs: number;
-    calories: number;
-    foodName: string;
-    allergies: string[];
-    description: string;
-  } | null>(null);
+  const [selectedFood, setSelectedFood] = useState(null);
 
-  // 🔥 Utility to detect meal type
-  const getMealType = () => {
-    const now = new Date();
-    const currentHour = now.getHours();
-    const currentMinute = now.getMinutes();
-    const day = now.getDay(); // Sunday=0, Monday=1, ... Saturday=6
-
-    const isWeekend = day === 0 || day === 6;
-
-    const isBetween = (startHour, startMinute, endHour, endMinute) => {
-      const nowMinutes = currentHour * 60 + currentMinute;
-      const startMinutes = startHour * 60 + startMinute;
-      const endMinutes = endHour * 60 + endMinute;
-      return nowMinutes >= startMinutes && nowMinutes < endMinutes;
-    };
-
-    if (!isWeekend) {
-      // Mon - Fri
-      if (isBetween(7, 0, 10, 30)) return "Breakfast";
-      if (isBetween(10, 30, 15, 30)) return "Lunch";
-      if (isBetween(15, 30, 20, 0)) return "Dinner";
-    } else {
-      // Sat - Sun
-      if (isBetween(9, 0, 14, 0)) return "Breakfast"; // brunch merged into breakfast
-      if (isBetween(10, 30, 15, 30)) return "Lunch";
-      if (isBetween(15, 30, 19, 0)) return "Dinner";
-    }
-
-    return "Breakfast"; // fallback
-  };
-
-  // 🔥 Meal type in state, auto-updating
-  const [currentMealType, setCurrentMealType] = useState(getMealType());
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentMealType(getMealType());
-    }, 60 * 1000); // update every minute
-    return () => clearInterval(interval);
-  }, []);
+  // 🔹 New state for meal modal
+  const [showMealModal, setShowMealModal] = useState(false);
+  const [pendingFood, setPendingFood] = useState(null);
 
   const handleAddToPlan = (
-    proteinVal: number,
-    fatVal: number,
-    carbsVal: number,
-    caloriesVal: number,
-    foodName: string,
-    focusedTab: string,
-    today: string
+    proteinVal,
+    fatVal,
+    carbsVal,
+    caloriesVal,
+    foodName,
+    focusedTab,
+    today
   ) => {
     setProteinConsumed(proteinConsumed + Number(proteinVal));
     setFatConsumed(fatConsumed + Number(fatVal));
@@ -133,15 +70,8 @@ export default function SearchFoodScreen() {
     const newFoodItem = { foodName, calories: caloriesVal };
 
     const updatedMap = { ...foodMap };
-
-    if (!updatedMap[today]) {
-      updatedMap[today] = {};
-    }
-
-    if (!updatedMap[today][focusedTab]) {
-      updatedMap[today][focusedTab] = [];
-    }
-
+    if (!updatedMap[today]) updatedMap[today] = {};
+    if (!updatedMap[today][focusedTab]) updatedMap[today][focusedTab] = [];
     updatedMap[today][focusedTab].push(newFoodItem);
 
     setFoodMap(updatedMap);
@@ -161,40 +91,22 @@ export default function SearchFoodScreen() {
       setLoading(true);
 
       try {
-        const queries = [
-          Query.limit(PAGE_LIMIT),
-          Query.equal("date", todayDifferentFormat),
-          Query.equal("foodType", currentMealType), // 🔥 filter by meal type
-          Query.orderAsc("foodName"),
-        ];
-
-        if (query.trim()) {
-          queries.push(Query.search("foodName", query));
-        }
-
-        if (lastDoc && !isRefresh) {
-          queries.push(Query.cursorAfter(lastDoc.$id));
-        }
+        const queries = [Query.limit(PAGE_LIMIT), Query.orderAsc("foodName")];
+        if (query.trim()) queries.push(Query.search("foodName", query));
+        if (lastDoc && !isRefresh) queries.push(Query.cursorAfter(lastDoc.$id));
 
         const res = await databases.listDocuments(
           DatabaseID,
-          foodDatasetCollectionID,
+          pandaExpressCollectionID,
           queries
         );
 
         const newDocs = res.documents;
+        if (isRefresh) setFoods(newDocs);
+        else setFoods((prev) => [...prev, ...newDocs]);
 
-        if (isRefresh) {
-          setFoods(newDocs);
-        } else {
-          setFoods((prev) => [...prev, ...newDocs]);
-        }
-
-        if (newDocs.length < PAGE_LIMIT) {
-          setHasMore(false);
-        } else {
-          setLastDoc(newDocs[newDocs.length - 1]);
-        }
+        if (newDocs.length < PAGE_LIMIT) setHasMore(false);
+        else setLastDoc(newDocs[newDocs.length - 1]);
       } catch (err) {
         console.error("Error fetching foods:", err);
       } finally {
@@ -202,7 +114,7 @@ export default function SearchFoodScreen() {
         setRefreshing(false);
       }
     },
-    [query, lastDoc, hasMore, loading, todayDifferentFormat, currentMealType]
+    [query, lastDoc, hasMore, loading]
   );
 
   useEffect(() => {
@@ -211,9 +123,9 @@ export default function SearchFoodScreen() {
       setLastDoc(null);
       setHasMore(true);
       fetchFoods(true);
-    }, 300); // debounce
+    }, 300);
     return () => clearTimeout(timeout);
-  }, [query, todayDifferentFormat, currentMealType]); // 🔥 refresh when meal type changes
+  }, [query]);
 
   const handleRefresh = () => {
     setRefreshing(true);
@@ -223,26 +135,27 @@ export default function SearchFoodScreen() {
     fetchFoods(true);
   };
 
-  const handleShowView = (
-    proteinVal: number,
-    fatVal: number,
-    carbsVal: number,
-    caloriesVal: number,
-    foodName: string,
-    allergiesList: string[],
-    shortDescription: string
-  ) => {
-    setSelectedFood({
-      protein: proteinVal,
-      fat: fatVal,
-      carbs: carbsVal,
-      calories: caloriesVal,
-      foodName,
-      allergies: allergiesList,
-      description: shortDescription,
-    });
-    setShowViewFoodComponent(true);
-  };
+const handleShowView = (
+  proteinVal,
+  fatVal,
+  carbsVal,
+  caloriesVal,
+  foodName,
+  allergiesList,
+  shortDescription
+) => {
+  setSelectedFood({
+    protein: proteinVal,
+    fat: fatVal,
+    carbs: carbsVal,
+    calories: caloriesVal,
+    foodName,
+    allergies: (allergiesList || []).map((a) => a.toLowerCase()), // 👈 normalize
+    description: shortDescription,
+  });
+  setShowViewFoodComponent(true);
+};
+
 
   const renderFoodItem = ({ item }) => (
     <View className="bg-white p-4 mb-3 rounded-xl shadow border border-gray-200">
@@ -273,10 +186,11 @@ export default function SearchFoodScreen() {
         </Text>
       </View>
 
+      {/* Action buttons */}
       <View className="flex-row space-x-5">
         <TouchableOpacity
           className="mt-4"
-          onPress={() => {
+          onPress={() =>
             handleShowView(
               Number(item.protein),
               Number(item.fat),
@@ -285,23 +199,22 @@ export default function SearchFoodScreen() {
               item.foodName,
               item.allergies,
               item.shortDescription
-            );
-          }}
+            )
+          }
         >
           <Text className="text-[#D4AF37] font-bold">View</Text>
         </TouchableOpacity>
         <TouchableOpacity
           className="mt-4"
           onPress={() => {
-            handleAddToPlan(
-              Number(item.protein),
-              Number(item.fat),
-              Number(item.carbohydrates),
-              Number(item.calories),
-              item.foodName,
-              currentMealType, // 🔥 use live-updating meal type
-              today
-            );
+            setPendingFood({
+              protein: Number(item.protein),
+              fat: Number(item.fat),
+              carbs: Number(item.carbohydrates),
+              calories: Number(item.calories),
+              foodName: item.foodName,
+            });
+            setShowMealModal(true);
           }}
         >
           <Text className="text-[#D4AF37] font-bold">Add to Plan ➔</Text>
@@ -312,12 +225,9 @@ export default function SearchFoodScreen() {
 
   return (
     <SafeAreaView className="flex-1 bg-white">
+      {/* Header */}
       <View className="flex-row items-center justify-between px-4 pt-4">
-        <TouchableOpacity
-          onPress={() => {
-            router.push("../CalendarScreen");
-          }}
-        >
+        <TouchableOpacity onPress={() => router.push("../CalendarScreen")}>
           <Ionicons name="arrow-back" size={24} color="black" />
         </TouchableOpacity>
         <View className="absolute left-0 right-0 items-center">
@@ -325,6 +235,7 @@ export default function SearchFoodScreen() {
         </View>
       </View>
 
+      {/* Search */}
       <View className="flex-row items-center bg-gray-200 rounded-xl px-4 py-2 mx-4 mt-4">
         <Ionicons name="search" size={20} color="gray" />
         <TextInput
@@ -336,6 +247,7 @@ export default function SearchFoodScreen() {
         />
       </View>
 
+      {/* Food List */}
       <FlatList
         className="mt-4 px-4"
         data={foods}
@@ -353,6 +265,8 @@ export default function SearchFoodScreen() {
         refreshing={refreshing}
         onRefresh={handleRefresh}
       />
+
+      {/* Food detail modal */}
       {selectedFood && (
         <ViewFoodDescriptionComponent
           showViewFoodComponent={showViewFoodComponent}
@@ -366,6 +280,50 @@ export default function SearchFoodScreen() {
           allergies={selectedFood.allergies}
         />
       )}
+
+      {/* Meal selection modal */}
+      <Modal visible={showMealModal} transparent animationType="fade">
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View className="bg-white w-80 rounded-2xl p-6">
+            <Text className="text-lg font-bold mb-4 text-center">
+              What are you eating?
+            </Text>
+
+            {["Breakfast", "Lunch", "Dinner", "Snacks"].map((meal) => (
+              <TouchableOpacity
+                key={meal}
+                className="bg-gray-100 py-3 rounded-xl mb-3"
+                onPress={() => {
+                  handleAddToPlan(
+                    pendingFood.protein,
+                    pendingFood.fat,
+                    pendingFood.carbs,
+                    pendingFood.calories,
+                    pendingFood.foodName,
+                    meal,
+                    today
+                  );
+                  setShowMealModal(false);
+                  setPendingFood(null);
+                }}
+              >
+                <Text className="text-center text-base font-semibold">
+                  {meal}
+                </Text>
+              </TouchableOpacity> 
+            ))}
+
+            <TouchableOpacity
+              onPress={() => {
+                setShowMealModal(false);
+                setPendingFood(null);
+              }}
+            >
+              <Text className="text-center text-red-500 mt-2">Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }
