@@ -98,7 +98,7 @@ export default function SearchFoodScreen() {
       // Mon - Fri
       if (isBetween(7, 0, 10, 30)) return "Breakfast";
       if (isBetween(10, 30, 15, 30)) return "Lunch";
-      if (isBetween(15, 30, 20, 0)) return "Dinner";
+      if (isBetween(15, 30, 20, 0)) return "Dinner";1
     } else {
       // Sat - Sun
       if (isBetween(9, 0, 14, 0)) return "Breakfast"; // brunch merged into breakfast
@@ -166,8 +166,8 @@ export default function SearchFoodScreen() {
       try {
         const queries = [
           Query.limit(PAGE_LIMIT),
-          Query.equal("date", todayDifferentFormat),
-          Query.equal("foodType", currentMealType), // 🔥 filter by meal type
+          //Query.equal("date", todayDifferentFormat),
+           Query.equal("foodType", currentMealType), // 🔥 filter by meal type
           Query.orderAsc("foodName"),
         ];
 

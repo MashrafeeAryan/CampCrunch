@@ -314,6 +314,7 @@ const Index = () => {
         <Link href="../(infoPages)/soundIntro">Sound Intro</Link>
         <Link href="../(auth)/SignUpScreen">SignUp</Link>
         <Link href="../(infoPages)/infoHome">Info Pages</Link>
+        <Link href="../(hidden)/outletPractice">Outlet Practice</Link>
       </ScrollView>
       {selectedFood && (
         <ViewFoodDescriptionComponent
