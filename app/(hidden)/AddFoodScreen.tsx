@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import {router, useRouter } from 'expo-router';
+import {router, useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { Alert, Image, KeyboardAvoidingView, Platform, ScrollView, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,6 +8,8 @@ import { FoodLogos } from '../../assets/images/addFoodLogos';
 import SearchFoodScreen from './SearchFoodScreen';
 
 export default function AddFoodScreen() {
+  const { foodType } = useLocalSearchParams<{ foodType?: string }>()
+
   const [selectedTab, setSelectedTab] = useState('Dining Hall');
   const router = useRouter()
   const renderContent = () => {
@@ -95,10 +97,10 @@ const DiningHall = () => (
 )
 
 const outlets = [
-  { name: 'Panda Express', image: FoodLogos.panda },
+  { name: 'Panda Express', image: FoodLogos.panda, link: '/PandaExpressSearch' },
   { name: "Moe's: Southwest Grill", image: FoodLogos.moes },
   { name: 'Starbucks', image: FoodLogos.starbucks },
-  { name: 'Chickfile', image: FoodLogos.chickfile },
+  { name: 'Chick-Fil-A', image: FoodLogos.chickfile, link: '/ChickfilASearch'},
   { name: 'Subway', image: FoodLogos.subway },
 ];
 
@@ -112,7 +114,7 @@ const CampusOutlets = () => (
           key={index}
           className="flex-row items-center bg-white p-4 rounded-2xl mb-4 shadow-md"
           activeOpacity={0.8}
-          onPress={() => console.log(`Selected: ${outlet.name}`)}
+          onPress={() => {router.push(outlet.link)}}
         >
           <Image
             source={outlet.image}
