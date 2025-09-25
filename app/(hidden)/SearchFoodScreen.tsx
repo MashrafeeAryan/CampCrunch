@@ -6,6 +6,7 @@ import {
   FlatList,
   ActivityIndicator,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -24,6 +25,8 @@ import ViewFoodDescriptionComponent from "@/components/homePageComponents/ViewFo
 const PAGE_LIMIT = 20;
 
 export default function SearchFoodScreen() {
+  const [showMealModal, setShowMealModal] = useState(false);
+  const [pendingFood, setPendingFood] = useState(null);
   const [foods, setFoods] = useState([]);
   const [query, setQuery] = useState("");
   const [lastDoc, setLastDoc] = useState(null);
@@ -95,7 +98,7 @@ export default function SearchFoodScreen() {
       // Mon - Fri
       if (isBetween(7, 0, 10, 30)) return "Breakfast";
       if (isBetween(10, 30, 15, 30)) return "Lunch";
-      if (isBetween(15, 30, 20, 0)) return "Dinner";
+      if (isBetween(15, 30, 20, 0)) return "Dinner";1
     } else {
       // Sat - Sun
       if (isBetween(9, 0, 14, 0)) return "Breakfast"; // brunch merged into breakfast
@@ -163,8 +166,8 @@ export default function SearchFoodScreen() {
       try {
         const queries = [
           Query.limit(PAGE_LIMIT),
-          Query.equal("date", todayDifferentFormat),
-          Query.equal("foodType", currentMealType), // 🔥 filter by meal type
+          //Query.equal("date", todayDifferentFormat),
+           Query.equal("foodType", currentMealType), // 🔥 filter by meal type
           Query.orderAsc("foodName"),
         ];
 
@@ -293,15 +296,14 @@ export default function SearchFoodScreen() {
         <TouchableOpacity
           className="mt-4"
           onPress={() => {
-            handleAddToPlan(
-              Number(item.protein),
-              Number(item.fat),
-              Number(item.carbohydrates),
-              Number(item.calories),
-              item.foodName,
-              currentMealType, // 🔥 use live-updating meal type
-              today
-            );
+            setPendingFood({
+              protein: Number(item.protein),
+              fat: Number(item.fat),
+              carbs: Number(item.carbohydrates),
+              calories: Number(item.calories),
+              foodName: item.foodName,
+            });
+            setShowMealModal(true);
           }}
         >
           <Text className="text-[#D4AF37] font-bold">Add to Plan ➔</Text>
@@ -366,6 +368,49 @@ export default function SearchFoodScreen() {
           allergies={selectedFood.allergies}
         />
       )}
+      {/* Meal selection modal */}
+      <Modal visible={showMealModal} transparent animationType="fade">
+        <View className="flex-1 justify-center items-center bg-black/50">
+          <View className="bg-white w-80 rounded-2xl p-6">
+            <Text className="text-lg font-bold mb-4 text-center">
+              What are you eating?
+            </Text>
+
+            {["Breakfast", "Lunch", "Dinner", "Snacks"].map((meal) => (
+              <TouchableOpacity
+                key={meal}
+                className="bg-gray-100 py-3 rounded-xl mb-3"
+                onPress={() => {
+                  handleAddToPlan(
+                    pendingFood.protein,
+                    pendingFood.fat,
+                    pendingFood.carbs,
+                    pendingFood.calories,
+                    pendingFood.foodName,
+                    meal,
+                    today
+                  );
+                  setShowMealModal(false);
+                  setPendingFood(null);
+                }}
+              >
+                <Text className="text-center text-base font-semibold">
+                  {meal}
+                </Text>
+              </TouchableOpacity>
+            ))}
+
+            <TouchableOpacity
+              onPress={() => {
+                setShowMealModal(false);
+                setPendingFood(null);
+              }}
+            >
+              <Text className="text-center text-red-500 mt-2">Cancel</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 }

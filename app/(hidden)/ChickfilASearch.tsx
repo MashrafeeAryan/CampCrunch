@@ -12,9 +12,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Query } from "appwrite";
 import {
+    chickFilACollectionID,
   DatabaseID,
   databases,
-  pandaExpressCollectionID,
 } from "@/appwriteConfig";
 import { useUserHealthStore } from "@/components/zustandStore/UserHealthStore";
 import moment from "moment";
@@ -24,7 +24,7 @@ import ViewFoodDescriptionComponent from "@/components/homePageComponents/ViewFo
 
 const PAGE_LIMIT = 20;
 
-export default function PandaExpressSearch() {
+export default function Chick_Fil_A_Search() {
   const [foods, setFoods] = useState([]);
   const [query, setQuery] = useState("");
   const [lastDoc, setLastDoc] = useState(null);
@@ -97,7 +97,7 @@ export default function PandaExpressSearch() {
 
         const res = await databases.listDocuments(
           DatabaseID,
-          pandaExpressCollectionID,
+          chickFilACollectionID,
           queries
         );
 
