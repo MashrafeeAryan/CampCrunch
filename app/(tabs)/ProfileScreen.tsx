@@ -71,13 +71,13 @@ const ProfileScreen = () => {
           <View className="flex-row justify-around py-5">
             {[
               { label: "Nutri-Level", value: 5 },
-              { label: "NutriBuds", value: 10 },
+              // { label: "NutriBuds", value: 10 },
               { label: "Fuel-Streak", value: 200 },
               { label: "Bonus Bucks", value: "$150" },
             ].map((item, index) => (
               <View
                 key={index}
-                className="items-center bg-white rounded-[10px] p-[9px]"
+                className="items-center bg-white rounded-[10px] p-[14px]"
                 style={{...getBackgroundStyle(theme), ...getSectionBorderStyle(theme)}}
               >
                 <Text className="font-bold text-lg" style={getTextStyle(theme)}>{item.value}</Text>
@@ -153,11 +153,6 @@ const ProfileScreen = () => {
           </ScrollView>
         </View>
         <View className="h-10">*/}
-
-        <TouchableOpacity onPress={() => router.push('/(infoPages)/infoHome')}>
-          <Text style={getTextStyle(theme)}>Hi there</Text>
-        </TouchableOpacity>
-
         </View> 
       </ScrollView>
     </View>
