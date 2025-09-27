@@ -15,13 +15,12 @@ import { OutletThumbnails } from "@/assets/images/outletThumnails";
 import { FoodLogos } from "@/assets/images/addFoodLogos";
 
 const restaurant = {
-  name: "Panda Express",
+  name: "Blenz",
   address: "118 College Drive",
   status: "Open now",
   pickup: "Ready in 4 min",
   line: "No line",
-  image:
-    OutletThumbnails.pandaExpress,
+  image: FoodLogos.blenz,
 };
 
 const data = [
@@ -173,7 +172,7 @@ export default function MenuScreen() {
             >
               <Search size={18} color="#666" />
               <TextInput
-                placeholder="Search Panda Express"
+                placeholder="Search Blenz"
                 style={{ flex: 1, marginLeft: 8 }}
               />
             </View>

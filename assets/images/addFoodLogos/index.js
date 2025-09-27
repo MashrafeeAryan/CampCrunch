@@ -9,4 +9,6 @@ export const FoodLogos = {
   subway: require('./subway.png'),
   blenz: require('./blenz.png'),
   einstein: require('./Einstein.png'),
+  bento: require('./bento.png'),
+  
 };
