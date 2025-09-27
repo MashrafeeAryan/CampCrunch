@@ -98,10 +98,15 @@ const DiningHall = () => (
 
 const outlets = [
   { name: 'Panda Express', image: FoodLogos.panda, link: '/PandaExpressSearch' },
+  { name: 'Southern Wings 2.0', image: FoodLogos.swc},
   { name: "Moe's: Southwest Grill", image: FoodLogos.moes },
   { name: 'Starbucks', image: FoodLogos.starbucks },
   { name: 'Chick-Fil-A', image: FoodLogos.chickfile, link: '/ChickfilASearch'},
   { name: 'Subway', image: FoodLogos.subway },
+  {name:'Blenz',image:FoodLogos.blenz},
+  {name:'Einstein Bros.Bagels',image:FoodLogos.einstein},
+
+  
 ];
 
 const CampusOutlets = () => (
