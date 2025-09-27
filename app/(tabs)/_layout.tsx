@@ -34,7 +34,7 @@ const TabsLayout = () => {
           headerTitle: "CampCrunch",
           headerStyle: {
             backgroundColor: "#3A3A3C",// #F4C542 
-            height: 80,
+            height: 90,
           },
           
           headerTitleAlign: "center",
@@ -44,9 +44,9 @@ const TabsLayout = () => {
           },
           headerBackground: () => (
             <View style={{ flex: 1 }}>
-              <View style={{ flex: 1, backgroundColor: "#3A3A3C", height:2}} className="" />
-              <View style={{ height: 5, backgroundColor: "#fff" }} className="" />
-              <View style={{ height: 5, backgroundColor: "#3A3A3C" }} />
+              <View style={{ flex: 1, backgroundColor: "#3A3A3C" }} />
+              <View style={{ height: 3, backgroundColor: "#fff" }} />
+              <View style={{ height: 3, backgroundColor: "#3A3A3C" }} />
             </View>
           ),
           
