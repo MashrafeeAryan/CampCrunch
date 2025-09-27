@@ -51,7 +51,7 @@ export default function BonusBucksScreen() {
     <View className="flex-1 bg-white">
       <View className="px-5 pt-6">
         {/* User Name */}
-        <Text className="text-lg font-bold mb-6">Sonam Sherpa</Text>
+        <Text className="text-lg font-bold mb-6 mt-10">Sonam Sherpa</Text>
 
         {/* Balance Card */}
         <View className="bg-gray-800 p-5 rounded-2xl flex-row justify-between items-center mb-6">
