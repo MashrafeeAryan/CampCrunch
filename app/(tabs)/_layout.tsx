@@ -5,7 +5,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import tabBarLogos from "@/assets/images/tabBarLogos";
 import { useEffect } from "react";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useState } from "react"
 import { Slot } from "expo-router";
 import { ActivityIndicator } from "react-native";
 
@@ -69,6 +69,7 @@ const TabsLayout = () => {
         name="BonusBucksScreen"
         options={{
           tabBarLabel:"BonusBucks",
+          headerShown: false,
 
           //When user is on that page, the icon color will be golden
           //When user leaves the page, icon color will be gray
@@ -83,25 +84,6 @@ const TabsLayout = () => {
               resizeMode="contain"
             />
           ),
-
-          headerTitle: "Eagle Eats +",
-          headerTitleAlign: "center",
-          headerTintColor: "#fff",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
-
-          // Here's the key part: a custom header background
-          headerBackground: () => (
-            <View style={{ flex: 1 }}>
-              <View style={{ flex: 1, backgroundColor: "#F4C542" }} />
-              <View style={{ height: 5, backgroundColor: "#fff" }} />
-              <View style={{ height: 5, backgroundColor: "#F4C542" }} />
-            </View>
-          ),
-          headerStyle: {
-            height: 80, // Add space for the stripe
-          },
         }}
       />
 
