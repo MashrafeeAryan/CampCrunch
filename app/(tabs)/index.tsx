@@ -150,18 +150,16 @@ const Index = () => {
             showsHorizontalScrollIndicator={false}
             className="p-4"
           >
-            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#3498db] border-2">
+            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[80] items-center justify-center border-[#3498db] border-2">
               <Text className="text-2xl font-bold text-[#3498db]">
                 {caloriesConsumed.toFixed(0)}
               </Text>
               <Text className="text-xs text-gray-700">Daily Calories</Text>
-              <Text className="text-xs text-gray-500">
-                of {dailyCalorieAdjustment.toFixed(0)}
-              </Text>
+              <Text className="text-xs text-gray-500">of {dailyCalorieAdjustment.toFixed(0)}</Text>
             </View>
 
 
-            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#9b59b6] border-2">
+            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[80] items-center justify-center border-[#9b59b6] border-2">
               <Text className="text-2xl font-bold text-[#9b59b6]">
                 {carbsConsumed.toFixed(0)}
               </Text>
@@ -171,17 +169,17 @@ const Index = () => {
               </Text>
             </View>
 
-            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#e74c3c] border-2">
+            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[80] items-center justify-center border-[#e74c3c] border-2">
               <Text className="text-2xl font-bold text-[#e74c3c]">
                 {proteinConsumed.toFixed(0)}
               </Text>
-              <Text className="text-xs text-gray-700">Daily Protein</Text>
+              <Text className="text-xs text-gray-700">Protein</Text>
               <Text className="text-xs text-gray-500">
                 of {protein.toFixed(0)}
               </Text>
             </View>
 
-            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[110] h-[80] items-center justify-center border-[#f1c40f] border-2">
+            <View className="bg-gray-10 rounded-xl p-4 mr-3 w-[120] h-[80] items-center justify-center border-[#f1c40f] border-2">
               <Text className="text-2xl font-bold text-[#f1c40f]">
                 {fatConsumed.toFixed(0)}
               </Text>
