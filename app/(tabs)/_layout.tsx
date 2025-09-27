@@ -84,6 +84,8 @@ const TabsLayout = () => {
               resizeMode="contain"
             />
           ),
+          headerShown: false,
+
         }}
       />
 
