@@ -4,4 +4,5 @@ export default {
     challengesLogo: require('./ChallengesLogo.png'),
     homeLogo: require('./HomeLogo.png'),
     profileLogo: require('./ProfileLogo.png'),
+    workOnPregressLogo: require('./WorkOnProgress.png'),
 }

@@ -20,6 +20,9 @@ const HiddenLayout = () => {
         <Stack.Screen
         name='ChickfilASearch'
       />
+        <Stack.Screen
+        name='outletPractice'
+      />
     </Stack>
   )
 }
