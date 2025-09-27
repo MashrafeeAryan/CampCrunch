@@ -12,16 +12,14 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Plus, Search } from "lucide-react-native";
 import { OutletThumbnails } from "@/assets/images/outletThumnails";
-import { FoodLogos } from "@/assets/images/addFoodLogos";
 
 const restaurant = {
-  name: "Panda Express",
+  name: "Subway",
   address: "118 College Drive",
   status: "Open now",
   pickup: "Ready in 4 min",
   line: "No line",
-  image:
-    OutletThumbnails.pandaExpress,
+  image: OutletThumbnails.subway,
 };
 
 const data = [

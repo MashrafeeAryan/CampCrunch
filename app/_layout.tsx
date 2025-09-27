@@ -43,6 +43,7 @@ export default function RootLayout() {
         <Stack.Screen name="(hidden)" options={{ headerShown: false }} />
         <Stack.Screen name="(infoPages)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(outlets)" options={{ headerShown: false }} />
       </Stack>
       <Toast />
     </>
@@ -53,6 +54,7 @@ export default function RootLayout() {
         <Stack.Screen name="(hidden)" options={{ headerShown: false }} />
         <Stack.Screen name="(infoPages)" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+        <Stack.Screen name="(outlets)" options={{ headerShown: false }} />
       </Stack>
       <Toast />
     </>

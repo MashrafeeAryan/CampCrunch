@@ -97,14 +97,15 @@ const DiningHall = () => (
 )
 
 const outlets = [
-  { name: 'Panda Express', image: FoodLogos.panda, link: '/PandaExpressSearch' },
-  { name: 'Southern Wings 2.0', image: FoodLogos.swc},
-  { name: "Moe's: Southwest Grill", image: FoodLogos.moes },
-  { name: 'Starbucks', image: FoodLogos.starbucks },
-  { name: 'Chick-Fil-A', image: FoodLogos.chickfile, link: '/ChickfilASearch'},
-  { name: 'Subway', image: FoodLogos.subway },
-  {name:'Blenz',image:FoodLogos.blenz},
-  {name:'Einstein Bros.Bagels',image:FoodLogos.einstein},
+  { name: 'Panda Express', image: FoodLogos.panda, link: '/(outlets)/PandaExpressScreen' },
+  { name: 'Southern Wings 2.0', image: FoodLogos.swc, link: '/(outlets)/SouthernWingsScreen'},
+  { name: "Moe's: Southwest Grill", image: FoodLogos.moes, link: '/(outlets)/MoesScreen' },
+  { name: 'Starbucks', image: FoodLogos.starbucks, link: '/(outlets)/StarbucksScreen' },
+  { name: 'Chick-Fil-A', image: FoodLogos.chickfile, link: '/(outlets)/ChickFilAScreen'},
+  { name: 'Subway', image: FoodLogos.subway, link: '/(outlets)/SubwayScreen' },
+  {name:'Blenz',image:FoodLogos.blenz, link: '/(outlets)/BlenzScreen'},
+  {name:'Einstein Bros.Bagels',image:FoodLogos.einstein, link: '/(outlets)/EinsteinScreen'},
+  {name:'Bento Sushi',image:FoodLogos.bento, link: '/(outlets)/BentoSushiScreen'},
 
   
 ];
