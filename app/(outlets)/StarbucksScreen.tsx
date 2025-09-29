@@ -25,76 +25,107 @@ const restaurant = {
 
 const data = [
   {
-    "$id": "food1",
-    "category": "Entrees",
-    "name": "Orange Chicken",
-    "description": "Crispy chicken tossed in a sweet and tangy orange sauce",
-    "calories": 490,
-    "protein": 25,
-    "fat": 23,
-    "carbs": 51
+    "$id": "sb1",
+    "category": "Hot Coffees",
+    "name": "Caffè Americano",
+    "description": "Rich espresso shots topped with hot water for a bold flavor",
+    "calories": 15,
+    "protein": 1,
+    "fat": 0,
+    "carbs": 3
   },
   {
-    "$id": "food2",
-    "category": "Entrees",
-    "name": "Kung Pao Chicken",
-    "description": "Spicy stir-fried chicken with peanuts, vegetables, and chili peppers",
-    "calories": 290,
-    "protein": 16,
-    "fat": 19,
-    "carbs": 14
+    "$id": "sb2",
+    "category": "Hot Coffees",
+    "name": "Caffè Latte",
+    "description": "Espresso balanced with steamed milk and a light layer of foam",
+    "calories": 190,
+    "protein": 12,
+    "fat": 7,
+    "carbs": 18
   },
   {
-    "$id": "food3",
-    "category": "Build Your Own",
-    "name": "Bowl",
-    "description": "1 Entree and 1 Side",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
+    "$id": "sb3",
+    "category": "Cold Coffees",
+    "name": "Iced Caramel Macchiato",
+    "description": "Espresso, vanilla-flavored syrup, milk, and caramel drizzle over ice",
+    "calories": 250,
+    "protein": 10,
+    "fat": 7,
+    "carbs": 38
   },
   {
-    "$id": "food4",
-    "category": "Build Your Own",
-    "name": "2-Entree Plate",
-    "description": "2 Entrees and 1 Side",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
+    "$id": "sb4",
+    "category": "Cold Coffees",
+    "name": "Cold Brew Coffee",
+    "description": "Slow-steeped cold brew coffee served over ice",
+    "calories": 5,
+    "protein": 0,
+    "fat": 0,
+    "carbs": 0
   },
   {
-    "$id": "food6",
-    "category": "Sides",
-    "name": "Fried Rice",
-    "description": "Classic fried rice with peas, carrots, and soy sauce",
-    "calories": 520,
-    "protein": 11,
-    "fat": 16,
-    "carbs": 85
+    "$id": "sb5",
+    "category": "Refreshers",
+    "name": "Strawberry Açaí Refresher",
+    "description": "A fruity blend of strawberry, açaí, and green coffee extract",
+    "calories": 90,
+    "protein": 0,
+    "fat": 0,
+    "carbs": 23
   },
   {
-    "$id": "food7",
-    "category": "Dessert Appetizers",
-    "name": "Chicken Egg Roll",
-    "description": "Crispy egg roll filled with chicken and veggies",
-    "calories": 200,
-    "protein": 9,
-    "fat": 10,
-    "carbs": 22
+    "$id": "sb6",
+    "category": "Refreshers",
+    "name": "Mango Dragonfruit Refresher",
+    "description": "Tropical flavors of mango and dragonfruit shaken with ice",
+    "calories": 70,
+    "protein": 1,
+    "fat": 0,
+    "carbs": 15
   },
   {
-    "$id": "food9",
-    "category": "Drinks",
-    "name": "Fountain Drink",
-    "description": "Choice of soft drinks",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
+    "$id": "sb7",
+    "category": "Teas",
+    "name": "Chai Tea Latte",
+    "description": "Black tea infused with cinnamon, clove, and spices, blended with milk",
+    "calories": 240,
+    "protein": 8,
+    "fat": 4,
+    "carbs": 45
+  },
+  {
+    "$id": "sb8",
+    "category": "Bakery",
+    "name": "Blueberry Muffin",
+    "description": "Moist muffin filled with blueberries and topped with sugar crystals",
+    "calories": 360,
+    "protein": 6,
+    "fat": 15,
+    "carbs": 52
+  },
+  {
+    "$id": "sb9",
+    "category": "Breakfast",
+    "name": "Bacon, Gouda & Egg Sandwich",
+    "description": "Smoked bacon, melted gouda cheese, and egg on a soft artisan roll",
+    "calories": 360,
+    "protein": 19,
+    "fat": 18,
+    "carbs": 34
+  },
+  {
+    "$id": "sb10",
+    "category": "Snacks & Sweets",
+    "name": "Dark Chocolate Cake Pop",
+    "description": "Rich chocolate cake coated in dark chocolate icing",
+    "calories": 160,
+    "protein": 2,
+    "fat": 9,
+    "carbs": 20
   }
 ];
+
 
 
 
@@ -142,17 +173,19 @@ export default function MenuScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
-      <ScrollView ref={scrollRef}>
-        {/* --- Top Section --- */}
-        <View>
-          <Image
-            source={restaurant.image}
-            style={{ width: "100%", height: 180 }}
-            resizeMode="cover"
-          />
-          <View style={{ padding: 16 }}>
-            <Text style={{ fontSize: 24, fontWeight: "800" }}>{restaurant.name}</Text>
+    <View style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
+      {/* --- Top Image Section --- */}
+      <Image
+        source={restaurant.image}
+        style={{ width: "100%", height: 230, marginBottom: 0 }}
+        resizeMode="cover"
+      />
+      
+      <SafeAreaView style={{ flex: 1, marginTop: -20 }}>
+        <ScrollView ref={scrollRef}>
+          {/* --- Content Section --- */}
+          <View style={{ padding: 10, paddingTop: 0 }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", marginTop: -2 }}>{restaurant.name}</Text>
             <Text style={{ color: "#555", marginTop: 2 }}>{restaurant.address}</Text>
             <Text style={{ color: "green", marginTop: 4 }}>{restaurant.status}</Text>
 
@@ -182,49 +215,49 @@ export default function MenuScreen() {
               <Text style={{ color: "#6b21a8", fontWeight: "600" }}>Categories ▼</Text>
             </TouchableOpacity>
           </View>
-        </View>
 
-        {/* --- Menu List --- */}
-        <View style={{ padding: 16 }}>
-          {categories.map((category) => (
-            <View
-              key={category}
-              onLayout={(event) => {
-                const { y } = event.nativeEvent.layout;
-                setSectionPositions((prev) => ({ ...prev, [category]: y }));
-              }}
-              style={{ marginBottom: 24 }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
-                {category}
-              </Text>
-              {groupedData[category].map((item) => (
-                <Card key={item.$id}>
-                  <View style={{ flex: 1, paddingRight: 12 }}>
-                    <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
-                    <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
-                    {item.calories && (
-                      <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
-                        {item.calories} cal
-                      </Text>
-                    )}
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "#F4C542",
-                      padding: 10,
-                      borderRadius: 50,
-                    }}
-                    onPress={() => console.log("Added", item.name)}
-                  >
-                    <Plus color="white" size={20} />
-                  </TouchableOpacity>
-                </Card>
-              ))}
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+          {/* --- Menu List --- */}
+          <View style={{ padding: 16 }}>
+            {categories.map((category) => (
+              <View
+                key={category}
+                onLayout={(event) => {
+                  const { y } = event.nativeEvent.layout;
+                  setSectionPositions((prev) => ({ ...prev, [category]: y }));
+                }}
+                style={{ marginBottom: 24 }}
+              >
+                <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
+                  {category}
+                </Text>
+                {groupedData[category].map((item) => (
+                  <Card key={item.$id}>
+                    <View style={{ flex: 1, paddingRight: 12 }}>
+                      <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
+                      <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
+                      {item.calories && (
+                        <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
+                          {item.calories} cal
+                        </Text>
+                      )}
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#F4C542",
+                        padding: 10,
+                        borderRadius: 50,
+                      }}
+                      onPress={() => console.log("Added", item.name)}
+                    >
+                      <Plus color="white" size={20} />
+                    </TouchableOpacity>
+                  </Card>
+                ))}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
 
       {/* --- Categories Modal --- */}
       <Modal visible={showModal} transparent animationType="fade">
@@ -260,6 +293,6 @@ export default function MenuScreen() {
           </View>
         </Pressable>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }

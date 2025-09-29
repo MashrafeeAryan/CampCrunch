@@ -143,17 +143,19 @@ export default function MenuScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
-      <ScrollView ref={scrollRef}>
-        {/* --- Top Section --- */}
-        <View>
-          <Image
-            source={restaurant.image}
-            style={{ width: "100%", height: 180 }}
-            resizeMode="cover"
-          />
-          <View style={{ padding: 16 }}>
-            <Text style={{ fontSize: 24, fontWeight: "800" }}>{restaurant.name}</Text>
+    <View style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
+      {/* --- Top Image Section --- */}
+      <Image
+        source={restaurant.image}
+        style={{ width: "100%", height: 230 , marginBottom:0 }}
+        resizeMode="cover"
+      />
+      
+      <SafeAreaView style={{ flex: 1 , marginTop: -20}}>
+        <ScrollView ref={scrollRef}>
+          {/* --- Content Section --- */}
+          <View style={{ padding: 10, paddingTop: 0 }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", marginTop: -2 }}>{restaurant.name}</Text>
             <Text style={{ color: "#555", marginTop: 2 }}>{restaurant.address}</Text>
             <Text style={{ color: "green", marginTop: 4 }}>{restaurant.status}</Text>
 
@@ -183,7 +185,6 @@ export default function MenuScreen() {
               <Text style={{ color: "#6b21a8", fontWeight: "600" }}>Categories ▼</Text>
             </TouchableOpacity>
           </View>
-        </View>
 
         {/* --- Menu List --- */}
         <View style={{ padding: 16 }}>
@@ -225,7 +226,8 @@ export default function MenuScreen() {
             </View>
           ))}
         </View>
-      </ScrollView>
+        </ScrollView>
+      </SafeAreaView>
 
       {/* --- Categories Modal --- */}
       <Modal visible={showModal} transparent animationType="fade">
@@ -261,6 +263,6 @@ export default function MenuScreen() {
           </View>
         </Pressable>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }

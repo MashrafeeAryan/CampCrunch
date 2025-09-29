@@ -25,74 +25,176 @@ const restaurant = {
 
 const data = [
   {
-    "$id": "food1",
+    "$id": "cf1",
+    "category": "Featured Flavors",
+    "name": "Spicy Chicken Sandwich Deluxe",
+    "description": "Spicy seasoned chicken breast with lettuce, tomato, and cheese on a toasted bun",
+    "calories": 550,
+    "protein": 29,
+    "fat": 25,
+    "carbs": 47
+  },
+  {
+    "$id": "cf13",
     "category": "Entrees",
-    "name": "Orange Chicken",
-    "description": "Crispy chicken tossed in a sweet and tangy orange sauce",
-    "calories": 490,
+    "name": "Grilled Chicken Sandwich",
+    "description": "Marinated grilled chicken breast served on a toasted multigrain bun with lettuce and tomato",
+    "calories": 380,
+    "protein": 28,
+    "fat": 11,
+    "carbs": 43
+  },
+  {
+    "$id": "cf14",
+    "category": "Entrees",
+    "name": "Grilled Nuggets (8-Count)",
+    "description": "Tender pieces of grilled chicken breast, seasoned to perfection",
+    "calories": 130,
     "protein": 25,
-    "fat": 23,
-    "carbs": 51
+    "fat": 3,
+    "carbs": 1
   },
   {
-    "$id": "food2",
+    "$id": "cf15",
     "category": "Entrees",
-    "name": "Kung Pao Chicken",
-    "description": "Spicy stir-fried chicken with peanuts, vegetables, and chili peppers",
-    "calories": 290,
-    "protein": 16,
-    "fat": 19,
-    "carbs": 14
+    "name": "Spicy Deluxe Sandwich",
+    "description": "Spicy breaded chicken breast with lettuce, tomato, and cheese on a toasted bun",
+    "calories": 570,
+    "protein": 33,
+    "fat": 27,
+    "carbs": 46
   },
   {
-    "$id": "food3",
-    "category": "Build Your Own",
-    "name": "Bowl",
-    "description": "1 Entree and 1 Side",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
-  },
-  {
-    "$id": "food4",
-    "category": "Build Your Own",
-    "name": "2-Entree Plate",
-    "description": "2 Entrees and 1 Side",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
-  },
-  {
-    "$id": "food6",
-    "category": "Sides",
-    "name": "Fried Rice",
-    "description": "Classic fried rice with peas, carrots, and soy sauce",
+    "$id": "cf16",
+    "category": "Entrees",
+    "name": "Grilled Chicken Club Sandwich",
+    "description": "Grilled chicken breast with Colby-Jack cheese, lettuce, tomato, and bacon on a multigrain bun",
     "calories": 520,
-    "protein": 11,
+    "protein": 37,
+    "fat": 22,
+    "carbs": 45
+  },
+  {
+    "$id": "cf17",
+    "category": "Entrees",
+    "name": "Chicken Strips (3-Count)",
+    "description": "Crispy breaded chicken tenders, golden fried",
+    "calories": 310,
+    "protein": 29,
+    "fat": 14,
+    "carbs": 17
+  },
+  
+
+  {
+    "$id": "cf2",
+    "category": "Entrees",
+    "name": "Chick-fil-A Chicken Sandwich",
+    "description": "Breaded chicken breast served on a toasted buttered bun with pickles",
+    "calories": 440,
+    "protein": 28,
+    "fat": 19,
+    "carbs": 41
+  },
+  {
+    "$id": "cf3",
+    "category": "Entrees",
+    "name": "8-Count Nuggets",
+    "description": "Bite-sized pieces of breaded chicken breast, pressure cooked to perfection",
+    "calories": 270,
+    "protein": 28,
+    "fat": 12,
+    "carbs": 9
+  },
+  {
+    "$id": "cf4",
+    "category": "Sides",
+    "name": "Waffle Potato Fries",
+    "description": "Crispy waffle-cut potatoes lightly salted",
+    "calories": 420,
+    "protein": 5,
+    "fat": 24,
+    "carbs": 45
+  },
+  {
+    "$id": "cf5",
+    "category": "Sides",
+    "name": "Mac & Cheese",
+    "description": "Creamy macaroni and cheese topped with a baked blend of cheeses",
+    "calories": 450,
+    "protein": 19,
+    "fat": 29,
+    "carbs": 30
+  },
+  {
+    "$id": "cf6",
+    "category": "Salads",
+    "name": "Cobb Salad",
+    "description": "Chopped nuggets served on fresh greens with cheese, roasted corn, and eggs",
+    "calories": 850,
+    "protein": 40,
+    "fat": 61,
+    "carbs": 32
+  },
+  {
+    "$id": "cf7",
+    "category": "Treats",
+    "name": "Chocolate Chunk Cookie",
+    "description": "Large, soft-baked cookie with chunks of chocolate and oats",
+    "calories": 350,
+    "protein": 4,
     "fat": 16,
+    "carbs": 48
+  },
+  {
+    "$id": "cf8",
+    "category": "Treats",
+    "name": "Hand-Spun Milkshake",
+    "description": "Creamy milkshake topped with whipped cream and a cherry",
+    "calories": 590,
+    "protein": 12,
+    "fat": 22,
     "carbs": 85
   },
   {
-    "$id": "food7",
-    "category": "Dessert Appetizers",
-    "name": "Chicken Egg Roll",
-    "description": "Crispy egg roll filled with chicken and veggies",
-    "calories": 200,
-    "protein": 9,
-    "fat": 10,
-    "carbs": 22
+    "$id": "cf9",
+    "category": "Beverages",
+    "name": "Freshly Brewed Sweet Tea",
+    "description": "Southern-style sweetened iced tea",
+    "calories": 120,
+    "protein": 0,
+    "fat": 0,
+    "carbs": 31
   },
   {
-    "$id": "food9",
-    "category": "Drinks",
-    "name": "Fountain Drink",
-    "description": "Choice of soft drinks",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
+    "$id": "cf10",
+    "category": "Beverages",
+    "name": "Lemonade",
+    "description": "Freshly squeezed lemonade made from real lemons",
+    "calories": 220,
+    "protein": 0,
+    "fat": 0,
+    "carbs": 58
+  },
+  {
+    "$id": "cf11",
+    "category": "8 oz Sauces",
+    "name": "Chick-fil-A Sauce",
+    "description": "Signature smoky, tangy, and sweet sauce",
+    "calories": 1140,
+    "protein": 0,
+    "fat": 84,
+    "carbs": 84
+  },
+  {
+    "$id": "cf12",
+    "category": "8 oz Sauces",
+    "name": "Polynesian Sauce",
+    "description": "Tangy-sweet sauce with bold flavor",
+    "calories": 860,
+    "protein": 0,
+    "fat": 3,
+    "carbs": 190
   }
 ];
 
@@ -142,17 +244,19 @@ export default function MenuScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
-      <ScrollView ref={scrollRef}>
-        {/* --- Top Section --- */}
-        <View>
-          <Image
-            source={restaurant.image}
-            style={{ width: "100%", height: 180 }}
-            resizeMode="cover"
-          />
-          <View style={{ padding: 16 }}>
-            <Text style={{ fontSize: 24, fontWeight: "800" }}>{restaurant.name}</Text>
+    <View style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
+      {/* --- Top Image Section --- */}
+      <Image
+        source={restaurant.image}
+        style={{ width: "100%", height: 230, marginBottom: 0 }}
+        resizeMode="cover"
+      />
+      
+      <SafeAreaView style={{ flex: 1, marginTop: -20 }}>
+        <ScrollView ref={scrollRef}>
+          {/* --- Content Section --- */}
+          <View style={{ padding: 10, paddingTop: 0 }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", marginTop: -2 }}>{restaurant.name}</Text>
             <Text style={{ color: "#555", marginTop: 2 }}>{restaurant.address}</Text>
             <Text style={{ color: "green", marginTop: 4 }}>{restaurant.status}</Text>
 
@@ -182,49 +286,49 @@ export default function MenuScreen() {
               <Text style={{ color: "#6b21a8", fontWeight: "600" }}>Categories ▼</Text>
             </TouchableOpacity>
           </View>
-        </View>
 
-        {/* --- Menu List --- */}
-        <View style={{ padding: 16 }}>
-          {categories.map((category) => (
-            <View
-              key={category}
-              onLayout={(event) => {
-                const { y } = event.nativeEvent.layout;
-                setSectionPositions((prev) => ({ ...prev, [category]: y }));
-              }}
-              style={{ marginBottom: 24 }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
-                {category}
-              </Text>
-              {groupedData[category].map((item) => (
-                <Card key={item.$id}>
-                  <View style={{ flex: 1, paddingRight: 12 }}>
-                    <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
-                    <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
-                    {item.calories && (
-                      <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
-                        {item.calories} cal
-                      </Text>
-                    )}
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "#F4C542",
-                      padding: 10,
-                      borderRadius: 50,
-                    }}
-                    onPress={() => console.log("Added", item.name)}
-                  >
-                    <Plus color="white" size={20} />
-                  </TouchableOpacity>
-                </Card>
-              ))}
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+          {/* --- Menu List --- */}
+          <View style={{ padding: 16 }}>
+            {categories.map((category) => (
+              <View
+                key={category}
+                onLayout={(event) => {
+                  const { y } = event.nativeEvent.layout;
+                  setSectionPositions((prev) => ({ ...prev, [category]: y }));
+                }}
+                style={{ marginBottom: 24 }}
+              >
+                <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
+                  {category}
+                </Text>
+                {groupedData[category].map((item) => (
+                  <Card key={item.$id}>
+                    <View style={{ flex: 1, paddingRight: 12 }}>
+                      <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
+                      <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
+                      {item.calories && (
+                        <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
+                          {item.calories} cal
+                        </Text>
+                      )}
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#F4C542",
+                        padding: 10,
+                        borderRadius: 50,
+                      }}
+                      onPress={() => console.log("Added", item.name)}
+                    >
+                      <Plus color="white" size={20} />
+                    </TouchableOpacity>
+                  </Card>
+                ))}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
 
       {/* --- Categories Modal --- */}
       <Modal visible={showModal} transparent animationType="fade">
@@ -260,6 +364,6 @@ export default function MenuScreen() {
           </View>
         </Pressable>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }

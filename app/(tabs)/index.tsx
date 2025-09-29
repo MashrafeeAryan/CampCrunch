@@ -183,7 +183,10 @@ const Index = () => {
               <Text className="text-2xl font-bold text-[#f1c40f]">
                 {fatConsumed.toFixed(0)}
               </Text>
-              <Text className="text-xs text-gray-700">Daily Fat</Text>
+              <Text className="text-xs text-gray-700">Daily
+
+
+Fat</Text>
               <Text className="text-xs text-gray-500">of {fat.toFixed(0)}</Text>
             </View>
 
