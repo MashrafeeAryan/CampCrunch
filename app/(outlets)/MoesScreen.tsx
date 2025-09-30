@@ -24,68 +24,131 @@ const restaurant = {
 };
 
 const data = [
+  // --- Burritos ---
   {
-    "$id": "food1",
-    "category": "Entrees",
-    "name": "Orange Chicken",
-    "description": "Crispy chicken tossed in a sweet and tangy orange sauce",
-    "calories": 490,
-    "protein": 25,
-    "fat": 23,
-    "carbs": 51
+    "$id": "moes1",
+    "category": "Burritos",
+    "name": "Homewrecker Burrito",
+    "description": "Flour tortilla stuffed with protein of choice, rice, beans, cheese, pico de gallo, guacamole, and sour cream",
+    "calories": 930,
+    "protein": 38,
+    "fat": 42,
+    "carbs": 95
   },
   {
-    "$id": "food2",
-    "category": "Entrees",
-    "name": "Kung Pao Chicken",
-    "description": "Spicy stir-fried chicken with peanuts, vegetables, and chili peppers",
-    "calories": 290,
-    "protein": 16,
-    "fat": 19,
-    "carbs": 14
+    "$id": "moes2",
+    "category": "Burritos",
+    "name": "Joey Bag of Donuts",
+    "description": "Classic burrito with choice of protein, rice, beans, shredded cheese, and pico de gallo",
+    "calories": 820,
+    "protein": 34,
+    "fat": 36,
+    "carbs": 90
   },
+
+  // --- Bowls ---
   {
-    "$id": "food3",
-    "category": "Build Your Own",
-    "name": "Bowl",
-    "description": "1 Entree and 1 Side",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
-  },
-  {
-    "$id": "food4",
-    "category": "Build Your Own",
-    "name": "2-Entree Plate",
-    "description": "2 Entrees and 1 Side",
-    "calories": null,
-    "protein": null,
-    "fat": null,
-    "carbs": null
-  },
-  {
-    "$id": "food6",
-    "category": "Sides",
-    "name": "Fried Rice",
-    "description": "Classic fried rice with peas, carrots, and soy sauce",
-    "calories": 520,
-    "protein": 11,
-    "fat": 16,
+    "$id": "moes3",
+    "category": "Bowls",
+    "name": "Burrito Bowl",
+    "description": "Choice of protein served with rice, beans, cheese, pico de gallo, and toppings without a tortilla",
+    "calories": 720,
+    "protein": 35,
+    "fat": 28,
     "carbs": 85
   },
   {
-    "$id": "food7",
-    "category": "Dessert Appetizers",
-    "name": "Chicken Egg Roll",
-    "description": "Crispy egg roll filled with chicken and veggies",
-    "calories": 200,
-    "protein": 9,
-    "fat": 10,
-    "carbs": 22
+    "$id": "moes4",
+    "category": "Bowls",
+    "name": "Earmuffs Bowl",
+    "description": "Protein of choice with rice, beans, queso, pico de gallo, and guacamole",
+    "calories": 760,
+    "protein": 37,
+    "fat": 31,
+    "carbs": 88
+  },
+
+  // --- Tacos ---
+  {
+    "$id": "moes5",
+    "category": "Tacos",
+    "name": "Overachiever Taco",
+    "description": "Soft taco with protein of choice, pico de gallo, cheese, sour cream, and guacamole",
+    "calories": 320,
+    "protein": 18,
+    "fat": 14,
+    "carbs": 28
   },
   {
-    "$id": "food9",
+    "$id": "moes6",
+    "category": "Tacos",
+    "name": "Funky Taco",
+    "description": "Soft taco with protein, beans, shredded cheese, and lettuce",
+    "calories": 290,
+    "protein": 16,
+    "fat": 12,
+    "carbs": 26
+  },
+
+  // --- Quesadillas ---
+  {
+    "$id": "moes7",
+    "category": "Quesadillas",
+    "name": "Chicken Quesadilla",
+    "description": "Grilled flour tortilla filled with chicken, cheese, and pico de gallo",
+    "calories": 680,
+    "protein": 32,
+    "fat": 28,
+    "carbs": 70
+  },
+  {
+    "$id": "moes8",
+    "category": "Quesadillas",
+    "name": "Steak Quesadilla",
+    "description": "Grilled tortilla stuffed with steak, shredded cheese, and vegetables",
+    "calories": 710,
+    "protein": 35,
+    "fat": 30,
+    "carbs": 72
+  },
+
+  // --- Nachos ---
+  {
+    "$id": "moes9",
+    "category": "Nachos",
+    "name": "Billy Barou Nachos",
+    "description": "Crispy tortilla chips topped with queso, beans, protein, jalapeños, pico de gallo, and sour cream",
+    "calories": 890,
+    "protein": 34,
+    "fat": 44,
+    "carbs": 95
+  },
+
+  // --- Sides ---
+  {
+    "$id": "moes10",
+    "category": "Sides",
+    "name": "Chips & Queso",
+    "description": "Freshly made tortilla chips served with Moe’s famous queso dip",
+    "calories": 430,
+    "protein": 10,
+    "fat": 22,
+    "carbs": 48
+  },
+  {
+    "$id": "moes11",
+    "category": "Sides",
+    "name": "Guacamole",
+    "description": "Handcrafted guacamole with fresh avocados, lime, and seasoning",
+    "calories": 120,
+    "protein": 2,
+    "fat": 10,
+    "carbs": 8
+  },
+
+  // --- Drinks ---
+  {
+    "$id": "moes12",
     "category": "Drinks",
     "name": "Fountain Drink",
     "description": "Choice of soft drinks",
@@ -93,8 +156,19 @@ const data = [
     "protein": null,
     "fat": null,
     "carbs": null
+  },
+  {
+    "$id": "moes13",
+    "category": "Drinks",
+    "name": "Sweet Tea",
+    "description": "Southern-style sweetened iced tea",
+    "calories": 120,
+    "protein": 0,
+    "fat": 0,
+    "carbs": 31
   }
 ];
+
 
 
 
@@ -142,17 +216,19 @@ export default function MenuScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
-      <ScrollView ref={scrollRef}>
-        {/* --- Top Section --- */}
-        <View>
-          <Image
-            source={restaurant.image}
-            style={{ width: "100%", height: 180 }}
-            resizeMode="cover"
-          />
-          <View style={{ padding: 16 }}>
-            <Text style={{ fontSize: 24, fontWeight: "800" }}>{restaurant.name}</Text>
+    <View style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
+      {/* --- Top Image Section --- */}
+      <Image
+        source={restaurant.image}
+        style={{ width: "100%", height: 230, marginBottom: 0 }}
+        resizeMode="cover"
+      />
+      
+      <SafeAreaView style={{ flex: 1, marginTop: -20 }}>
+        <ScrollView ref={scrollRef}>
+          {/* --- Content Section --- */}
+          <View style={{ padding: 10, paddingTop: 0 }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", marginTop: -2 }}>{restaurant.name}</Text>
             <Text style={{ color: "#555", marginTop: 2 }}>{restaurant.address}</Text>
             <Text style={{ color: "green", marginTop: 4 }}>{restaurant.status}</Text>
 
@@ -182,49 +258,49 @@ export default function MenuScreen() {
               <Text style={{ color: "#6b21a8", fontWeight: "600" }}>Categories ▼</Text>
             </TouchableOpacity>
           </View>
-        </View>
 
-        {/* --- Menu List --- */}
-        <View style={{ padding: 16 }}>
-          {categories.map((category) => (
-            <View
-              key={category}
-              onLayout={(event) => {
-                const { y } = event.nativeEvent.layout;
-                setSectionPositions((prev) => ({ ...prev, [category]: y }));
-              }}
-              style={{ marginBottom: 24 }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
-                {category}
-              </Text>
-              {groupedData[category].map((item) => (
-                <Card key={item.$id}>
-                  <View style={{ flex: 1, paddingRight: 12 }}>
-                    <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
-                    <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
-                    {item.calories && (
-                      <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
-                        {item.calories} cal
-                      </Text>
-                    )}
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "#F4C542",
-                      padding: 10,
-                      borderRadius: 50,
-                    }}
-                    onPress={() => console.log("Added", item.name)}
-                  >
-                    <Plus color="white" size={20} />
-                  </TouchableOpacity>
-                </Card>
-              ))}
-            </View>
-          ))}
-        </View>
-      </ScrollView>
+          {/* --- Menu List --- */}
+          <View style={{ padding: 16 }}>
+            {categories.map((category) => (
+              <View
+                key={category}
+                onLayout={(event) => {
+                  const { y } = event.nativeEvent.layout;
+                  setSectionPositions((prev) => ({ ...prev, [category]: y }));
+                }}
+                style={{ marginBottom: 24 }}
+              >
+                <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
+                  {category}
+                </Text>
+                {groupedData[category].map((item) => (
+                  <Card key={item.$id}>
+                    <View style={{ flex: 1, paddingRight: 12 }}>
+                      <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
+                      <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
+                      {item.calories && (
+                        <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
+                          {item.calories} cal
+                        </Text>
+                      )}
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#F4C542",
+                        padding: 10,
+                        borderRadius: 50,
+                      }}
+                      onPress={() => console.log("Added", item.name)}
+                    >
+                      <Plus color="white" size={20} />
+                    </TouchableOpacity>
+                  </Card>
+                ))}
+              </View>
+            ))}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
 
       {/* --- Categories Modal --- */}
       <Modal visible={showModal} transparent animationType="fade">
@@ -260,6 +336,6 @@ export default function MenuScreen() {
           </View>
         </Pressable>
       </Modal>
-    </SafeAreaView>
+    </View>
   );
 }
