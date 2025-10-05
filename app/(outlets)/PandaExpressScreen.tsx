@@ -144,22 +144,23 @@ export default function MenuScreen() {
 
   return (
     <View style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
-      {/* --- Top Image Section --- */}
-      <Image
-        source={restaurant.image}
-        style={{ width: "100%", height: 230 , marginBottom:0 }}
-        resizeMode="cover"
-      />
-      
-      <SafeAreaView style={{ flex: 1 , marginTop: -20}}>
-        <ScrollView ref={scrollRef}>
+      <ScrollView ref={scrollRef} showsVerticalScrollIndicator={false}>
+        {/* --- Full Top Image Section --- */}
+        <Image
+          source={restaurant.image}
+          style={{ 
+            width: "100%", 
+            height: 300,
+            marginTop: -50 // Extends into status bar area
+          }}
+          resizeMode="cover"
+        />
+        
+        <SafeAreaView style={{ flex: 1, marginTop: -40 }}>
           {/* --- Content Section --- */}
-          <View style={{ padding: 10, paddingTop: 0 }}>
-            <Text style={{ fontSize: 24, fontWeight: "800", marginTop: -2 }}>{restaurant.name}</Text>
+          <View style={{ padding: 16, backgroundColor: "#f9f9f9", borderTopLeftRadius: 20, borderTopRightRadius: 20 }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", marginTop: 0 }}>{restaurant.name}</Text>
             <Text style={{ color: "#555", marginTop: 2 }}>{restaurant.address}</Text>
-            <Text style={{ color: "green", marginTop: 4 }}>{restaurant.status}</Text>
-
-            
 
             {/* Search Bar */}
             <View
@@ -169,14 +170,14 @@ export default function MenuScreen() {
                 backgroundColor: "#f0f0f0",
                 borderRadius: 12,
                 marginTop: 12,
-                paddingHorizontal: 10,
-                paddingVertical: 8,
+                paddingHorizontal: 16,
+                paddingVertical: 14,
               }}
             >
-              <Search size={18} color="#666" />
+              <Search size={20} color="#666" />
               <TextInput
                 placeholder="Search Panda Express"
-                style={{ flex: 1, marginLeft: 8 }}
+                style={{ flex: 1, marginLeft: 12, fontSize: 16 }}
               />
             </View>
 
@@ -186,48 +187,48 @@ export default function MenuScreen() {
             </TouchableOpacity>
           </View>
 
-        {/* --- Menu List --- */}
-        <View style={{ padding: 16 }}>
-          {categories.map((category) => (
-            <View
-              key={category}
-              onLayout={(event) => {
-                const { y } = event.nativeEvent.layout;
-                setSectionPositions((prev) => ({ ...prev, [category]: y }));
-              }}
-              style={{ marginBottom: 24 }}
-            >
-              <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
-                {category}
-              </Text>
-              {groupedData[category].map((item) => (
-                <Card key={item.$id}>
-                  <View style={{ flex: 1, paddingRight: 12 }}>
-                    <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
-                    <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
-                    {item.calories && (
-                      <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
-                        {item.calories} cal
-                      </Text>
-                    )}
-                  </View>
-                  <TouchableOpacity
-                    style={{
-                      backgroundColor: "#F4C542",
-                      padding: 10,
-                      borderRadius: 50,
-                    }}
-                    onPress={() => console.log("Added", item.name)}
-                  >
-                    <Plus color="white" size={20} />
-                  </TouchableOpacity>
-                </Card>
-              ))}
-            </View>
-          ))}
-        </View>
-        </ScrollView>
-      </SafeAreaView>
+          {/* --- Menu List --- */}
+          <View style={{ paddingHorizontal: 16, backgroundColor: "#f9f9f9" }}>
+            {categories.map((category) => (
+              <View
+                key={category}
+                onLayout={(event) => {
+                  const { y } = event.nativeEvent.layout;
+                  setSectionPositions((prev) => ({ ...prev, [category]: y }));
+                }}
+                style={{ marginBottom: 24 }}
+              >
+                <Text style={{ fontSize: 20, fontWeight: "700", marginBottom: 12 }}>
+                  {category}
+                </Text>
+                {groupedData[category].map((item) => (
+                  <Card key={item.$id}>
+                    <View style={{ flex: 1, paddingRight: 12 }}>
+                      <Text style={{ fontSize: 16, fontWeight: "600" }}>{item.name}</Text>
+                      <Text style={{ color: "#555", marginTop: 2 }}>{item.description}</Text>
+                      {item.calories && (
+                        <Text style={{ color: "#888", fontSize: 12, marginTop: 4 }}>
+                          {item.calories} cal
+                        </Text>
+                      )}
+                    </View>
+                    <TouchableOpacity
+                      style={{
+                        backgroundColor: "#F4C542",
+                        padding: 10,
+                        borderRadius: 50,
+                      }}
+                      onPress={() => console.log("Added", item.name)}
+                    >
+                      <Plus color="white" size={20} />
+                    </TouchableOpacity>
+                  </Card>
+                ))}
+              </View>
+            ))}
+          </View>
+        </SafeAreaView>
+      </ScrollView>
 
       {/* --- Categories Modal --- */}
       <Modal visible={showModal} transparent animationType="fade">
