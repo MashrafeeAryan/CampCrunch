@@ -8,8 +8,9 @@ import {
   TextInput,
   Modal,
   Pressable,
+  StatusBar,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 import { Plus, Search } from "lucide-react-native";
 import { OutletThumbnails } from "@/assets/images/outletThumnails";
 import { FoodLogos } from "@/assets/images/addFoodLogos";
@@ -96,8 +97,6 @@ const data = [
   }
 ];
 
-
-
 const groupByCategory = (items) =>
   items.reduce((acc, item) => {
     if (!acc[item.category]) acc[item.category] = [];
@@ -127,6 +126,8 @@ const Card = ({ children }) => (
 );
 
 export default function MenuScreen() {
+  const insets = useSafeAreaInsets();
+
   const groupedData = groupByCategory(data);
   const categories = Object.keys(groupedData);
 
@@ -142,28 +143,32 @@ export default function MenuScreen() {
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#f9f9f9" }}>
+    // exclude top so content can render under status bar
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#f9f9f9" }} edges={["left", "right", "bottom"]}>
+      {/* float the status bar on top of the image */}
+      <StatusBar translucent backgroundColor="transparent" barStyle="light-content" />
+
       <ScrollView ref={scrollRef}>
-        {/* --- Top Section --- */}
-        <View>
+        {/* --- Top Section (image behind status bar) --- */}
+        <View style={{ position: "relative" }}>
           <Image
             source={restaurant.image}
-            style={{ width: "100%", height: 180 }}
+            style={{ width: "100%", height: 220 }}
             resizeMode="cover"
           />
-          <View style={{ padding: 16 }}>
-            <Text style={{ fontSize: 24, fontWeight: "800" }}>{restaurant.name}</Text>
-            <Text style={{ color: "#555", marginTop: 2 }}>{restaurant.address}</Text>
-            <Text style={{ color: "green", marginTop: 4 }}>{restaurant.status}</Text>
 
-            
+          {/* Overlayed header content, pushed down by status bar inset */}
+          <View style={{ position: "absolute", top: insets.top + 12, left: 16, right: 16 }}>
+            <Text style={{ fontSize: 24, fontWeight: "800", color: "#fff" }}>{restaurant.name}</Text>
+            <Text style={{ color: "#f0f0f0", marginTop: 2 }}>{restaurant.address}</Text>
+            <Text style={{ color: "#90ee90", marginTop: 4 }}>{restaurant.status}</Text>
 
             {/* Search Bar */}
             <View
               style={{
                 flexDirection: "row",
                 alignItems: "center",
-                backgroundColor: "#f0f0f0",
+                backgroundColor: "rgba(255,255,255,0.9)",
                 borderRadius: 12,
                 marginTop: 12,
                 paddingHorizontal: 10,
@@ -173,13 +178,14 @@ export default function MenuScreen() {
               <Search size={18} color="#666" />
               <TextInput
                 placeholder="Search Bento Sushi"
-                style={{ flex: 1, marginLeft: 8 }}
+                placeholderTextColor="#666"
+                style={{ flex: 1, marginLeft: 8, color: "#111" }}
               />
             </View>
 
             {/* Categories Button */}
             <TouchableOpacity onPress={() => setShowModal(true)} style={{ marginTop: 12 }}>
-              <Text style={{ color: "#6b21a8", fontWeight: "600" }}>Categories ▼</Text>
+              <Text style={{ color: "#f9d423", fontWeight: "700" }}>Categories ▼</Text>
             </TouchableOpacity>
           </View>
         </View>

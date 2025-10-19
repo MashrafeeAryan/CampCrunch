@@ -98,7 +98,7 @@ export default function SearchFoodScreen() {
       // Mon - Fri
       if (isBetween(7, 0, 10, 30)) return "Breakfast";
       if (isBetween(10, 30, 15, 30)) return "Lunch";
-      if (isBetween(15, 30, 20, 0)) return "Dinner";1
+      if (isBetween(15, 30, 20, 0)) return "Dinner";
     } else {
       // Sat - Sun
       if (isBetween(9, 0, 14, 0)) return "Breakfast"; // brunch merged into breakfast
@@ -106,8 +106,8 @@ export default function SearchFoodScreen() {
       if (isBetween(15, 30, 19, 0)) return "Dinner";
     }
 
-    return "Breakfast"; // fallback
-  };
+    return "Dinner" ; // fallback
+  }; 
 
   // 🔥 Meal type in state, auto-updating
   const [currentMealType, setCurrentMealType] = useState(getMealType());
