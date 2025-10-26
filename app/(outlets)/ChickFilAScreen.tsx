@@ -27,7 +27,7 @@ const data = [
   {
     "$id": "cf1",
     "category": "Featured Flavors",
-    "name": "Spicy Chicken Sandwich Deluxe",
+    "name": "Sweet and Salty Chicken Sandwich Deluxe",
     "description": "Spicy seasoned chicken breast with lettuce, tomato, and cheese on a toasted bun",
     "calories": 550,
     "protein": 29,
